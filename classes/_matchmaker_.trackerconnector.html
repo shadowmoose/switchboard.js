@@ -79,7 +79,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">TrackerConnector</span>
+						<a href="_subscribable_.subscribable.html" class="tsd-signature-type">Subscribable</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">TrackerConnector</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -113,22 +118,31 @@
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_matchmaker_.trackerconnector.html#isworking" class="tsd-kind-icon">is<wbr>Working</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#close" class="tsd-kind-icon">close</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#connect" class="tsd-kind-icon">connect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#createoffer" class="tsd-kind-icon">create<wbr>Offer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="_matchmaker_.trackerconnector.html#emit" class="tsd-kind-icon">emit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#getannouncepacket" class="tsd-kind-icon">get<wbr>Announce<wbr>Packet</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_matchmaker_.trackerconnector.html#kill" class="tsd-kind-icon">kill</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#makepeer" class="tsd-kind-icon">make<wbr>Peer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#onconnect" class="tsd-kind-icon">on<wbr>Connect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#onmessage" class="tsd-kind-icon">on<wbr>Message</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#onpeerconnected" class="tsd-kind-icon">on<wbr>Peer<wbr>Connected</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_matchmaker_.trackerconnector.html#once" class="tsd-kind-icon">once</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#reannounce" class="tsd-kind-icon">re<wbr>Announce</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#reconnect" class="tsd-kind-icon">reconnect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#retractoffer" class="tsd-kind-icon">retract<wbr>Offer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#send" class="tsd-kind-icon">send</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_matchmaker_.trackerconnector.html#setannouncetimer" class="tsd-kind-icon">set<wbr>Announce<wbr>Timer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_matchmaker_.trackerconnector.html#subscribe" class="tsd-kind-icon">subscribe</a></li>
 							</ul>
 						</section>
 					</div>
@@ -146,7 +160,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L76">src/matchmaker.ts:76</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L111">src/matchmaker.ts:111</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -202,7 +216,7 @@
 					<div class="tsd-signature tsd-kind-icon">connect<wbr>Tries<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L75">src/matchmaker.ts:75</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L110">src/matchmaker.ts:110</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -212,7 +226,7 @@
 					<div class="tsd-signature tsd-kind-icon">current<wbr>Announce<wbr>Interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 50000</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L73">src/matchmaker.ts:73</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L108">src/matchmaker.ts:108</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -222,7 +236,7 @@
 					<div class="tsd-signature tsd-kind-icon">info<wbr>Hash<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L65">src/matchmaker.ts:65</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L100">src/matchmaker.ts:100</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -232,7 +246,7 @@
 					<div class="tsd-signature tsd-kind-icon">intro<wbr>Pending<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L74">src/matchmaker.ts:74</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L109">src/matchmaker.ts:109</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -242,7 +256,7 @@
 					<div class="tsd-signature tsd-kind-icon">open<wbr>Last<wbr>Offers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L72">src/matchmaker.ts:72</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L107">src/matchmaker.ts:107</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -252,7 +266,7 @@
 					<div class="tsd-signature tsd-kind-icon">open<wbr>Offers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L71">src/matchmaker.ts:71</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L106">src/matchmaker.ts:106</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -262,7 +276,7 @@
 					<div class="tsd-signature tsd-kind-icon">peer<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L66">src/matchmaker.ts:66</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L101">src/matchmaker.ts:101</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -272,7 +286,7 @@
 					<div class="tsd-signature tsd-kind-icon">peerID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L64">src/matchmaker.ts:64</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L99">src/matchmaker.ts:99</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -282,7 +296,7 @@
 					<div class="tsd-signature tsd-kind-icon">peers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_matchmaker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L70">src/matchmaker.ts:70</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L105">src/matchmaker.ts:105</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -292,7 +306,7 @@
 					<div class="tsd-signature tsd-kind-icon">should<wbr>Reconnect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L67">src/matchmaker.ts:67</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L102">src/matchmaker.ts:102</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -302,7 +316,7 @@
 					<div class="tsd-signature tsd-kind-icon">sock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebSocket</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L69">src/matchmaker.ts:69</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L104">src/matchmaker.ts:104</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -312,7 +326,7 @@
 					<div class="tsd-signature tsd-kind-icon">timer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L68">src/matchmaker.ts:68</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L103">src/matchmaker.ts:103</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -322,7 +336,7 @@
 					<div class="tsd-signature tsd-kind-icon">trackerID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L76">src/matchmaker.ts:76</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L111">src/matchmaker.ts:111</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -332,9 +346,34 @@
 					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L63">src/matchmaker.ts:63</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L98">src/matchmaker.ts:98</a></li>
 						</ul>
 					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="isworking" class="tsd-anchor"></a>
+					<h3>is<wbr>Working</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isWorking<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L133">src/matchmaker.ts:133</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns a boolean, representing if this tracker is still viable.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -349,7 +388,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L113">src/matchmaker.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L155">src/matchmaker.ts:155</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -372,7 +411,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L99">src/matchmaker.ts:99</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L141">src/matchmaker.ts:141</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -394,7 +433,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L308">src/matchmaker.ts:308</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L352">src/matchmaker.ts:352</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -408,6 +447,33 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+					<a name="emit" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> emit</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">emit<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"disconnect"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"connect"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"peer"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"kill"</span>, val<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="_subscribable_.subscribable.html">Subscribable</a>.<a href="_subscribable_.subscribable.html#emit">emit</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L439">src/matchmaker.ts:439</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">"disconnect"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"connect"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"peer"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"kill"</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> val: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="getannouncepacket" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>Announce<wbr>Packet</h3>
@@ -418,7 +484,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L259">src/matchmaker.ts:259</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L303">src/matchmaker.ts:303</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -450,13 +516,13 @@
 					<a name="kill" class="tsd-anchor"></a>
 					<h3>kill</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">kill<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">kill<span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L399">src/matchmaker.ts:399</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L448">src/matchmaker.ts:448</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -465,6 +531,12 @@
 								</div>
 								<p>All cleanup handled by the internal <code>websocket.onclose</code> handler will also be applied as a result.</p>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> err: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -479,7 +551,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L355">src/matchmaker.ts:355</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L399">src/matchmaker.ts:399</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -517,7 +589,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L150">src/matchmaker.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L193">src/matchmaker.ts:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -540,7 +612,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L171">src/matchmaker.ts:171</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L215">src/matchmaker.ts:215</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -572,7 +644,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L376">src/matchmaker.ts:376</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L420">src/matchmaker.ts:420</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -593,6 +665,40 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="once" class="tsd-anchor"></a>
+					<h3>once</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">once<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_subscribable_.subscribable.html">Subscribable</a>.<a href="_subscribable_.subscribable.html#once">once</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/subscribable.ts#L29">src/subscribable.ts:29</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Same as subscribe, but only triggers one time &amp; automatically cleans up.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>callback: <span class="tsd-signature-type">Function</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="reannounce" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> re<wbr>Announce</h3>
@@ -603,7 +709,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L384">src/matchmaker.ts:384</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L429">src/matchmaker.ts:429</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -625,7 +731,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L124">src/matchmaker.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L167">src/matchmaker.ts:167</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -647,7 +753,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L333">src/matchmaker.ts:333</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L377">src/matchmaker.ts:377</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -685,7 +791,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L139">src/matchmaker.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L182">src/matchmaker.ts:182</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -716,7 +822,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8a0067b/src/matchmaker.ts#L239">src/matchmaker.ts:239</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L283">src/matchmaker.ts:283</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -735,6 +841,201 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="subscribe" class="tsd-anchor"></a>
+					<h3>subscribe</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">subscribe<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"disconnect"</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">subscribe<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"connect"</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">subscribe<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"peer"</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>peer<span class="tsd-signature-symbol">: </span><a href="_matchmaker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">subscribe<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"kill"</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="_subscribable_.subscribable.html">Subscribable</a>.<a href="_subscribable_.subscribable.html#subscribe">subscribe</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L65">src/matchmaker.ts:65</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Triggered when the connection is lost to the Tracker server.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">"disconnect"</span></h5>
+								</li>
+								<li>
+									<h5>callback: <span class="tsd-signature-type">Function</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h4>
+							<p>A function to call, in order to unsubscribe.</p>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-signature">
+									<ul class="tsd-signatures tsd-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="_subscribable_.subscribable.html">Subscribable</a>.<a href="_subscribable_.subscribable.html#subscribe">subscribe</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L73">src/matchmaker.ts:73</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Triggered when the connection is established to the Tracker server.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">"connect"</span></h5>
+								</li>
+								<li>
+									<h5>callback: <span class="tsd-signature-type">Function</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h4>
+							<p>A function to call, in order to unsubscribe.</p>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-signature">
+									<ul class="tsd-signatures tsd-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="_subscribable_.subscribable.html">Subscribable</a>.<a href="_subscribable_.subscribable.html#subscribe">subscribe</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L81">src/matchmaker.ts:81</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Triggered when a new Peer object is located and connected.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">"peer"</span></h5>
+								</li>
+								<li>
+									<h5>callback: <span class="tsd-signature-symbol">(</span>peer<span class="tsd-signature-symbol">: </span><a href="_matchmaker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>peer<span class="tsd-signature-symbol">: </span><a href="_matchmaker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>peer: <a href="_matchmaker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h4>
+							<p>A function to call, in order to unsubscribe.</p>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-signature">
+									<ul class="tsd-signatures tsd-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="_subscribable_.subscribable.html">Subscribable</a>.<a href="_subscribable_.subscribable.html#subscribe">subscribe</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/8655b53/src/matchmaker.ts#L89">src/matchmaker.ts:89</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Triggered when this TrackerConnector is unrecoverably killed.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">"kill"</span></h5>
+								</li>
+								<li>
+									<h5>callback: <span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A function that can receive the Error, if any, that caused termination.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>err: <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h4>
+							<p>A function to call, in order to unsubscribe.</p>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-signature">
+									<ul class="tsd-signatures tsd-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -745,6 +1046,9 @@
 					</li>
 					<li class="current tsd-kind-module">
 						<a href="../modules/_matchmaker_.html">&quot;matchmaker&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_subscribable_.html">&quot;subscribable&quot;</a>
 					</li>
 				</ul>
 			</nav>
@@ -803,6 +1107,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_matchmaker_.trackerconnector.html#url" class="tsd-kind-icon">url</a>
 							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="_matchmaker_.trackerconnector.html#isworking" class="tsd-kind-icon">is<wbr>Working</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="_matchmaker_.trackerconnector.html#close" class="tsd-kind-icon">close</a>
 							</li>
@@ -811,6 +1118,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="_matchmaker_.trackerconnector.html#createoffer" class="tsd-kind-icon">create<wbr>Offer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="_matchmaker_.trackerconnector.html#emit" class="tsd-kind-icon">emit</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="_matchmaker_.trackerconnector.html#getannouncepacket" class="tsd-kind-icon">get<wbr>Announce<wbr>Packet</a>
@@ -830,6 +1140,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="_matchmaker_.trackerconnector.html#onpeerconnected" class="tsd-kind-icon">on<wbr>Peer<wbr>Connected</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_matchmaker_.trackerconnector.html#once" class="tsd-kind-icon">once</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="_matchmaker_.trackerconnector.html#reannounce" class="tsd-kind-icon">re<wbr>Announce</a>
 							</li>
@@ -844,6 +1157,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="_matchmaker_.trackerconnector.html#setannouncetimer" class="tsd-kind-icon">set<wbr>Announce<wbr>Timer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="_matchmaker_.trackerconnector.html#subscribe" class="tsd-kind-icon">subscribe</a>
 							</li>
 						</ul>
 					</li>
@@ -878,6 +1194,12 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 		</div>
 	</div>
