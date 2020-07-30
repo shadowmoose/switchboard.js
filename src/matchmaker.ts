@@ -9,7 +9,7 @@ let debug = (...args: any)=>{};
 /**
  * Enable/disable debug logging. Optionally provide your own custom logging callback.
  * @param enabled If logging should be enabled.
- * @param callback Pass a custom function if you wish to override the default `console.log` behavior.
+ * @param callback Pass a custom function if you wish to override the default `console.debug` behavior.
  */
 export function setLogging(enabled: boolean, callback: any = console.debug) {
     if (enabled) {
@@ -20,7 +20,7 @@ export function setLogging(enabled: boolean, callback: any = console.debug) {
 }
 
 /**
- * Wrapper for the simple-peer Peer object, contains the extra metadata that the TrackerConnector will append.
+ * Wrapper for the `simple-peer` Peer object, contains the extra metadata that the TrackerConnector will append.
  */
 export class PeerWrapper extends Peer {
     /**
@@ -57,7 +57,7 @@ export interface AnnouncePacket {
 /**
  * Naive implementation of the WebsSocket matchmaking protocol used by WebTorrent services.
  *
- * Registers at the given server, then returns Peers (simple-peer objects) once they are connected & ready.
+ * Registers at the given server, then returns Peers (`simple-peer` objects) once they are connected & ready.
  */
 export class TrackerConnector {
     private readonly url: string;
