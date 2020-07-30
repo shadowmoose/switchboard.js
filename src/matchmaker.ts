@@ -1,6 +1,8 @@
 import randombytes from 'randombytes'
 import Peer from 'simple-peer';
+import Subscribable from "./subscribable";
 
+// noinspection JSUnusedLocalSymbols
 /**
  * @hidden The debug-logging method. Defaults to noop.
  */
@@ -15,7 +17,7 @@ export function setLogging(enabled: boolean, callback: any = console.debug) {
     if (enabled) {
         debug = callback;
     } else {
-        debug = (...args: any)=>{};
+        debug = ()=>{};
     }
 }
 
@@ -53,13 +55,46 @@ export interface AnnouncePacket {
     'tracker id'?: string;
 }
 
+export interface TrackerConnector {
+    /**
+     * Triggered when the connection is lost to the Tracker server.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    subscribe(event: 'disconnect', callback: Function): () => void;
+
+    /**
+     * Triggered when the connection is established to the Tracker server.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    subscribe(event: 'connect', callback: Function): () => void;
+
+    /**
+     * Triggered when a new Peer object is located and connected.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    subscribe(event: 'peer', callback: {(peer: PeerWrapper): void}): () => void;
+
+    /**
+     * Triggered when this TrackerConnector is unrecoverably killed.
+     * @param event
+     * @param callback A function that can receive the Error, if any, that caused termination.
+     * @returns A function to call, in order to unsubscribe.
+     */
+    subscribe(event: 'kill', callback: {(err: Error|null): void}): () => void;
+}
 
 /**
  * Naive implementation of the WebsSocket matchmaking protocol used by WebTorrent services.
  *
  * Registers at the given server, then returns Peers (`simple-peer` objects) once they are connected & ready.
  */
-export class TrackerConnector {
+export class TrackerConnector extends Subscribable{
     private readonly url: string;
     private readonly peerID: string;
     private readonly infoHash: string;
@@ -75,7 +110,6 @@ export class TrackerConnector {
     private connectTries: number = 0;
     private trackerID: string|null = null;
 
-
     /**
      * Create and connect to a new Tracker, using a websocket URL.
      * @param trackerURL The "ws" or "wss" tracker URL to join.
@@ -84,12 +118,20 @@ export class TrackerConnector {
      * @param peerConfig An object with additional params to pass into each created simple-peer Peer object.
      */
     constructor(trackerURL: string, peerID: string, infoHash: string, peerConfig: object) {
+        super();
         this.url = trackerURL;
         this.peerID = peerID;
         this.infoHash = Buffer.from(infoHash, 'hex').toString('binary');
         this.peerConfig = peerConfig;
 
         this.connect();
+    }
+
+    /**
+     * Returns a boolean, representing if this tracker is still viable.
+     */
+    get isWorking(): boolean {
+        return this.shouldReconnect;
     }
 
     /**
@@ -115,6 +157,7 @@ export class TrackerConnector {
         clearInterval(this.timer);
         Object.keys(this.openOffers).forEach(oID => this.retractOffer(oID, true));
         Object.keys(this.openLastOffers).forEach(oID => this.retractOffer(oID, true));
+        this.emit('disconnect');
     }
 
     /**
@@ -160,6 +203,7 @@ export class TrackerConnector {
         this.introPending = true;
         this.send(intro);
         this.setAnnounceTimer(this.currentAnnounceInterval);
+        this.emit('connect');
     }
 
     /**
@@ -172,7 +216,7 @@ export class TrackerConnector {
         const msg: AnnouncePacket = JSON.parse(event.data);
         const interval: any = msg.interval || msg['min interval'];
 
-        debug('Rec:', msg);
+        debug(msg);
 
         if (msg['failure reason']) {
             console.error(msg['failure reason']);
@@ -198,7 +242,7 @@ export class TrackerConnector {
         }
 
         if (msg.offer && msg.peer_id && msg.offer_id) {
-            debug('Client is "trying" to connect:', msg.peer_id);
+            debug(msg.peer_id);
             const peer = this.makePeer(msg.offer_id, false);
             peer.once('signal', answer => {
                 const params: any = {
@@ -217,7 +261,7 @@ export class TrackerConnector {
         }
 
         if (msg.answer && msg.peer_id && msg.offer_id) {
-            debug('Got answer to open invitation:', msg.offer_id, msg.peer_id);
+            debug(msg.offer_id, msg.peer_id);
             const peer = this.peers[msg.offer_id];
 
             peer.id = msg.peer_id;
@@ -225,7 +269,7 @@ export class TrackerConnector {
             if (peer) {
                 peer.signal(msg.answer);
             } else {
-                debug('Got unexpected answer:', msg);
+                debug(msg);
             }
         }
     }
@@ -237,7 +281,7 @@ export class TrackerConnector {
      * @private
      */
     private setAnnounceTimer(interval: number|null) {
-        debug('Scheduling auto-announce timer:', interval);
+        debug(interval);
         if (this.timer !== null) {
             clearInterval(this.timer);
             this.timer = null;
@@ -332,7 +376,7 @@ export class TrackerConnector {
      */
     private retractOffer(offerID: string, killPeer: boolean = true) {
         if (this.openOffers[offerID]) {
-            debug('Retracting offer:', offerID, '- kill:', killPeer);
+            debug(offerID, '- kill:', killPeer);
 
             if (killPeer) this.peers[offerID].destroy();
 
@@ -374,7 +418,8 @@ export class TrackerConnector {
      * @private
      */
     private onPeerConnected(peer: PeerWrapper) {
-        console.log("Peer connected:", peer, peer.id);
+        debug(peer, peer.id);
+        this.emit('peer', peer);
     }
 
     /**
@@ -386,9 +431,13 @@ export class TrackerConnector {
 
         const packet = await this.getAnnouncePacket(null, 10);
 
-        debug('Auto-Sending Announce:', packet);
+        debug(packet);
 
         this.send(packet);
+    }
+
+    protected emit(event: 'disconnect'|'connect'|'peer'|'kill', val?: any) {
+        super.emit(event, val);
     }
 
     /**
@@ -396,8 +445,9 @@ export class TrackerConnector {
      *
      * All cleanup handled by the internal `websocket.onclose` handler will also be applied as a result.
      */
-    public kill() {
+    public kill(err?: any) {
         this.shouldReconnect = false;
         this.close();
+        this.emit('kill', err||null);
     }
 }

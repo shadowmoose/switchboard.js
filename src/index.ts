@@ -20,3 +20,18 @@ const myID = makeID(20);
 setLogging(true);
 
 const conn = new TrackerConnector('ws://localhost:9090', myID, '7EDA978ED7628595BB91C48B947F025BAE78CB77', {});
+
+console.log(conn);
+
+conn.subscribe('peer', (peer) => {
+    console.log('Got peer:', peer);
+})
+
+conn.subscribe('kill', (err) => {
+   if (err) console.error(err);
+   console.log('Connection killed.')
+});
+
+conn.subscribe('connect', () => {
+    console.log('Connected to tracker!');
+})
