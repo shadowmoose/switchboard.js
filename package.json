@@ -23,10 +23,11 @@
   "types": "dist/matchmaker.d.ts",
   "browser": "build/main.js",
   "scripts": {
-    "bundle": "webpack --mode production",
     "start:dev": "webpack-dev-server --mode development --progress --color",
-    "build-docs": "npx typedoc --out docs src",
-    "server": "node src/server.js",
+    "server": "node test/server.js",
+
+    "bundle": "webpack --mode production",
+    "build-docs": "npx typedoc src --out docs --excludeNotExported --includeVersion --mode modules",
     "build-module": "tsc --build tsconfig.module.json",
     "prepublishOnly": "npm run-script bundle && npm run-script build-module"
   },
