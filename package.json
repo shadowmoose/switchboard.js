@@ -1,0 +1,56 @@
+{
+  "name": "switchboard.js",
+  "version": "0.0.1",
+  "description": "Decentralized peering without a middleman server",
+  "author": "ShadowMoose",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shadowmoose/switchboard.js.git"
+  },
+  "keywords": [
+    "webRTC",
+    "matchmaking",
+    "p2p",
+    "peer-to-peer"
+  ],
+  "bugs": {
+    "url": "https://github.com/shadowmoose/switchboard.js/issues"
+  },
+  "homepage": "https://github.com/shadowmoose/switchboard.js",
+  "license": "MIT",
+
+  "main": "dist/matchmaker.js",
+  "types": "dist/matchmaker.d.ts",
+  "browser": "build/main.js",
+  "scripts": {
+    "bundle": "webpack --mode production",
+    "start:dev": "webpack-dev-server --mode development --progress --color",
+    "build-docs": "npx typedoc --out docs src",
+    "server": "node src/server.js",
+    "build-module": "tsc --build tsconfig.module.json",
+    "prepublishOnly": "npm run-script bundle && npm run-script build-module"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.26",
+    "@types/randombytes": "^2.0.0",
+    "@types/simple-peer": "^9.6.0",
+    "@types/webtorrent": "^0.107.2",
+    "@types/ws": "^7.2.6",
+    "ts-loader": "^8.0.1",
+    "typedoc": "^0.17.8",
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.0",
+    "webpack-bundle-analyzer": "^3.8.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "bittorrent-tracker": "^9.15.0"
+  },
+  "dependencies": {
+    "isomorphic-ws": "^4.0.1",
+    "randombytes": "^2.1.0",
+    "torrent-discovery": "^9.3.0",
+    "ws": "^7.3.1",
+    "simple-peer": "^9.7.2"
+  },
+  "files": ["build"]
+}
