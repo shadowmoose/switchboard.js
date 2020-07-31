@@ -66,7 +66,59 @@
 				<a href="#switchboardjs-" id="switchboardjs-" style="color: inherit; text-decoration: none;">
 					<h1>switchboard.js <a href="https://shadowmoose.github.io/switchboard.js"><img src="https://github.com/shadowmoose/switchboard.js/workflows/Build%20Docs/badge.svg" alt="Build Docs"></a></h1>
 				</a>
-				<p>Placeholder - coming soon.</p>
+				<p><strong>This is a Work in Progress. It may not even be functional currently.</strong></p>
+				<p>Switchboard.js is a library built to help connect users in peer-to-peer networks. It&#39;s specifically designed to work for developers deploying static sites (say, through GitHub Pages) without an available middleman (<a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling">signaling</a>) server to handle peer discovery. With Switchboard it&#39;s possible to deploy anything from a fully in-browser file server, to a media streaming service, or even vast online multiplayer applications - all within a single browser tab powered by static HTML.</p>
+				<p>With switchboard you can establish traditional <code>client-&gt;host</code> connections, or even connect <em>full swarms of clients</em> together. Switchboard handles all the intricacies involved with reconnection and peer discovery, and uses cryptographic peer IDs to securely connect without the risk of impersonators. All of this works out of the box in just a few lines of code, and requires zero server setup on the developer&#39;s behalf.</p>
+				<a href="#enough-talk-give-me-an-example" id="enough-talk-give-me-an-example" style="color: inherit; text-decoration: none;">
+					<h2>Enough talk, give me an example:</h2>
+				</a>
+				<p>It&#39;s simple to start with Switchboard. Here&#39;s a sample that connects to a swarm of clients, and sends them each a greeting:</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> {Matchmaker} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;switchboard.js&#x27;</span>;
+
+<span class="hljs-comment">// Create new matchmaker:</span>
+<span class="hljs-keyword">const</span> c = <span class="hljs-keyword">new</span> Matchmaker();
+
+<span class="hljs-comment">// Connect to a test swarm of Peers - this can be any ID you&#x27;d like:</span>
+c.swarm(<span class="hljs-string">&#x27;test-swarm&#x27;</span>);
+
+<span class="hljs-comment">// Listen for new peer connections as you/they join the swarm:</span>
+c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">peer</span>) =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Connected to peer:&#x27;</span>, peer.id, peer);
+    peer.send(<span class="hljs-string">&#x27;Hello there!&#x27;</span>);
+    peer.on(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Received:&#x27;</span>, data));
+})</code></pre>
+				<p>...or perhaps you&#39;d like to implement a client-&gt;server connection, using persistent IDs that survive through browser restarts?</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> {Matchmaker} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;switchboard.js&#x27;</span>;
+
+<span class="hljs-comment">// Load a secret code from storage, or one will auto-generate if one isn&#x27;t already saved:</span>
+<span class="hljs-keyword">const</span> c = <span class="hljs-keyword">new</span> Matchmaker({seed: <span class="hljs-built_in">localStorage</span>.getItem(<span class="hljs-string">&#x27;secretSeed&#x27;</span>)});  
+
+<span class="hljs-comment">// Connect to the host:</span>
+c.findHost(<span class="hljs-string">&#x27;Host-ID&#x27;</span>);
+
+<span class="hljs-comment">// Listen for new peer connections as you/they join the swarm:</span>
+c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">peer</span>) =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Connected to the Host:&#x27;</span>, peer.id, peer);
+    peer.send(<span class="hljs-string">&#x27;Hello there, Mr. Host!&#x27;</span>);
+    peer.on(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Received from host:&#x27;</span>, data));
+})
+
+<span class="hljs-built_in">localStorage</span>.setItem(<span class="hljs-string">&#x27;secretSeed&#x27;</span>, c.secretSeed); <span class="hljs-comment">// Store use later on reload.</span></code></pre>
+				<a href="#okay-so-how39s-it-work" id="okay-so-how39s-it-work" style="color: inherit; text-decoration: none;">
+					<h2>Okay, so how&#39;s it work?</h2>
+				</a>
+				<p>Switchboard is lightweight, small, simple, and blazingly-fast. In the world of WebRTC, you rarely see more than two of those attributes at once. There are a few strategies employeed in this project to make this all happen:</p>
+				<ul>
+					<li><strong>Built from Scratch:</strong> While following the official spec, Switchboard doesn&#39;t import any of the usual bloated WebRTC libraries!</li>
+					<li><strong>TypeScript:</strong> Rewriting the common stuff in TypeScript gets us full tree-shaking, easy reference for the API, and <a href="https://shadowmoose.github.io/switchboard.js">great documentation.</a></li>
+					<li><strong>Lower-Level:</strong> Reimplementing the APIs also grants Swithboard faster access to do fancy things - such as rejecting unwanted Peers before they even establish a connection.</li>
+				</ul>
+				<a href="#are-there-really-no-servers-involved" id="are-there-really-no-servers-involved" style="color: inherit; text-decoration: none;">
+					<h2>Are there really no servers involved?</h2>
+				</a>
+				<p>Well... no. Unfortunately, that&#39;s impossible in the current world of WebRTC. However - there are so many public resources available these days, that a developer need not roll their own matchmaking server!</p>
+				<p>Switchboard makes use of multiple public, reliable WebTorrent peering servers that exist online. You can simply use the default list built-in, or provide your own. Switchboard will connect to them all to assure it has multiple redundant fallbacks. Having multiple public services at its disposal makes Switchboard far more reliable than most services can hope to achieve. Built-in custom logic deals with these servers, and Switchboard won&#39;t fail unless none of the provided servers can be reached. Additionally - if you have the resources and don&#39;t want to use public servers - it is trivial to spin up <a href="https://github.com/webtorrent/bittorrent-tracker">your own server</a>.</p>
+				<p>However, you don&#39;t need to worry about public servers either. Switchboard uses public key encryption on top of a simple ID system for every single connection. Wherever you are, whenever you connect to somebody, you will always know they&#39;re exactly who they say they are.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
