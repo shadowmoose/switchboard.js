@@ -59,7 +59,7 @@ Switchboard is lightweight, small, simple, and blazingly-fast. In the world of W
 + __TypeScript:__ Rewriting the common stuff in TypeScript gets us full tree-shaking, easy reference for the API, and [great documentation.](https://shadowmoose.github.io/switchboard.js)
 + __Lower-Level:__ Reimplementing the APIs also grants Swithboard faster access to do fancy things - such as rejecting unwanted Peers before they even establish a connection.
 
-## Are there really no servers involved?
+## So there aren't any servers involved?
 Well... no. Unfortunately, that's impossible in the current world of WebRTC. However - there are so many public resources available these days, that a developer need not roll their own matchmaking server!
 
 Switchboard makes use of multiple public, reliable WebTorrent peering servers that exist online. You can simply use the default list built-in, or provide your own. Switchboard will connect to them all to assure it has multiple redundant fallbacks. Having multiple public services at its disposal makes Switchboard far more reliable than most services can hope to achieve. Built-in custom logic deals with these servers, and Switchboard won't fail unless none of the provided servers can be reached. Additionally - if you have the resources and don't want to use public servers - it is trivial to spin up [your own server](https://github.com/webtorrent/bittorrent-tracker).
