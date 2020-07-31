@@ -1,4 +1,9 @@
 /**
+ * @hidden
+ * @internal
+ */
+
+/**
  * Basic event emitter implementation, to avoid extra requirements.
  */
 export default class Subscribable {
@@ -22,9 +27,10 @@ export default class Subscribable {
     }
 
     /**
-     * Same as subscribe, but only triggers one time & automatically cleans up.
+     * Same as {@link subscribe}, but only triggers one time & automatically cleans up.
      * @param event
      * @param callback
+     * @see {@link subscribe} for the available specific events.
      */
     public once(event: string, callback: Function) {
         const unsub = this.subscribe(event, (val: any) => {

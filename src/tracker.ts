@@ -1,6 +1,7 @@
-import randombytes from 'randombytes'
+import nacl from 'tweetnacl';
 import Peer from 'simple-peer';
 import Subscribable from "./subscribable";
+import {ConnectionFailedError} from "./errors";
 
 // noinspection JSUnusedLocalSymbols
 /**
@@ -25,10 +26,52 @@ export function setLogging(enabled: boolean, callback: any = console.debug) {
  * Wrapper for the `simple-peer` Peer object, contains the extra metadata that the TrackerConnector will append.
  */
 export class PeerWrapper extends Peer {
+    private permanentHandlers: Record<string, any[]> = {};
+
     /**
      * The ID this peer has used to identify themselves, cross-tracker.
      */
     public id: string = '';
+
+    /**
+     * Store the ping timeout with each peer.
+     */
+    public timeoutTracker: any = null;
+
+    /**
+     * Register an event that cannot be cleared.
+     * Used internally to guarantee certain events (close, etc.) are detected.
+     * @param event
+     * @param handler
+     */
+    public permanent(event: string, handler: any) {
+        this.permanentHandlers[event] = this.permanentHandlers[event] || [];
+        this.permanentHandlers[event].push(handler);
+        this.on(event, handler);
+    }
+
+    public removeAllListeners(event?: string): this {
+        super.removeAllListeners(event);
+
+        const events = event? [event] : Object.keys(this.permanentHandlers);
+        events.forEach( event => {
+            const handlers = this.permanentHandlers[event];
+            if (handlers) {
+                handlers.forEach(h => this.on(event, h))
+            }
+        })
+
+        return this;
+    }
+
+    // noinspection JSUnusedGlobalSymbols
+    /**
+     * If this Peer is currently connected.
+     */
+    get connected(): boolean {
+        // @ts-ignore
+        return super.connected;
+    }
 }
 
 /**
@@ -42,10 +85,7 @@ export interface AnnouncePacket {
     left: number;
     event?: string;
     action: "announce";
-    offers?: {
-        offer: any;
-        offer_id: string;
-    }[];
+    offers?: Offer[];
     offer?: any;
     answer?: any;
     offer_id?: string;
@@ -53,6 +93,11 @@ export interface AnnouncePacket {
     'min interval'?: number;
     'failure reason'?: string;
     'tracker id'?: string;
+}
+
+interface Offer {
+    offer: any;
+    offer_id: string;
 }
 
 export interface TrackerConnector {
@@ -99,16 +144,18 @@ export class TrackerConnector extends Subscribable{
     private readonly peerID: string;
     private readonly infoHash: string;
     private readonly peerConfig: object;
+    private readonly isBlacklisted: Function;
     private shouldReconnect: boolean = true;
     private timer: any = null;
     private sock: WebSocket|null = null;
     private peers: Record<string, PeerWrapper> = {};
-    private openOffers: Record<string, any> = {};  // Offers are opaque to this middleman.
-    private openLastOffers: Record<string, any> = {}; // cache of previous offers, which the tracker no longer has.
+    private openOffers: Offer[] = [];  // Offers are opaque to this middleman.
     private currentAnnounceInterval: number = 50000;
     private introPending: boolean = true;
     private connectTries: number = 0;
     private trackerID: string|null = null;
+    private maxOpenOffers: number = 10;
+    private didConnect: boolean = false;
 
     /**
      * Create and connect to a new Tracker, using a websocket URL.
@@ -116,32 +163,31 @@ export class TrackerConnector extends Subscribable{
      * @param peerID The ID to identify this client. Reuse this across all trackers.
      * @param infoHash The "info hash" to register with the Tracker. This is used as a connection ID.
      * @param peerConfig An object with additional params to pass into each created simple-peer Peer object.
+     * @param isBlacklisted A function, which decides if a given Peer ID may connect pre-handshake.
      */
-    constructor(trackerURL: string, peerID: string, infoHash: string, peerConfig: object) {
+    constructor(trackerURL: string, peerID: string, infoHash: string, peerConfig: object, isBlacklisted: Function) {
         super();
         this.url = trackerURL;
         this.peerID = peerID;
+        this.isBlacklisted = isBlacklisted;
         this.infoHash = Buffer.from(infoHash, 'hex').toString('binary');
         this.peerConfig = peerConfig;
-
-        this.connect();
     }
 
     /**
-     * Returns a boolean, representing if this tracker is still viable.
+     * If this current tracker's websocket is open.
      */
-    get isWorking(): boolean {
-        return this.shouldReconnect;
+    get isOpen() {
+        return this.sock?.readyState === WebSocket.OPEN;
     }
 
     /**
      * Connect to this tracker. Creates a new WebSocket & binds callbacks.
-     * @private
      */
-    private connect() {
+    connect() {
         this.sock = new WebSocket(this.url);
         this.sock.onclose = this.reconnect.bind(this);
-        this.sock.onerror = this.kill.bind(this);
+        this.sock.onerror = this.onError.bind(this);
         this.sock.onopen = this.onConnect.bind(this);
         this.sock.onmessage = this.onMessage.bind(this);
     }
@@ -153,10 +199,10 @@ export class TrackerConnector extends Subscribable{
      * @private
      */
     private close() {
+        debug('closing tracker socket.');
         this.sock?.close();
         clearInterval(this.timer);
-        Object.keys(this.openOffers).forEach(oID => this.retractOffer(oID, true));
-        Object.keys(this.openLastOffers).forEach(oID => this.retractOffer(oID, true));
+        this.openOffers.map(o => o.offer_id).forEach(oid => this.retractOffer(oid, true));
         this.emit('disconnect');
     }
 
@@ -191,6 +237,8 @@ export class TrackerConnector extends Subscribable{
      * @private
      */
     private onConnect() {
+        debug('Connecting to tracker:', this.url)
+        this.didConnect = true;
         const intro: AnnouncePacket = {
             action: "announce",
             event: "completed",
@@ -207,6 +255,23 @@ export class TrackerConnector extends Subscribable{
     }
 
     /**
+     * Called when the tracker experiences an error.
+     * If a connection was previously established, reconnects.
+     * Otherwise, kills this tracker with an ConnectionFailedError.
+     * @param error
+     * @private
+     */
+    private onError(error: Event) {
+        debug('WS Error:', error, this.url);
+        if (this.didConnect) {
+            this.didConnect = false;
+            this.reconnect();
+        } else {
+            this.kill(new ConnectionFailedError('Connection could not be established to websocket host.'));
+        }
+    }
+
+    /**
      * Called when a message is received from the Tracker.
      * Handles changes in announcement rate, error messages, and peer introductions.
      * @param event {MessageEvent} The websocket message event.
@@ -216,7 +281,7 @@ export class TrackerConnector extends Subscribable{
         const msg: AnnouncePacket = JSON.parse(event.data);
         const interval: any = msg.interval || msg['min interval'];
 
-        debug(msg);
+        debug('Incoming Tracker Data:', msg);
 
         if (msg['failure reason']) {
             console.error(msg['failure reason']);
@@ -237,12 +302,17 @@ export class TrackerConnector extends Subscribable{
             this.getAnnouncePacket('started', 10).then(packet => {
                 this.send(packet);
             }).catch(err => {
-                console.error(err);
+                this.kill(err);
             })
         }
 
+        if (msg.peer_id && this.isBlacklisted(msg.peer_id)) {
+            debug('Ignoring blacklisted client:', msg.peer_id);
+            return;
+        }
+
         if (msg.offer && msg.peer_id && msg.offer_id) {
-            debug(msg.peer_id);
+            debug('Joining peer:', msg.peer_id);
             const peer = this.makePeer(msg.offer_id, false);
             peer.once('signal', answer => {
                 const params: any = {
@@ -261,7 +331,7 @@ export class TrackerConnector extends Subscribable{
         }
 
         if (msg.answer && msg.peer_id && msg.offer_id) {
-            debug(msg.offer_id, msg.peer_id);
+            debug('Accepting peer:', msg.offer_id, msg.peer_id);
             const peer = this.peers[msg.offer_id];
 
             peer.id = msg.peer_id;
@@ -281,7 +351,7 @@ export class TrackerConnector extends Subscribable{
      * @private
      */
     private setAnnounceTimer(interval: number|null) {
-        debug(interval);
+        debug('Announce Timer interval:', interval, this.url);
         if (this.timer !== null) {
             clearInterval(this.timer);
             this.timer = null;
@@ -289,7 +359,7 @@ export class TrackerConnector extends Subscribable{
 
         if (interval !== null) {
             this.currentAnnounceInterval = interval;
-            setInterval(this.reAnnounce.bind(this), interval);
+            this.timer = setInterval(this.reAnnounce.bind(this), interval);
         }
     }
 
@@ -312,30 +382,13 @@ export class TrackerConnector extends Subscribable{
         if (event) ret.event = event;
 
         if (invites) {
-            for (const oID of Object.keys(this.openLastOffers)) {
-                this.retractOffer(oID);
-            }
-
-            for (const oID of Object.keys(this.openOffers)) {
-                // Cache the previous batch of offers for a bit, just in case somebody is currently trying to join.
-                this.openLastOffers[oID] = this.openOffers[oID];
-                delete this.openOffers[oID];
-            }
-
-            const pending: Promise<any>[] = [];
+            this.maxOpenOffers = invites * 2;
+            const pending: Promise<Offer>[] = [];
             for (let i=0; i < invites; i++) {
                 pending.push(this.createOffer());
             }
 
-            await Promise.all(pending);
-
-            ret.offers = [];
-            for (const oID of Object.keys(this.openOffers)) {
-                ret.offers.push({
-                    offer: this.openOffers[oID],
-                    offer_id: oID
-                })
-            }
+            ret.offers = await Promise.all(pending);
         }
 
         return ret;
@@ -349,18 +402,24 @@ export class TrackerConnector extends Subscribable{
      * In practice, this offering value should be treated as opaque, as it is specific to WebRTC implementation.
      * @private
      */
-    private async createOffer(): Promise<any> {
+    private async createOffer(): Promise<Offer> {
         return new Promise((res, rej) => {
-            const offerID = randombytes(20).toString('hex');
+            const offerID = Buffer.from(nacl.randomBytes(20)).toString('hex');
             const peer = this.peers[offerID] = this.makePeer(offerID, true);
 
             peer.once('signal', (offer: any) => {
-                this.openOffers[offerID] = offer;
-                res(offer);
+                const off = {
+                    offer,
+                    offer_id: offerID
+                };
+                this.openOffers.push(off)
+                while (this.openOffers.length > this.maxOpenOffers) {
+                    this.retractOffer(this.openOffers[0].offer_id, true);
+                }
+                res(off);
             });
             peer.once('error', (err) => {
-                peer.destroy();
-                this.retractOffer(offerID);
+                this.retractOffer(offerID, true);
                 rej(err);
             });
         });
@@ -375,16 +434,15 @@ export class TrackerConnector extends Subscribable{
      * @private
      */
     private retractOffer(offerID: string, killPeer: boolean = true) {
-        if (this.openOffers[offerID]) {
+        const idx = this.openOffers.findIndex(o => o.offer_id === offerID);
+
+        if (idx >= 0) {
             debug(offerID, '- kill:', killPeer);
 
             if (killPeer) this.peers[offerID].destroy();
 
-            if (this.openLastOffers[offerID]) {
-                delete this.peers[offerID];
-                delete this.openLastOffers[offerID];
-            }
-            delete this.openOffers[offerID];
+            delete this.peers[offerID];
+            this.openOffers.splice(idx, 1);
         }
     }
 
@@ -418,7 +476,7 @@ export class TrackerConnector extends Subscribable{
      * @private
      */
     private onPeerConnected(peer: PeerWrapper) {
-        debug(peer, peer.id);
+        debug('Tracker connected to peer:', peer, peer.id);
         this.emit('peer', peer);
     }
 
@@ -429,7 +487,7 @@ export class TrackerConnector extends Subscribable{
     private async reAnnounce() {
         if (!this.sock) return;
 
-        const packet = await this.getAnnouncePacket(null, 10);
+        const packet = await this.getAnnouncePacket(null, 10).catch(this.kill);
 
         debug(packet);
 
@@ -446,6 +504,7 @@ export class TrackerConnector extends Subscribable{
      * All cleanup handled by the internal `websocket.onclose` handler will also be applied as a result.
      */
     public kill(err?: any) {
+        debug('Tracker kill error:', err);
         this.shouldReconnect = false;
         this.close();
         this.emit('kill', err||null);
