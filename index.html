@@ -118,8 +118,8 @@ c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs
 					<li><strong>TypeScript:</strong> Rewriting the common stuff in TypeScript gets us full tree-shaking, easy reference for the API, and <a href="https://shadowmoose.github.io/switchboard.js">great documentation.</a></li>
 					<li><strong>Lower-Level:</strong> Reimplementing the APIs also grants Swithboard faster access to do fancy things - such as rejecting unwanted Peers before they even establish a connection.</li>
 				</ul>
-				<a href="#are-there-really-no-servers-involved" id="are-there-really-no-servers-involved" style="color: inherit; text-decoration: none;">
-					<h2>Are there really no servers involved?</h2>
+				<a href="#so-there-aren39t-any-servers-involved" id="so-there-aren39t-any-servers-involved" style="color: inherit; text-decoration: none;">
+					<h2>So there aren&#39;t any servers involved?</h2>
 				</a>
 				<p>Well... no. Unfortunately, that&#39;s impossible in the current world of WebRTC. However - there are so many public resources available these days, that a developer need not roll their own matchmaking server!</p>
 				<p>Switchboard makes use of multiple public, reliable WebTorrent peering servers that exist online. You can simply use the default list built-in, or provide your own. Switchboard will connect to them all to assure it has multiple redundant fallbacks. Having multiple public services at its disposal makes Switchboard far more reliable than most services can hope to achieve. Built-in custom logic deals with these servers, and Switchboard won&#39;t fail unless none of the provided servers can be reached. Additionally - if you have the resources and don&#39;t want to use public servers - it is trivial to spin up <a href="https://github.com/webtorrent/bittorrent-tracker">your own server</a>.</p>
