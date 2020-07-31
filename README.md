@@ -53,7 +53,7 @@ localStorage.setItem('secretSeed', c.secretSeed); // Store this identity for use
 You can see the code is pretty much the same either way, thanks to the simple API. There are much more advanced ways to customize the behavior of Switchboard, including hooking events and authorization, and you can read more about those [here](https://shadowmoose.github.io/switchboard.js)
 
 ## Okay, so how's it work?
-Switchboard is lightweight, small, simple, and blazingly-fast. In the world of WebRTC, you rarely see more than two of those attributes at once. There are a few strategies employeed in this project to make this all happen:
+Switchboard is lightweight, small, simple, and blazingly-fast. In the world of WebRTC, you rarely see more than a few of those attributes at once. There are a few strategies employeed in this project to make this all happen:
 
 + __Built from Scratch:__ While following the official spec, Switchboard doesn't import any of the usual bloated WebRTC libraries!
 + __TypeScript:__ Rewriting the common stuff in TypeScript gets us full tree-shaking, easy reference for the API, and [great documentation.](https://shadowmoose.github.io/switchboard.js)
