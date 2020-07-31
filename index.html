@@ -87,7 +87,7 @@ c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs
     peer.send(<span class="hljs-string">&#x27;Hello there!&#x27;</span>);
     peer.on(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Received:&#x27;</span>, data));
 })</code></pre>
-				<p>...or perhaps you&#39;d like to implement a client-&gt;server connection, using persistent IDs that survive through browser restarts?</p>
+				<p>...or perhaps you&#39;d like to implement a client-&gt;host connection, using persistent IDs that survive through browser restarts?</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> {Matchmaker} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;switchboard.js&#x27;</span>;
 
 <span class="hljs-comment">// Load a secret code from storage, or one will auto-generate if one isn&#x27;t already saved:</span>
@@ -96,14 +96,19 @@ c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs
 <span class="hljs-comment">// Connect to the host:</span>
 c.findHost(<span class="hljs-string">&#x27;Host-ID&#x27;</span>);
 
-<span class="hljs-comment">// Listen for new peer connections as you/they join the swarm:</span>
+<span class="hljs-comment">// If we were the host instead:</span>
+<span class="hljs-comment">// c.host();</span>
+
+<span class="hljs-comment">// Listen for the Host - they can be online already, or pop online in the future:</span>
 c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">peer</span>) =&gt;</span> {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Connected to the Host:&#x27;</span>, peer.id, peer);
     peer.send(<span class="hljs-string">&#x27;Hello there, Mr. Host!&#x27;</span>);
     peer.on(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Received from host:&#x27;</span>, data));
 })
 
-<span class="hljs-built_in">localStorage</span>.setItem(<span class="hljs-string">&#x27;secretSeed&#x27;</span>, c.secretSeed); <span class="hljs-comment">// Store use later on reload.</span></code></pre>
+<span class="hljs-built_in">localStorage</span>.setItem(<span class="hljs-string">&#x27;secretSeed&#x27;</span>, c.secretSeed); <span class="hljs-comment">// Store this identity for use later on reload.</span>
+<span class="hljs-comment">// The browser will now reuse the same identity whenever it reloads!</span></code></pre>
+				<p>You can see the code is pretty much the same either way, thanks to the simple API. There are much more advanced ways to customize the behavior of Switchboard, including hooking events and authorization, and you can read more about those <a href="https://shadowmoose.github.io/switchboard.js">here</a></p>
 				<a href="#okay-so-how39s-it-work" id="okay-so-how39s-it-work" style="color: inherit; text-decoration: none;">
 					<h2>Okay, so how&#39;s it work?</h2>
 				</a>
