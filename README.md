@@ -27,7 +27,7 @@ c.subscribe('peer', (peer) => {
 })
 ```
 
-...or perhaps you'd like to implement a client->server connection, using persistent IDs that survive through browser restarts?
+...or perhaps you'd like to implement a client->host connection, using persistent IDs that survive through browser restarts?
 ```ts
 import {Matchmaker} from 'switchboard.js';
 
@@ -37,15 +37,20 @@ const c = new Matchmaker({seed: localStorage.getItem('secretSeed')});
 // Connect to the host:
 c.findHost('Host-ID');
 
-// Listen for new peer connections as you/they join the swarm:
+// If we were the host instead:
+// c.host();
+
+// Listen for the Host - they can be online already, or pop online in the future:
 c.subscribe('peer', (peer) => {
     console.log('Connected to the Host:', peer.id, peer);
     peer.send('Hello there, Mr. Host!');
     peer.on('data', (data: any) => console.log('Received from host:', data));
 })
 
-localStorage.setItem('secretSeed', c.secretSeed); // Store use later on reload.
+localStorage.setItem('secretSeed', c.secretSeed); // Store this identity for use later on reload.
+// The browser will now reuse the same identity whenever it reloads!
 ```
+You can see the code is pretty much the same either way, thanks to the simple API. There are much more advanced ways to customize the behavior of Switchboard, including hooking events and authorization, and you can read more about those [here](https://shadowmoose.github.io/switchboard.js)
 
 ## Okay, so how's it work?
 Switchboard is lightweight, small, simple, and blazingly-fast. In the world of WebRTC, you rarely see more than two of those attributes at once. There are a few strategies employeed in this project to make this all happen:
