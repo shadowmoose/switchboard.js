@@ -105,18 +105,17 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#currentannounceinterval" class="tsd-kind-icon">current<wbr>Announce<wbr>Interval</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#didconnect" class="tsd-kind-icon">did<wbr>Connect</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#infohash" class="tsd-kind-icon">info<wbr>Hash</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#initiatorpeers" class="tsd-kind-icon">initiator<wbr>Peers</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#intropending" class="tsd-kind-icon">intro<wbr>Pending</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#isblacklisted" class="tsd-kind-icon">is<wbr>Blacklisted</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#maxopenoffers" class="tsd-kind-icon">max<wbr>Open<wbr>Offers</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#openoffers" class="tsd-kind-icon">open<wbr>Offers</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#peerconfig" class="tsd-kind-icon">peer<wbr>Config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#peerid" class="tsd-kind-icon">peerID</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#peers" class="tsd-kind-icon">peers</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#shouldreconnect" class="tsd-kind-icon">should<wbr>Reconnect</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#sock" class="tsd-kind-icon">sock</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#timer" class="tsd-kind-icon">timer</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#trackerid" class="tsd-kind-icon">trackerID</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#url" class="tsd-kind-icon">url</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#wantedpeercount" class="tsd-kind-icon">wanted<wbr>Peer<wbr>Count</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -130,7 +129,6 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#close" class="tsd-kind-icon">close</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tracker_.trackerconnector.html#connect" class="tsd-kind-icon">connect</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#createoffer" class="tsd-kind-icon">create<wbr>Offer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="_tracker_.trackerconnector.html#emit" class="tsd-kind-icon">emit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_tracker_.trackerconnector.html#getannouncepacket" class="tsd-kind-icon">get<wbr>Announce<wbr>Packet</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tracker_.trackerconnector.html#kill" class="tsd-kind-icon">kill</a></li>
@@ -157,13 +155,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Tracker<wbr>Connector<span class="tsd-signature-symbol">(</span>trackerURL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, peerID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, infoHash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, peerConfig<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span>, isBlacklisted<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tracker_.trackerconnector.html" class="tsd-signature-type">TrackerConnector</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Tracker<wbr>Connector<span class="tsd-signature-symbol">(</span>trackerURL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, peerID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, infoHash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, peerConfig<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PeerOptions</span><span class="tsd-signature-symbol">&gt;</span>, isBlacklisted<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span>, announceInterval<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, wantedPeerCount<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tracker_.trackerconnector.html" class="tsd-signature-type">TrackerConnector</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L158">src/tracker.ts:158</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L191">src/tracker.ts:191</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -198,7 +196,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>peerConfig: <span class="tsd-signature-type">object</span></h5>
+									<h5>peerConfig: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PeerOptions</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>An object with additional params to pass into each created simple-peer Peer object.</p>
@@ -210,6 +208,22 @@
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>A function, which decides if a given Peer ID may connect pre-handshake.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5>announceInterval: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The interval, in milliseconds, that this tracker will re-announce.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5>wantedPeerCount: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The total number of peers to tell the tracker we want.</p>
 										</div>
 									</div>
 								</li>
@@ -227,17 +241,17 @@
 					<div class="tsd-signature tsd-kind-icon">connect<wbr>Tries<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L155">src/tracker.ts:155</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L188">src/tracker.ts:188</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="currentannounceinterval" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> current<wbr>Announce<wbr>Interval</h3>
-					<div class="tsd-signature tsd-kind-icon">current<wbr>Announce<wbr>Interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 50000</span></div>
+					<div class="tsd-signature tsd-kind-icon">current<wbr>Announce<wbr>Interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L153">src/tracker.ts:153</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L186">src/tracker.ts:186</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -247,7 +261,7 @@
 					<div class="tsd-signature tsd-kind-icon">did<wbr>Connect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L158">src/tracker.ts:158</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L190">src/tracker.ts:190</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -257,7 +271,17 @@
 					<div class="tsd-signature tsd-kind-icon">info<wbr>Hash<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L145">src/tracker.ts:145</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L179">src/tracker.ts:179</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="initiatorpeers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> initiator<wbr>Peers</h3>
+					<div class="tsd-signature tsd-kind-icon">initiator<wbr>Peers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_tracker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L185">src/tracker.ts:185</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -267,7 +291,7 @@
 					<div class="tsd-signature tsd-kind-icon">intro<wbr>Pending<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L154">src/tracker.ts:154</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L187">src/tracker.ts:187</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -277,37 +301,17 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Blacklisted<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L147">src/tracker.ts:147</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="maxopenoffers" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> max<wbr>Open<wbr>Offers</h3>
-					<div class="tsd-signature tsd-kind-icon">max<wbr>Open<wbr>Offers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 10</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L157">src/tracker.ts:157</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="openoffers" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> open<wbr>Offers</h3>
-					<div class="tsd-signature tsd-kind-icon">open<wbr>Offers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Offer</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L152">src/tracker.ts:152</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L181">src/tracker.ts:181</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="peerconfig" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> peer<wbr>Config</h3>
-					<div class="tsd-signature tsd-kind-icon">peer<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<div class="tsd-signature tsd-kind-icon">peer<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PeerOptions</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L146">src/tracker.ts:146</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L180">src/tracker.ts:180</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -317,17 +321,7 @@
 					<div class="tsd-signature tsd-kind-icon">peerID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L144">src/tracker.ts:144</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="peers" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> peers</h3>
-					<div class="tsd-signature tsd-kind-icon">peers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_tracker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L151">src/tracker.ts:151</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L178">src/tracker.ts:178</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -337,7 +331,7 @@
 					<div class="tsd-signature tsd-kind-icon">should<wbr>Reconnect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L148">src/tracker.ts:148</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L182">src/tracker.ts:182</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -347,7 +341,7 @@
 					<div class="tsd-signature tsd-kind-icon">sock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebSocket</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L150">src/tracker.ts:150</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L184">src/tracker.ts:184</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -357,7 +351,7 @@
 					<div class="tsd-signature tsd-kind-icon">timer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L149">src/tracker.ts:149</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L183">src/tracker.ts:183</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -367,7 +361,7 @@
 					<div class="tsd-signature tsd-kind-icon">trackerID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L156">src/tracker.ts:156</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L189">src/tracker.ts:189</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -377,7 +371,17 @@
 					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L143">src/tracker.ts:143</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L177">src/tracker.ts:177</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="wantedpeercount" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> wanted<wbr>Peer<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">wanted<wbr>Peer<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L191">src/tracker.ts:191</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -394,7 +398,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L180">src/tracker.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L224">src/tracker.ts:224</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -419,7 +423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L201">src/tracker.ts:201</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L245">src/tracker.ts:245</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -442,7 +446,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L187">src/tracker.ts:187</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L231">src/tracker.ts:231</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -451,30 +455,6 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="createoffer" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Offer</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Offer<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Offer</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L405">src/tracker.ts:405</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Asynchronously generate an SDP Offering, for WebRTC connection establishment.</p>
-								</div>
-								<p>In theory, this returns an object with a small descriptor of the offering &amp; the string contents.</p>
-								<p>In practice, this offering value should be treated as opaque, as it is specific to WebRTC implementation.</p>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Offer</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -489,7 +469,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Subscribable.emit</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L497">src/tracker.ts:497</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L528">src/tracker.ts:528</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -515,7 +495,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L373">src/tracker.ts:373</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L409">src/tracker.ts:409</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -535,7 +515,7 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> invites: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The number of offers that should be asynchronously generated.</p>
+										<p>The total number of offers we want to have.</p>
 									</div>
 								</li>
 							</ul>
@@ -553,7 +533,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L506">src/tracker.ts:506</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L537">src/tracker.ts:537</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -576,13 +556,13 @@
 					<a name="makepeer" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> make<wbr>Peer</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">make<wbr>Peer<span class="tsd-signature-symbol">(</span>offerID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, initiator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tracker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a></li>
+						<li class="tsd-signature tsd-kind-icon">make<wbr>Peer<span class="tsd-signature-symbol">(</span>initiator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tracker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L457">src/tracker.ts:457</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L456">src/tracker.ts:456</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -593,12 +573,6 @@
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
-								<li>
-									<h5>offerID: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The offer ID that should be used for this peer.</p>
-									</div>
-								</li>
 								<li>
 									<h5>initiator: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
@@ -620,7 +594,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L239">src/tracker.ts:239</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L285">src/tracker.ts:285</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -643,7 +617,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L264">src/tracker.ts:264</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L309">src/tracker.ts:309</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -673,7 +647,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L280">src/tracker.ts:280</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L325">src/tracker.ts:325</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -705,7 +679,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L478">src/tracker.ts:478</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L488">src/tracker.ts:488</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -737,7 +711,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Subscribable.once</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/subscribable.ts#L35">src/subscribable.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/subscribable.ts#L35">src/subscribable.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -773,7 +747,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L487">src/tracker.ts:487</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L515">src/tracker.ts:515</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -795,7 +769,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L213">src/tracker.ts:213</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L257">src/tracker.ts:257</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -811,13 +785,13 @@
 					<a name="retractoffer" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> retract<wbr>Offer</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">retract<wbr>Offer<span class="tsd-signature-symbol">(</span>offerID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, killPeer<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">retract<wbr>Offer<span class="tsd-signature-symbol">(</span>peer<span class="tsd-signature-symbol">: </span><a href="_tracker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a>, killPeer<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L436">src/tracker.ts:436</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L440">src/tracker.ts:440</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -829,10 +803,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>offerID: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The ID to cancel.</p>
-									</div>
+									<h5>peer: <a href="_tracker_.peerwrapper.html" class="tsd-signature-type">PeerWrapper</a></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> killPeer: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></h5>
@@ -855,7 +826,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L228">src/tracker.ts:228</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L274">src/tracker.ts:274</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -886,7 +857,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L353">src/tracker.ts:353</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L499">src/tracker.ts:499</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -919,7 +890,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Subscribable.subscribe</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L110">src/tracker.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L143">src/tracker.ts:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -955,7 +926,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Subscribable.subscribe</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L118">src/tracker.ts:118</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L151">src/tracker.ts:151</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -991,7 +962,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Subscribable.subscribe</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L126">src/tracker.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L159">src/tracker.ts:159</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1045,7 +1016,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Subscribable.subscribe</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/tracker.ts#L134">src/tracker.ts:134</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/tracker.ts#L167">src/tracker.ts:167</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1142,25 +1113,19 @@
 								<a href="_tracker_.trackerconnector.html#infohash" class="tsd-kind-icon">info<wbr>Hash</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_tracker_.trackerconnector.html#initiatorpeers" class="tsd-kind-icon">initiator<wbr>Peers</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_tracker_.trackerconnector.html#intropending" class="tsd-kind-icon">intro<wbr>Pending</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_tracker_.trackerconnector.html#isblacklisted" class="tsd-kind-icon">is<wbr>Blacklisted</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_tracker_.trackerconnector.html#maxopenoffers" class="tsd-kind-icon">max<wbr>Open<wbr>Offers</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_tracker_.trackerconnector.html#openoffers" class="tsd-kind-icon">open<wbr>Offers</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_tracker_.trackerconnector.html#peerconfig" class="tsd-kind-icon">peer<wbr>Config</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_tracker_.trackerconnector.html#peerid" class="tsd-kind-icon">peerID</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_tracker_.trackerconnector.html#peers" class="tsd-kind-icon">peers</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_tracker_.trackerconnector.html#shouldreconnect" class="tsd-kind-icon">should<wbr>Reconnect</a>
@@ -1177,6 +1142,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_tracker_.trackerconnector.html#url" class="tsd-kind-icon">url</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_tracker_.trackerconnector.html#wantedpeercount" class="tsd-kind-icon">wanted<wbr>Peer<wbr>Count</a>
+							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_tracker_.trackerconnector.html#isopen" class="tsd-kind-icon">is<wbr>Open</a>
 							</li>
@@ -1185,9 +1153,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_tracker_.trackerconnector.html#connect" class="tsd-kind-icon">connect</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="_tracker_.trackerconnector.html#createoffer" class="tsd-kind-icon">create<wbr>Offer</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 								<a href="_tracker_.trackerconnector.html#emit" class="tsd-kind-icon">emit</a>

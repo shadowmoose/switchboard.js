@@ -92,7 +92,9 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#clientblacklistduration" class="tsd-kind-icon">client<wbr>Blacklist<wbr>Duration</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#clientmaxretries" class="tsd-kind-icon">client<wbr>Max<wbr>Retries</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#clienttimeout" class="tsd-kind-icon">client<wbr>Timeout</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#secretid" class="tsd-kind-icon">secretID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#seed" class="tsd-kind-icon">seed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#trackerannounceinterval" class="tsd-kind-icon">tracker<wbr>Announce<wbr>Interval</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#trackers" class="tsd-kind-icon">trackers</a></li>
 							</ul>
 						</section>
 					</div>
@@ -106,7 +108,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Blacklist<wbr>Duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/index.ts#L26">src/index.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/index.ts#L32">src/index.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -122,7 +124,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Max<wbr>Retries<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/index.ts#L20">src/index.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/index.ts#L26">src/index.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -137,7 +139,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/index.ts#L15">src/index.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/index.ts#L21">src/index.ts:21</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -147,17 +149,48 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="secretid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> secretID</h3>
-					<div class="tsd-signature tsd-kind-icon">secretID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="seed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> seed</h3>
+					<div class="tsd-signature tsd-kind-icon">seed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/7d04525/src/index.ts#L31">src/index.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/index.ts#L37">src/index.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>If provided, the given ID will be used to reconnect as a past identity. Otherwise, a new one will be created.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="trackerannounceinterval" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> tracker<wbr>Announce<wbr>Interval</h3>
+					<div class="tsd-signature tsd-kind-icon">tracker<wbr>Announce<wbr>Interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/index.ts#L43">src/index.ts:43</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The interval, in milliseconds, that each tracker should re-announce.
+							Don&#39;t change this unless you know what you&#39;re doing.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="trackers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> trackers</h3>
+					<div class="tsd-signature tsd-kind-icon">trackers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="_index_.trackeroptions.html" class="tsd-signature-type">TrackerOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/eacc8b7/src/index.ts#L16">src/index.ts:16</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A list of strings and/or <a href="_index_.trackeroptions.html">TrackerOptions</a> config objects.</p>
 						</div>
 					</div>
 				</section>
@@ -180,7 +213,7 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_index_.matchmaker.html" class="tsd-kind-icon">Matchmaker</a>
+						<a href="../classes/_index_.switchboard.html" class="tsd-kind-icon">Switchboard</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -197,7 +230,13 @@
 								<a href="_index_.clientoptions.html#clienttimeout" class="tsd-kind-icon">client<wbr>Timeout</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_index_.clientoptions.html#secretid" class="tsd-kind-icon">secretID</a>
+								<a href="_index_.clientoptions.html#seed" class="tsd-kind-icon">seed</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_index_.clientoptions.html#trackerannounceinterval" class="tsd-kind-icon">tracker<wbr>Announce<wbr>Interval</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_index_.clientoptions.html#trackers" class="tsd-kind-icon">trackers</a>
 							</li>
 						</ul>
 					</li>
@@ -205,6 +244,9 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_index_.trackeroptions.html" class="tsd-kind-icon">Tracker<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/_index_.html#enablelogging" class="tsd-kind-icon">enable<wbr>Logging</a>
 					</li>
 				</ul>
 			</nav>
