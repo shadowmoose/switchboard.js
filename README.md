@@ -11,7 +11,7 @@ With switchboard you can establish traditional `client->host` connections, or ev
 
 It's simple to start with Switchboard. Here's a sample that connects to a swarm of clients, and sends them each a greeting:
 ```ts
-import {Matchmaker} from 'switchboard.js';
+import Switchboard from 'switchboard.js';
 
 // Create new matchmaker:
 const c = new Switchboard();
@@ -29,7 +29,7 @@ c.subscribe('peer', (peer) => {
 
 ...or perhaps you'd like to implement a client->host connection, using persistent IDs that survive through browser restarts?
 ```ts
-import {Matchmaker} from 'switchboard.js';
+import Switchboard from 'switchboard.js';
 
 // Load a secret code from storage, or one will auto-generate if one isn't already saved:
 const c = new Switchboard({seed: localStorage.getItem('secretSeed')});
