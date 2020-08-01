@@ -18,16 +18,18 @@
   },
   "homepage": "https://github.com/shadowmoose/switchboard.js",
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "browser": "build/main.js",
+  "main": "build/module/index.js",
+  "types": "build/module/index.d.ts",
+  "browser": "build/browser/main.js",
   "scripts": {
     "start:dev": "webpack-dev-server --mode development --progress --color",
     "server": "node test/server.js",
-    "bundle": "webpack --mode production",
+
+    "build-module": "npx rimraf build/module/ && tsc --build tsconfig.module.json",
+    "build-browser": "npx rimraf build/browser/ && webpack --mode production",
     "build-docs": "npx typedoc src --out docs --excludeNotExported --includeVersion --mode modules",
-    "build-module": "tsc --build tsconfig.module.json",
-    "prepublishOnly": "npm run-script bundle && npm run-script build-module"
+
+    "prepublishOnly": "npm run-script build-browser && npm run-script build-module"
   },
   "devDependencies": {
     "@types/bs58": "^4.0.1",
@@ -37,6 +39,7 @@
     "@types/webtorrent": "^0.107.2",
     "@types/ws": "^7.2.6",
     "bittorrent-tracker": "^9.15.0",
+    "rimraf": "^3.0.2",
     "ts-loader": "^8.0.1",
     "typedoc": "^0.17.8",
     "typescript": "^3.9.7",

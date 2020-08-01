@@ -14,7 +14,7 @@ It's simple to start with Switchboard. Here's a sample that connects to a swarm 
 import {Matchmaker} from 'switchboard.js';
 
 // Create new matchmaker:
-const c = new Matchmaker();
+const c = new Switchboard();
 
 // Connect to a test swarm of Peers - this can be any ID you'd like:
 c.swarm('test-swarm');
@@ -32,7 +32,7 @@ c.subscribe('peer', (peer) => {
 import {Matchmaker} from 'switchboard.js';
 
 // Load a secret code from storage, or one will auto-generate if one isn't already saved:
-const c = new Matchmaker({seed: localStorage.getItem('secretSeed')});  
+const c = new Switchboard({seed: localStorage.getItem('secretSeed')});
 
 // Connect to the host:
 c.findHost('Host-ID');
@@ -50,18 +50,24 @@ c.subscribe('peer', (peer) => {
 localStorage.setItem('secretSeed', c.secretSeed); // Store this identity for use later on reload.
 // The browser will now reuse the same identity whenever it reloads!
 ```
-You can see the code is pretty much the same either way, thanks to the simple API. There are much more advanced ways to customize the behavior of Switchboard, including hooking events and authorization, and you can read more about those [here](https://shadowmoose.github.io/switchboard.js)
+You can see the code is pretty much the same either way, thanks to the simple API.
+There are much more advanced ways to customize the behavior of Switchboard, including hooking events and authorization,
+and you can read more about those [here](https://shadowmoose.github.io/switchboard.js)
 
 ## Okay, so how's it work?
-Switchboard is lightweight, small, simple, and blazingly-fast. In the world of WebRTC, you rarely see more than a few of those attributes at once. There are a few strategies employeed in this project to make this all happen:
+Switchboard is lightweight, small, simple, and blazingly-fast.
+In the world of WebRTC, you rarely see more than a few of those attributes at once.
+There are a few strategies employed in this project to make this all happen:
 
 + __Built from Scratch:__ While following the official spec, Switchboard doesn't import any of the usual bloated WebRTC libraries!
 + __TypeScript:__ Rewriting the common stuff in TypeScript gets us full tree-shaking, easy reference for the API, and [great documentation.](https://shadowmoose.github.io/switchboard.js)
-+ __Lower-Level:__ Reimplementing the APIs also grants Swithboard faster access to do fancy things - such as rejecting unwanted Peers before they even establish a connection.
++ __Lower-Level:__ Reimplementing the APIs also grants Switchboard faster access to do fancy things - such as rejecting unwanted Peers before they even establish a connection.
 
 ## So there aren't any servers involved?
 Well... no. Unfortunately, that's impossible in the current world of WebRTC. However - there are so many public resources available these days, that a developer need not roll their own matchmaking server!
 
-Switchboard makes use of multiple public, reliable WebTorrent peering servers that exist online. You can simply use the default list built-in, or provide your own. Switchboard will connect to them all to be sure it has multiple redundant fallbacks. Having multiple public services at its disposal makes Switchboard far more reliable than most services can hope to achieve. Built-in custom logic deals with these servers for you, and Switchboard won't fail unless none of the provided servers can be reached. 
+Switchboard makes use of multiple public, reliable WebTorrent peering servers that exist online. You can simply use the default list built-in, or provide your own.
+Switchboard will connect to them all to be sure it has multiple redundant fallbacks. Having multiple public services at its disposal makes Switchboard far more reliable than most services can hope to achieve.
+Built-in custom logic deals with these servers for you, and Switchboard won't fail unless none of the provided servers can be reached.
 
 If you have the resources and don't want to use public servers, it is trivial to spin up [your own private server](https://github.com/webtorrent/bittorrent-tracker). However, you don't need to worry about using public servers either. Switchboard uses public key encryption on top of a simple ID system for every single connection. Wherever you are, whenever you connect to somebody, you will always know they're exactly who they say they are.

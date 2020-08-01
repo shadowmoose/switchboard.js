@@ -3,12 +3,43 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Test</title>
-	<script src="../build/main.js"></script>
+	<script src="../build/browser/main.js"></script>
 </head>
 
 <body>
 
 Test Page
 
+<script>
+	console.log(switchboard);
+
+	// switchboard.enableLogging(true);
+
+	const c = new switchboard.Switchboard();
+
+
+	c.swarm('test-swarm');
+
+	c.subscribe('warn', (err) => {
+		console.error('client error:', err);
+	})
+
+	c.subscribe('kill', () => {
+		console.warn('Client killed.');
+	})
+
+	c.subscribe('peer', (peer) => {
+		console.log('Connected to peer:', peer.id, peer);
+		peer.on('error', (err) => {
+			console.error('Peer error:', err);
+		})
+	})
+
+	c.subscribe('connected', () => {
+		console.log('All possible trackers connected!')
+	})
+	console.log('My ID:', c.peerID, c.peerID.length);
+	console.log('Secret ID:', c.secretSeed);
+</script>
 </body>
 </html>

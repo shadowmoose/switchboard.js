@@ -1,14 +1,20 @@
-import {TrackerConnector, PeerWrapper} from './tracker'
+import {TrackerConnector, PeerWrapper, setLogging} from './tracker'
 import Subscribable from "./subscribable";
 import {ClientAuthError, ConnectionFailedError} from "./errors";
 import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 import sha1 from 'sha1';
+import {Options as PeerOptions} from "simple-peer";
 
 /**
  * These are the options that the Matchmaker accepts as configuration.
  */
 export interface ClientOptions {
+    /**
+     * A list of strings and/or {@link TrackerOptions} config objects.
+     */
+    trackers?: (string|TrackerOptions)[];
+
     /**
      * The time (in milliseconds) before a client is disconnected automatically.
      */
@@ -28,7 +34,13 @@ export interface ClientOptions {
     /**
      * If provided, the given ID will be used to reconnect as a past identity. Otherwise, a new one will be created.
      */
-    secretID?: string;
+    seed?: string;
+
+    /**
+     * The interval, in milliseconds, that each tracker should re-announce.
+     * Don't change this unless you know what you're doing.
+     */
+    trackerAnnounceInterval?: number
 }
 
 /** Custom configuration for client Trackers. */
@@ -38,21 +50,32 @@ export interface TrackerOptions {
     /** If true, the client will fail (and globally disconnect) if this tracker fails to connect. */
     isRequired?: boolean;
     /** Optionally overwrite client values passed into each `simple-peer` Peer on a per-tracker basis here. */
-    customPeerOpts?: object;
+    customPeerOpts?: Partial<PeerOptions>;
 }
 
 const DEFAULT_MAX_RETRIES = 2;
 const DEFAULT_CLIENT_TIMEOUT = 150000;
 const SHORT_ID_LENGTH = 20;
+const DEFAULT_TRACKERS: string[] = [
+    'wss://tracker.sloppyta.co:443/announce',
+    'wss://tracker.files.fm:7073/announce',
+    'wss://tracker.openwebtorrent.com',
+    'wss://tracker.btorrent.xyz',
+    'wss://hub.bugout.link'
+];
+const DEFAULT_ANNOUNCE_RATE = 50000;
 
 
-export interface Matchmaker {
+// noinspection JSUnusedGlobalSymbols
+export interface Switchboard {
     /**
      * Emitted when all possible trackers have connected.
      * If all trackers fail, this is not emitted.
      *
      * For potential ease of debugging, the internally-used array of
      * connected TrackerConnectors will be provided with this event. It is not advisable to manipulate these.
+     *
+     * You should not wait for this event. Peers may come in from faster trackers before they are all connected.
      * @param event
      * @param callback A function which can accept an array of the internal TrackerConnectors.
      * @returns A function to call, in order to unsubscribe.
@@ -123,7 +146,7 @@ export interface Matchmaker {
 }
 
 
-export class Matchmaker extends Subscribable {
+export class Switchboard extends Subscribable {
     /**
      * This is the secret ID generated for use in cryptography.
      * You should copy and reuse this if you wish to maintain a persistent Peer ID.
@@ -138,7 +161,7 @@ export class Matchmaker extends Subscribable {
     public readonly secretSeed: string;
     private readonly opts: ClientOptions;
     private readonly cryptoKeys: nacl.SignKeyPair;
-    private trackerURIs: TrackerOptions[] = [];
+    private trackerOpts: TrackerOptions[] = [];
     private blacklist: Record<string, number> = {};
     private trackers: Set<TrackerConnector> = new Set();
     private connected: Record<string, PeerWrapper> = {};
@@ -151,23 +174,22 @@ export class Matchmaker extends Subscribable {
      * Creates a new Matchmaker.
      *
      * To start finding peers, call one of: [{@link host}, {@link findHost}, {@link swarm}].
-     * @param trackers A list of strings and/or {@link TrackerOptions} config objects.
      * @param opts Extra optional config values that this Matchmaker will use.
      */
-    constructor(trackers: (string|TrackerOptions)[], opts?: ClientOptions) {
+    constructor(opts?: ClientOptions) {
         super();
 
         this.opts = opts || {};
-        this.secretSeed = this.opts.secretID || Matchmaker.makeSeed();
-        this.cryptoKeys = Matchmaker.makeCryptoPair(this.secretSeed);
+        this.secretSeed = this.opts.seed || Switchboard.makeSeed();
+        this.cryptoKeys = Switchboard.makeCryptoPair(this.secretSeed);
 
-        for (const t of trackers) {
+        for (const t of this.opts?.trackers || DEFAULT_TRACKERS) {
             if ((typeof t).toLowerCase() === "string") {
-                this.trackerURIs.push({
+                this.trackerOpts.push({
                     uri: `${t}`
                 })
             } else {
-                this.trackerURIs.push(<TrackerOptions>t);
+                this.trackerOpts.push(<TrackerOptions>t);
             }
         }
     }
@@ -178,7 +200,7 @@ export class Matchmaker extends Subscribable {
      * @see {@link makeID}
      */
     get peerID(): string {
-        return Matchmaker.makeID(this.cryptoKeys.publicKey);
+        return Switchboard.makeID(this.cryptoKeys.publicKey);
     }
 
     /**
@@ -186,7 +208,7 @@ export class Matchmaker extends Subscribable {
      * When connecting to a target Host, this may technically be more secure than the shortened {@link peerID}.
      */
     get fullID(): string {
-        return Matchmaker.makeFullID(this.cryptoKeys.publicKey);
+        return Switchboard.makeFullID(this.cryptoKeys.publicKey);
     }
 
     /**
@@ -204,9 +226,10 @@ export class Matchmaker extends Subscribable {
             }
         }
 
-        for (const trk of this.trackerURIs) {
-            const cfg = Object.assign({}, this.opts, trk.customPeerOpts||{});
-            const t = new TrackerConnector(trk.uri, this.peerID, this.infoHash, cfg, this.shouldBlockConnection.bind(this));
+        for (const trk of this.trackerOpts) {
+            const cfg: Partial<PeerOptions> = trk.customPeerOpts||{};
+            const announce = this.opts.trackerAnnounceInterval || DEFAULT_ANNOUNCE_RATE;
+            const t = new TrackerConnector(trk.uri, this.peerID, this.infoHash, cfg, this.shouldBlockConnection.bind(this), announce, this.wantedPeerCount);
 
             t.subscribe('kill', (err) => {
                 if (this.killed) return;
@@ -243,7 +266,7 @@ export class Matchmaker extends Subscribable {
      * @see {@link findHost}
      */
     host(maxPeers?: number) {
-        this.wantedPeerCount = maxPeers || Infinity;
+        this.wantedPeerCount = maxPeers || 500;
         this.start(this.peerID);
     }
 
@@ -271,7 +294,7 @@ export class Matchmaker extends Subscribable {
      * @param maxPeers An optional limit on the number of unique connected Peers.
      */
     swarm(swarmID: string, maxPeers?: number) {
-        this.wantedPeerCount = maxPeers || Infinity;
+        this.wantedPeerCount = maxPeers || 500;
         this.start(swarmID);
     }
 
@@ -336,6 +359,8 @@ export class Matchmaker extends Subscribable {
      * @private
      */
     private onPeer(peer: PeerWrapper) {
+        this.connected[peer.id] = peer;
+
         peer.timeoutTracker = setTimeout(() => {
             this.addPeerFailure(peer, 1);
             peer.destroy();
@@ -353,9 +378,8 @@ export class Matchmaker extends Subscribable {
         peer.once('data', data => {
             try {
                 clearTimeout(peer.timeoutTracker);
-                if (Matchmaker.verifyPacket(peer.id, data, this.wantedSpecificID)) {
+                if (Switchboard.verifyPacket(peer.id, data, this.wantedSpecificID)) {
                     delete this.blacklist[peer.id];
-                    this.connected[peer.id] = peer;
                     this.emit('peer', peer);
                 }
             } catch (err) {
@@ -410,10 +434,10 @@ export class Matchmaker extends Subscribable {
         const pub = packet.slice(1, pubLen+1);
         const sig = packet.slice(1+pubLen);
 
-        if (wantedID && Matchmaker.makeFullID(pub).substr(0, wantedID.length) !== wantedID) {
+        if (wantedID && Switchboard.makeFullID(pub).substr(0, wantedID.length) !== wantedID) {
             throw new ClientAuthError('The full client ID does not match the desired ID!');
         }
-        if (Matchmaker.makeID(pub) !== peerID) {
+        if (Switchboard.makeID(pub) !== peerID) {
             throw new ClientAuthError('Mismatch with provided peer ID during auth!');
         }
         const match = nacl.sign.detached.verify(pub, sig, pub);
@@ -432,7 +456,7 @@ export class Matchmaker extends Subscribable {
      * @private
      */
     private static makeID(pubKey:  Uint8Array): string {
-        return Matchmaker.makeFullID(pubKey).substr(0, SHORT_ID_LENGTH);
+        return Switchboard.makeFullID(pubKey).substr(0, SHORT_ID_LENGTH);
     }
 
     /**
@@ -461,32 +485,15 @@ export class Matchmaker extends Subscribable {
     }
 }
 
-export default Matchmaker;
+// noinspection JSUnusedGlobalSymbols
+export default Switchboard;
 
-
-
-/*setLogging(true);
-
-const c = new Matchmaker(['ws://localhost:9090']);
-
-c.swarm('test-swarm');
-
-c.subscribe('warn', (err: Error) => {
-    console.error('client error:', err);
-})
-
-c.subscribe('kill', () => {
-    console.warn('Client killed.');
-})
-
-c.subscribe('peer', (peer: PeerWrapper) => {
-    console.log('Connected to peer:', peer.id, peer);
-    peer.on('error', (err: any) => {
-        console.error('Peer error:', err);
-    })
-})
-console.log('My ID:', c.peerID, c.peerID.length);
-console.log('Secret ID:', c.secretSeed);
-
-/*
-*/
+// noinspection JSUnusedGlobalSymbols
+/**
+ * Enable/disable library-wide debug logging. Optionally provide your own custom logging callback.
+ * @param enabled If logging should be enabled.
+ * @param callback Pass a custom function if you wish to override the default `console.debug` behavior.
+ */
+export function enableLogging(enabled: boolean, callback: any = console.debug) {
+    return setLogging(enabled, callback);
+}

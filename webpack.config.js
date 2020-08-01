@@ -8,7 +8,8 @@ module.exports = {
 	target: "web",
 	output: {
 		filename: 'main.js',
-		path: path.resolve(__dirname, 'build')
+		library: 'switchboard',
+		path: path.resolve(__dirname, 'build/browser')
 	},
 	module: {
 		rules: [
