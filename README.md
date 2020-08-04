@@ -38,7 +38,7 @@ c.subscribe('peer', (peer) => {
 import Switchboard from 'switchboard.js';
 
 // Load a secret code from storage, or one will auto-generate if one isn't already saved:
-const c = new Switchboard({seed: localStorage.getItem('secretSeed')});
+const c = new Switchboard({seed: localStorage['secretSeed']});
 
 // Connect to the host:
 c.findHost('Host-ID');
@@ -53,7 +53,7 @@ c.subscribe('peer', (peer) => {
     peer.on('data', (data: any) => console.log('Received from host:', data));
 })
 
-localStorage.setItem('secretSeed', c.secretSeed); // Store this identity for use later on reload.
+localStorage['secretSeed'] = c.secretSeed; // Store this identity for use later on reload.
 // The browser will now reuse the same identity whenever it reloads!
 ```
 You can see the code is pretty much the same either way, thanks to the simple API.
