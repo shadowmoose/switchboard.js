@@ -21,6 +21,7 @@ jobs:
       - name: Build Docs
         run: |
           npm run-script build-docs
+          mv ./examples ./docs/
 
       - name: Deploy to Web
         uses: peaceiris/actions-gh-pages@v3
