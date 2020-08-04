@@ -59,8 +59,7 @@ const DEFAULT_TRACKERS: string[] = [
     'wss://tracker.sloppyta.co:443/announce',
     'wss://tracker.files.fm:7073/announce',
     'wss://tracker.openwebtorrent.com',
-    'wss://tracker.btorrent.xyz',
-    'wss://hub.bugout.link'
+    'wss://tracker.btorrent.xyz'
 ];
 const DEFAULT_ANNOUNCE_RATE = 50000;
 
