@@ -115,12 +115,12 @@ c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs
 					<h2>Okay, so how&#39;s it work?</h2>
 				</a>
 				<p>Switchboard is lightweight, small, simple, and blazingly-fast.
-					This was accomplished in Switchboard thanks to the full rewrite of the tracker-handling code.
+					This was accomplished by completely rewriting the tracker-handling code, instead of relying on existing libraries.
 				Skipping the usual bloated WebRTC libraries in favor of direct API access has several major advantages:</p>
 				<ul>
-					<li><strong>Smaller Size:</strong> While following the official spec, Switchboard doesn&#39;t import any of the usual bloated WebRTC libraries!</li>
+					<li><strong>Smaller Bundle Size:</strong> While it works with all WebRTC implementations, Switchboard doesn&#39;t import any of the usual bloated WebRTC libraries!</li>
 					<li><strong>TypeScript:</strong> Rewriting the common stuff in TypeScript gets us full tree-shaking, easy reference for the API, and <a href="https://shadowmoose.github.io/switchboard.js">great documentation.</a></li>
-					<li><strong>Lower-Level:</strong> Switchboard also gets faster access to do fancy things - such as rejecting unwanted Peers before they even establish a connection.</li>
+					<li><strong>Lower-Level:</strong> Switchboard also gets faster access to do fancy things - such as rejecting unwanted Peers before they can even establish a connection.</li>
 				</ul>
 				<a href="#so-there-aren39t-any-servers-involved" id="so-there-aren39t-any-servers-involved" style="color: inherit; text-decoration: none;">
 					<h2>So there aren&#39;t any servers involved?</h2>
