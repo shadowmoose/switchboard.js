@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>switchboard.js - v0.0.1</title>
-	<meta name="description" content="Documentation for switchboard.js - v0.0.1">
+	<title>switchboard.js - v0.0.0</title>
+	<meta name="description" content="Documentation for switchboard.js - v0.0.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">switchboard.js - v0.0.1</a>
+					<a href="index.html" class="title">switchboard.js - v0.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1>switchboard.js - v0.0.1</h1>
+			<h1>switchboard.js - v0.0.0</h1>
 		</div>
 	</div>
 </header>
@@ -115,12 +115,12 @@ c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs
 					<h2>Okay, so how&#39;s it work?</h2>
 				</a>
 				<p>Switchboard is lightweight, small, simple, and blazingly-fast.
-					In the world of WebRTC, you rarely see more than a few of those attributes at once.
-				There are a few strategies employed in this project to make this all happen:</p>
+					This was accomplished in Switchboard thanks to the full rewrite of the tracker-handling code.
+				Skipping the usual bloated WebRTC libraries in favor of direct API access has several major advantages:</p>
 				<ul>
-					<li><strong>Built from Scratch:</strong> While following the official spec, Switchboard doesn&#39;t import any of the usual bloated WebRTC libraries!</li>
+					<li><strong>Smaller Size:</strong> While following the official spec, Switchboard doesn&#39;t import any of the usual bloated WebRTC libraries!</li>
 					<li><strong>TypeScript:</strong> Rewriting the common stuff in TypeScript gets us full tree-shaking, easy reference for the API, and <a href="https://shadowmoose.github.io/switchboard.js">great documentation.</a></li>
-					<li><strong>Lower-Level:</strong> Reimplementing the APIs also grants Switchboard faster access to do fancy things - such as rejecting unwanted Peers before they even establish a connection.</li>
+					<li><strong>Lower-Level:</strong> Switchboard also gets faster access to do fancy things - such as rejecting unwanted Peers before they even establish a connection.</li>
 				</ul>
 				<a href="#so-there-aren39t-any-servers-involved" id="so-there-aren39t-any-servers-involved" style="color: inherit; text-decoration: none;">
 					<h2>So there aren&#39;t any servers involved?</h2>
