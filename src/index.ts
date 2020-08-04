@@ -7,7 +7,7 @@ import sha1 from 'sha1';
 import {Options as PeerOptions} from "simple-peer";
 
 /**
- * These are the options that the Matchmaker accepts as configuration.
+ * These are the options that the Switchboard accepts as configuration.
  */
 export interface ClientOptions {
     /**
@@ -35,22 +35,21 @@ export interface ClientOptions {
      * If provided, the given ID will be used to reconnect as a past identity. Otherwise, a new one will be created.
      */
     seed?: string;
-
-    /**
-     * The interval, in milliseconds, that each tracker should re-announce.
-     * Don't change this unless you know what you're doing.
-     */
-    trackerAnnounceInterval?: number
 }
 
 /** Custom configuration for client Trackers. */
 export interface TrackerOptions {
     /** The WebSocket URI to join. */
     uri: string;
-    /** If true, the client will fail (and globally disconnect) if this tracker fails to connect. */
+    /** If true, the whole Switchboard will fail (and disconnect from all trackers) if this tracker fails to connect. */
     isRequired?: boolean;
-    /** Optionally overwrite client values passed into each `simple-peer` Peer on a per-tracker basis here. */
+    /** Optionally overwrite client values passed into each `simple-peer` Peer created by this tracker. */
     customPeerOpts?: Partial<PeerOptions>;
+    /**
+     * The interval, in milliseconds, that each tracker should re-announce.
+     * Don't change this unless you know what you're doing.
+     */
+    trackerAnnounceInterval?: number;
 }
 
 const DEFAULT_MAX_RETRIES = 2;
@@ -118,7 +117,7 @@ export interface Switchboard {
     subscribe(event: 'peer-blacklisted', callback: {(peer: PeerWrapper): void}): () => void;
 
     /**
-     * Emitted when a non-fatal error occurs. You should not assume that the Matchmaker is broken based off these.
+     * Emitted when a non-fatal error occurs. You should not assume that the Switchboard is broken based off these.
      * @param event
      * @param callback A function that can receive the Error, if any, that caused termination.
      * @returns A function to call, in order to unsubscribe.
@@ -126,9 +125,9 @@ export interface Switchboard {
     subscribe(event: 'warn', callback: {(err: Error): void}): () => void;
 
     /**
-     * Triggered when this Matchmaker is unrecoverably killed.
+     * Triggered when this Switchboard is unrecoverably killed.
      *
-     * If this is emitted, the Matchmaker is dead.
+     * If this is emitted, the Switchboard is dead.
      * You should create a new one if you need to reconnect.
      * @param event
      * @param callback A function that can receive the Error, if any, that caused termination.
@@ -137,7 +136,7 @@ export interface Switchboard {
     subscribe(event: 'kill', callback: {(err: Error|null): void}): () => void;
 
     /**
-     * Emitted when one of the trackers connects.
+     * Emitted when each of the trackers connects.
      * @param event
      * @param callback A function that can receive the TrackerOptions.
      * @returns A function to call, in order to unsubscribe.
@@ -169,6 +168,7 @@ export class Switchboard extends Subscribable {
     private killed: boolean = false;
     private wantedPeerCount: number = 0;
     private wantedSpecificID: string|null = null;
+    private _fullID: string|null = null;
 
     /**
      * Creates a new Matchmaker.
@@ -200,7 +200,7 @@ export class Switchboard extends Subscribable {
      * @see {@link makeID}
      */
     get peerID(): string {
-        return Switchboard.makeID(this.cryptoKeys.publicKey);
+        return this.fullID.substr(0, SHORT_ID_LENGTH);
     }
 
     /**
@@ -208,7 +208,12 @@ export class Switchboard extends Subscribable {
      * When connecting to a target Host, this may technically be more secure than the shortened {@link peerID}.
      */
     get fullID(): string {
-        return Switchboard.makeFullID(this.cryptoKeys.publicKey);
+        if (this._fullID) {
+            return this._fullID;
+        } else {
+            this._fullID = Switchboard.makeFullID(this.cryptoKeys.publicKey);
+        }
+        return this._fullID;
     }
 
     /**
@@ -228,7 +233,7 @@ export class Switchboard extends Subscribable {
 
         for (const trk of this.trackerOpts) {
             const cfg: Partial<PeerOptions> = trk.customPeerOpts||{};
-            const announce = this.opts.trackerAnnounceInterval || DEFAULT_ANNOUNCE_RATE;
+            const announce = trk.trackerAnnounceInterval || DEFAULT_ANNOUNCE_RATE;
             const t = new TrackerConnector(trk.uri, this.peerID, this.infoHash, cfg, this.shouldBlockConnection.bind(this), announce, this.wantedPeerCount);
 
             t.subscribe('kill', (err) => {
@@ -299,7 +304,7 @@ export class Switchboard extends Subscribable {
     }
 
     /**
-     * Kill all connections to the matchmaking servers.
+     * Kill all connections to the tracker servers.
      */
     kill(error?: Error) {
         this.killed = true;

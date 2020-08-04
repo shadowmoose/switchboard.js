@@ -1,6 +1,6 @@
 {
   "name": "switchboard.js",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Decentralized peering without a middleman server",
   "author": "ShadowMoose",
   "repository": {

@@ -188,7 +188,7 @@ export class TrackerConnector extends Subscribable{
     private connectTries: number = 0;
     private trackerID: string|null = null;
     private didConnect: boolean = false;
-    private wantedPeerCount: number;
+    private readonly wantedPeerCount: number;
 
     /**
      * Create and connect to a new Tracker, using a websocket URL.
@@ -198,7 +198,7 @@ export class TrackerConnector extends Subscribable{
      * @param peerConfig An object with additional params to pass into each created simple-peer Peer object.
      * @param isBlacklisted A function, which decides if a given Peer ID may connect pre-handshake.
      * @param announceInterval The interval, in milliseconds, that this tracker will re-announce.
-     * @param wantedPeerCount The total number of peers to tell the tracker we want.
+     * @param wantedPeerCount The total number of peers ideally wanted from this tracker each announce.
      */
     constructor(trackerURL: string,
                 peerID: string,

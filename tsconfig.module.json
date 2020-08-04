@@ -2,11 +2,12 @@
   "compilerOptions": {
     "module": "commonjs",
     "types": ["node"],
-    "target": "es5",
+    "target": "es6",
     "outDir": "./build/module",
     "declaration": true,
     "sourceMap": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "removeComments": false
   },
   "exclude": [
     "node_modules",

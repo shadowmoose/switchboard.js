@@ -17,6 +17,8 @@ Test Page
 
 	const c = new switchboard.Switchboard();
 
+	let other;
+
 
 	c.swarm('test-swarm');
 
@@ -30,8 +32,12 @@ Test Page
 
 	c.subscribe('peer', (peer) => {
 		console.log('Connected to peer:', peer.id, peer);
+		other = peer;
 		peer.on('error', (err) => {
 			console.error('Peer error:', err);
+		});
+		peer.on('data', data => {
+			console.log('Incoming:', data);
 		})
 	})
 

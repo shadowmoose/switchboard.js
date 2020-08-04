@@ -56,12 +56,12 @@ and you can read more about those [here](https://shadowmoose.github.io/switchboa
 
 ## Okay, so how's it work?
 Switchboard is lightweight, small, simple, and blazingly-fast.
-In the world of WebRTC, you rarely see more than a few of those attributes at once.
-There are a few strategies employed in this project to make this all happen:
+This was accomplished in Switchboard thanks to the full rewrite of the tracker-handling code.
+Skipping the usual bloated WebRTC libraries in favor of direct API access has several major advantages:
 
-+ __Built from Scratch:__ While following the official spec, Switchboard doesn't import any of the usual bloated WebRTC libraries!
++ __Smaller Size:__ While following the official spec, Switchboard doesn't import any of the usual bloated WebRTC libraries!
 + __TypeScript:__ Rewriting the common stuff in TypeScript gets us full tree-shaking, easy reference for the API, and [great documentation.](https://shadowmoose.github.io/switchboard.js)
-+ __Lower-Level:__ Reimplementing the APIs also grants Switchboard faster access to do fancy things - such as rejecting unwanted Peers before they even establish a connection.
++ __Lower-Level:__ Switchboard also gets faster access to do fancy things - such as rejecting unwanted Peers before they even establish a connection.
 
 ## So there aren't any servers involved?
 Well... no. Unfortunately, that's impossible in the current world of WebRTC. However - there are so many public resources available these days, that a developer need not roll their own matchmaking server!
