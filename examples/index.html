@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Example Group Chat (Swarm)</title>
+	<!--
+		NOTE: In production, you should lock this package version by changing the URL to something like
+			"https://unpkg.com/switchboard.js@0.1.0/build/browser/main.js"
+			See here (https://unpkg.com/browse/switchboard.js@0.1.0/build/) for more CDN version options.
+	-->
+	<script src="https://unpkg.com/switchboard.js"></script>
+</head>
+
+<body style="font-family: Arial, Helvetica, sans-serif;">
+	<h1>Example Group Chat (swarm)</h1>
+	<div id="output" style="width: 600px; height: 400px; overflow-y: auto; border: 1px solid black">
+		Joining Swarm...
+	</div>
+
+	<form onsubmit="send(); return false;">
+		<label for="inText">Text:</label>
+		<input id="inText" type="text" autofocus />
+
+		<input type="submit" value="Send"> <span id="connected">Connected: 0</span>
+	</form>
+
+
+	<script>
+		let swarmID = window.location.hash.substr(1);
+		document.getElementById('inText').focus();
+
+		/** Simple log function to display text. */
+		function log(txt, col='black'){
+			console.log(txt);
+			document.getElementById('output').innerHTML += `<div style="color: ${col}">${txt}</div>`;
+			document.getElementById('output').scrollTo(0,document.body.scrollHeight)
+		}
+
+		/** Send function, runs when form is submitted, sends message to all connected Peers. */
+		function send() {
+			const txt = document.getElementById('inText');
+			if (!txt.value) return;
+			for (const p of peers) {
+				p.send(String(txt.value));
+			}
+			log(`Sent: ${txt.value}`, '#5f99db');
+			txt.value = '';
+		}
+
+		/** Cosmetic function, unpdates the count of connected users. */
+		function updateCount() {
+			document.getElementById('connected').innerText = `Connected: ${peers.length}`;
+		}
+
+		// Chat Setup:
+		if (!swarmID) {
+			swarmID = prompt('Enter any swarm ID to connect:');
+			window.location.hash = swarmID;
+		}
+		log(`Joining swarm ID: <span style="color: #5f99db">${swarmID}</span>`);
+
+		// Connect to the chosen swarm ID:
+		const sb = new switchboard.Switchboard();
+		const peers = [];
+
+		sb.swarm(swarmID);
+
+		sb.subscribe('warn', (err) => {
+			log('client error:' + err, 'red');
+		})
+
+		sb.subscribe('kill', () => {
+			log('Client killed.', 'red');
+		})
+
+		sb.subscribe('peer', (peer) => {
+			// Receive new peers as they connect, and update the UI:
+			const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+			peers.push(peer);
+			updateCount();
+			log(`Connected to peer:  ${peer.id}`, randomColor);
+
+			peer.on('error', (err) => {
+				log('Peer error:' + err, 'red');
+			});
+			peer.on('close', () => {
+				// Detect when Peer disconnects:
+				peers.splice(peers.findIndex(p => p.id === peer.id), 1);
+				log(`Peer <i>(${peer.id})</i> disconnected.`, 'gray');
+				updateCount();
+			})
+			peer.on('data', data => {
+				// Log incoming messages from this Peer:
+				log(`<b style="color: ${randomColor}">[${peer.id}]:</b> ${data}`);
+			});
+		});
+
+		sb.subscribe('connected', () => {
+			log('All possible trackers connected!', '#4db12e')
+		})
+	</script>
+</body>
+</html>
