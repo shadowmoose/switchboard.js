@@ -27,7 +27,7 @@
 
     "build-module": "npx rimraf build/module/ && tsc --build tsconfig.module.json",
     "build-browser": "npx rimraf build/browser/ && webpack --mode production",
-    "build-docs": "npx typedoc src --out docs --excludeNotExported --includeVersion --mode modules",
+    "build-docs": "npx typedoc src --out docs --excludeNotExported --mode modules",
 
     "prepublishOnly": "npm run-script build-browser && npm run-script build-module"
   },
