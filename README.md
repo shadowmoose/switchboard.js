@@ -7,7 +7,12 @@ Switchboard.js is a library built to help connect users in peer-to-peer networks
 
 With switchboard you can establish traditional `client->host` connections, or even connect *full swarms of clients* together. Switchboard handles all the intricacies involved with reconnection and peer discovery, and uses cryptographic peer IDs to securely connect without the risk of impersonators. All of this works out of the box in just a few lines of code, and requires zero server setup on the developer's behalf.
 
-## Enough talk, give me an example:
+## Installation
+For developers working in a node/typescript environment, ```npm i switchboard.js``` or ```yarn add switchboard.js```.
+
+If you'd prefer a direct bundle for use in a browser script tag, [grab the latest release link from the jsDelivr global CDN](https://www.jsdelivr.com/package/npm/switchboard.js).
+
+## Enough talk, give me an example
 
 It's simple to start with Switchboard. Here's a sample that connects to a swarm of clients, and sends them each a greeting:
 ```ts
