@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Video Lobby - Client/Host</title>
+	<!--
+		NOTE: In production, you should lock this package version by changing the URL to something like
+		"https://unpkg.com/switchboard.js@0.1.0/build/browser/main.js"
+		See here (https://unpkg.com/browse/switchboard.js@0.1.0/build/) for more CDN version options.
+	-->
+	<script src="https://unpkg.com/switchboard.js"></script>
+</head>
+<body>
+
+<h1>Video lobby</h1>
+<div id="message"></div>
+<div id="hostOnly">
+	<label for="fileIn">Select a video to share:</label> <input id="fileIn" type="file" accept="video/*"/>
+	<div id="clientLink"></div>
+</div>
+<video controls autoplay style="max-width: 100%; max-height: 600px"></video>
+
+<script>
+	// Video player stuff:
+	const isHost = window.location.hash.substr(1) === 'host';
+	const peers = [];
+	const URL = window.URL || window.webkitURL;
+	const videoNode = document.querySelector('video');
+	const inputNode = document.querySelector('input');
+	const log = function (message, isError) {
+		const element = document.querySelector('#message')
+		element.innerHTML = message;
+		element.className = isError ? 'error' : 'info';
+	}
+
+	const updateCount = () => {
+		log(`Peers connected: ${peers.length}`)
+	}
+
+	if (isHost) {
+		const playSelectedFile = function () {
+			const file = this.files[0];
+			const type = file.type;
+			let canPlay = videoNode.canPlayType(type);
+			if (canPlay === '') canPlay = 'no';
+			const isError = canPlay === 'no';
+
+			if (isError) {
+				log('Cannot play file type "' + type + '": ' + canPlay, isError);
+				return;
+			}
+
+			videoNode.src = URL.createObjectURL(file);
+		}
+
+		inputNode.addEventListener('change', playSelectedFile, false);
+	} else {
+		document.getElementById('hostOnly').style.display = 'none';
+	}
+</script>
+
+<script>
+	// WebRTC Stuff:
+	const sb = new switchboard.Switchboard({seed: isHost? localStorage['secretSeed'] : null});
+	let hostStream = null;
+
+	if (isHost) {
+		sb.host();
+		localStorage['secretSeed'] = sb.secretSeed;
+		document.getElementById('clientLink').innerHTML = `<a href="#${sb.peerID}" target="_blank">Connect to this client link to share video.</a>`;
+	} else {
+		sb.findHost(window.location.hash.substr(1));
+	}
+
+	sb.on('warn', (err) => {
+		console.warn('client error:' + err);
+	})
+
+	sb.on('kill', () => {
+		console.warn('Client killed.');
+	})
+
+	sb.on('peer', (peer) => {
+		// Receive new peers as they connect, and update the UI:
+		peers.push(peer);
+		updateCount();
+		console.log(`Connected to peer:  ${peer.id}`);
+
+		peer.on('error', (err) => {
+			console.error('Peer error:' + err);
+		});
+		peer.on('close', () => {
+			// Detect when Peer disconnects:
+			peers.splice(peers.findIndex(p => p.id === peer.id), 1);
+			updateCount();
+		})
+		if (isHost) {
+			if (hostStream) peer.addStream(hostStream);
+		} else {
+			console.debug('Waiting for stream...');
+			peer.on('stream', stream => {
+				console.debug('Got stream from host!');
+				// got remote video stream, now let's show it in a video tag
+				if ('srcObject' in videoNode) {
+					videoNode.srcObject = stream
+				} else {
+					videoNode.src = window.URL.createObjectURL(stream) // for older browsers
+				}
+				videoNode.play()
+			})
+			peer.on('signal', () => {
+				console.debug('Signal')
+			})
+		}
+	});
+
+	// TODO: https://stackoverflow.com/questions/35504214/how-to-addtrack-in-mediastream-in-webrtc
+	
+	if (isHost) {
+		videoNode.onplay = function() {
+			if (!hostStream) {
+				hostStream = videoNode.captureStream();
+				for (const p of peers) {
+					console.log('Sending stream to client...', hostStream, p);
+					p.addStream(hostStream)
+				}
+			}
+		};
+	}
+
+</script>
+</body>
+</html>

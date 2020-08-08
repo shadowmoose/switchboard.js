@@ -67,15 +67,15 @@
 
 		sb.swarm(swarmID);
 
-		sb.subscribe('warn', (err) => {
+		sb.on('warn', (err) => {
 			log('client error:' + err, 'red');
 		})
 
-		sb.subscribe('kill', () => {
+		sb.on('kill', () => {
 			log('Client killed.', 'red');
 		})
 
-		sb.subscribe('peer', (peer) => {
+		sb.on('peer', (peer) => {
 			// Receive new peers as they connect, and update the UI:
 			const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
 			peers.push(peer);
@@ -97,7 +97,7 @@
 			});
 		});
 
-		sb.subscribe('connected', () => {
+		sb.on('connected', () => {
 			log('All possible trackers connected!', '#4db12e')
 		})
 	</script>
