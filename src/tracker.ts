@@ -140,7 +140,7 @@ export interface TrackerConnector {
      * @param callback
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'disconnect', callback: Function): () => void;
+    on(event: 'disconnect', callback: Function): () => void;
 
     /**
      * Triggered when the connection is established to the Tracker server.
@@ -148,7 +148,7 @@ export interface TrackerConnector {
      * @param callback
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'connect', callback: Function): () => void;
+    on(event: 'connect', callback: Function): () => void;
 
     /**
      * Triggered when a new Peer object is located and connected.
@@ -156,7 +156,7 @@ export interface TrackerConnector {
      * @param callback
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'peer', callback: {(peer: PeerWrapper): void}): () => void;
+    on(event: 'peer', callback: {(peer: PeerWrapper): void}): () => void;
 
     /**
      * Triggered when this TrackerConnector is unrecoverably killed.
@@ -164,7 +164,7 @@ export interface TrackerConnector {
      * @param callback A function that can receive the Error, if any, that caused termination.
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'kill', callback: {(err: Error|null): void}): () => void;
+    on(event: 'kill', callback: {(err: Error|null): void}): () => void;
 }
 
 

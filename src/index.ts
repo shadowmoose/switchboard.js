@@ -5,6 +5,9 @@ import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 import sha1 from 'sha1';
 import {Options as PeerOptions} from "simple-peer";
+import Peer from './peer';
+
+export class TestPeer extends Peer{}  // TODO: Remove export.
 
 /**
  * These are the options that the Switchboard accepts as configuration.
@@ -78,7 +81,7 @@ export interface Switchboard {
      * @param callback A function which can accept an array of the internal TrackerConnectors.
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'connected', callback: {(openTrackers: TrackerConnector[]): void}): () => void;
+    on(event: 'connected', callback: {(openTrackers: TrackerConnector[]): void}): () => void;
 
     /**
      * Emitted after a new Peer object is located, connected, and authenticated.
@@ -87,7 +90,7 @@ export interface Switchboard {
      * @param callback
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'peer', callback: {(peer: PeerWrapper): void}): () => void;
+    on(event: 'peer', callback: {(peer: PeerWrapper): void}): () => void;
 
     /**
      * Emitted when any connected Peer has an error.
@@ -96,7 +99,7 @@ export interface Switchboard {
      * @param callback A function that can receive the Error, if any, that caused termination.
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'peer-error', callback: {(err: Error): void}): () => void;
+    on(event: 'peer-error', callback: {(err: Error): void}): () => void;
 
     /**
      * Emitted when a PeerID is offered by a Tracker. The Peer may not actually connect.
@@ -104,7 +107,7 @@ export interface Switchboard {
      * @param callback A function that can receive the Peer ID.
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'peer-seen', callback: {(peerID: string): void}): () => void;
+    on(event: 'peer-seen', callback: {(peerID: string): void}): () => void;
 
     /**
      * Emitted whenever a Peer ID is blacklisted.
@@ -113,7 +116,7 @@ export interface Switchboard {
      * @param callback A function that can receive the PeerWrapper that was blacklisted.
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'peer-blacklisted', callback: {(peer: PeerWrapper): void}): () => void;
+    on(event: 'peer-blacklisted', callback: {(peer: PeerWrapper): void}): () => void;
 
     /**
      * Emitted when a non-fatal error occurs. You should not assume that the Switchboard is broken based off these.
@@ -121,7 +124,7 @@ export interface Switchboard {
      * @param callback A function that can receive the Error, if any, that caused termination.
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'warn', callback: {(err: Error): void}): () => void;
+    on(event: 'warn', callback: {(err: Error): void}): () => void;
 
     /**
      * Triggered when this Switchboard is unrecoverably killed.
@@ -132,7 +135,7 @@ export interface Switchboard {
      * @param callback A function that can receive the Error, if any, that caused termination.
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'kill', callback: {(err: Error|null): void}): () => void;
+    on(event: 'kill', callback: {(err: Error|null): void}): () => void;
 
     /**
      * Emitted when each of the trackers connects.
@@ -140,7 +143,7 @@ export interface Switchboard {
      * @param callback A function that can receive the TrackerOptions.
      * @returns A function to call, in order to unsubscribe.
      */
-    subscribe(event: 'tracker-connect', callback: {(tracker: TrackerOptions): void}): () => void;
+    on(event: 'tracker-connect', callback: {(tracker: TrackerOptions): void}): () => void;
 }
 
 
@@ -235,7 +238,7 @@ export class Switchboard extends Subscribable {
             const announce = trk.trackerAnnounceInterval || DEFAULT_ANNOUNCE_RATE;
             const t = new TrackerConnector(trk.uri, this.peerID, this.infoHash, cfg, this.shouldBlockConnection.bind(this), announce, this.wantedPeerCount);
 
-            t.subscribe('kill', (err) => {
+            t.on('kill', (err) => {
                 if (this.killed) return;
 
                 this.emit('warn', err);  // Only warn initially; This might not be fatal.
@@ -248,12 +251,12 @@ export class Switchboard extends Subscribable {
                 }
             });
 
-            t.subscribe('peer', this.onPeer.bind(this));
-            t.subscribe('connect', () => {
+            t.on('peer', this.onPeer.bind(this));
+            t.on('connect', () => {
                 this.emit('tracker-connect', trk);
                 checkReady();
             });
-            t.subscribe('disconnect', () => {
+            t.on('disconnect', () => {
                 this.emit('warn', new ConnectionFailedError(`Tracker disconnected: ${trk.uri}`));
             });
 
