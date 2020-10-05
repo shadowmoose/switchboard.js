@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ClientOptions | switchboard.js</title>
+	<title>TrackerOptions | switchboard.js</title>
 	<meta name="description" content="Documentation for switchboard.js">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_index_.html">&quot;index&quot;</a>
+					<a href="../modules/_switchboard_.html">&quot;switchboard&quot;</a>
 				</li>
 				<li>
-					<a href="_index_.clientoptions.html">ClientOptions</a>
+					<a href="_switchboard_.trackeroptions.html">TrackerOptions</a>
 				</li>
 			</ul>
-			<h1>Interface ClientOptions</h1>
+			<h1>Interface TrackerOptions</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>These are the options that the Switchboard accepts as configuration.</p>
+						<p>Custom configuration for client Trackers.</p>
 					</div>
 				</div>
 			</section>
@@ -78,7 +78,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ClientOptions</span>
+						<span class="target">TrackerOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -89,11 +89,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#clientblacklistduration" class="tsd-kind-icon">client<wbr>Blacklist<wbr>Duration</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#clientmaxretries" class="tsd-kind-icon">client<wbr>Max<wbr>Retries</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#clienttimeout" class="tsd-kind-icon">client<wbr>Timeout</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#seed" class="tsd-kind-icon">seed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.clientoptions.html#trackers" class="tsd-kind-icon">trackers</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_switchboard_.trackeroptions.html#custompeeropts" class="tsd-kind-icon">custom<wbr>Peer<wbr>Opts</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_switchboard_.trackeroptions.html#isrequired" class="tsd-kind-icon">is<wbr>Required</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_switchboard_.trackeroptions.html#trackerannounceinterval" class="tsd-kind-icon">tracker<wbr>Announce<wbr>Interval</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_switchboard_.trackeroptions.html#uri" class="tsd-kind-icon">uri</a></li>
 							</ul>
 						</section>
 					</div>
@@ -102,78 +101,63 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="clientblacklistduration" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> client<wbr>Blacklist<wbr>Duration</h3>
-					<div class="tsd-signature tsd-kind-icon">client<wbr>Blacklist<wbr>Duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<a name="custompeeropts" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> custom<wbr>Peer<wbr>Opts</h3>
+					<div class="tsd-signature tsd-kind-icon">custom<wbr>Peer<wbr>Opts<span class="tsd-signature-symbol">:</span> <a href="_peer_.peerconfig.html" class="tsd-signature-type">PeerConfig</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f19b1b8/src/index.ts#L35">src/index.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/switchboard.ts#L50">src/switchboard.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If set, this is the duration (in milliseconds) that a client will be prevented from reconnecting to this session,
-							once they exceed the max retry limit. Pass 0 for no blacklist. Also accepts Infinity.</p>
+							<p>Optionally overwrite client values passed into each <code>simple-peer</code> Peer created by this tracker.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="clientmaxretries" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> client<wbr>Max<wbr>Retries</h3>
-					<div class="tsd-signature tsd-kind-icon">client<wbr>Max<wbr>Retries<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<a name="isrequired" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> is<wbr>Required</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Required<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f19b1b8/src/index.ts#L29">src/index.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/switchboard.ts#L48">src/switchboard.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The maximum attempts a client gets to successfully authenticate, before becoming blacklisted.</p>
+							<p>If true, the whole Switchboard will fail (and disconnect from all trackers) if this tracker fails to connect.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="clienttimeout" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> client<wbr>Timeout</h3>
-					<div class="tsd-signature tsd-kind-icon">client<wbr>Timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<a name="trackerannounceinterval" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> tracker<wbr>Announce<wbr>Interval</h3>
+					<div class="tsd-signature tsd-kind-icon">tracker<wbr>Announce<wbr>Interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f19b1b8/src/index.ts#L24">src/index.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/switchboard.ts#L55">src/switchboard.ts:55</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The time (in milliseconds) before a client is disconnected automatically.</p>
+							<p>The interval, in milliseconds, that each tracker should re-announce.
+							Don&#39;t change this unless you know what you&#39;re doing.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="seed" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> seed</h3>
-					<div class="tsd-signature tsd-kind-icon">seed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="uri" class="tsd-anchor"></a>
+					<h3>uri</h3>
+					<div class="tsd-signature tsd-kind-icon">uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f19b1b8/src/index.ts#L40">src/index.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/switchboard.ts#L46">src/switchboard.ts:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If provided, the given ID will be used to reconnect as a past identity. Otherwise, a new one will be created.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="trackers" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> trackers</h3>
-					<div class="tsd-signature tsd-kind-icon">trackers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="_index_.trackeroptions.html" class="tsd-signature-type">TrackerOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f19b1b8/src/index.ts#L19">src/index.ts:19</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A list of strings and/or <a href="_index_.trackeroptions.html">TrackerOptions</a> config objects.</p>
+							<p>The WebSocket URI to join.</p>
 						</div>
 					</div>
 				</section>
@@ -185,11 +169,11 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="current tsd-kind-module">
-						<a href="../modules/_index_.html">&quot;index&quot;</a>
-					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_peer_.html">&quot;peer&quot;</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/_switchboard_.html">&quot;switchboard&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_tracker_.html">&quot;tracker&quot;</a>
@@ -199,40 +183,37 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_index_.switchboard.html" class="tsd-kind-icon">Switchboard</a>
+						<a href="../classes/_switchboard_.switchboard.html" class="tsd-kind-icon">Switchboard</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_index_.testpeer.html" class="tsd-kind-icon">Test<wbr>Peer</a>
+						<a href="../classes/_switchboard_.testpeer.html" class="tsd-kind-icon">Test<wbr>Peer</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_switchboard_.clientoptions.html" class="tsd-kind-icon">Client<wbr>Options</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_index_.clientoptions.html" class="tsd-kind-icon">Client<wbr>Options</a>
+						<a href="_switchboard_.trackeroptions.html" class="tsd-kind-icon">Tracker<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_index_.clientoptions.html#clientblacklistduration" class="tsd-kind-icon">client<wbr>Blacklist<wbr>Duration</a>
+								<a href="_switchboard_.trackeroptions.html#custompeeropts" class="tsd-kind-icon">custom<wbr>Peer<wbr>Opts</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_index_.clientoptions.html#clientmaxretries" class="tsd-kind-icon">client<wbr>Max<wbr>Retries</a>
+								<a href="_switchboard_.trackeroptions.html#isrequired" class="tsd-kind-icon">is<wbr>Required</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_index_.clientoptions.html#clienttimeout" class="tsd-kind-icon">client<wbr>Timeout</a>
+								<a href="_switchboard_.trackeroptions.html#trackerannounceinterval" class="tsd-kind-icon">tracker<wbr>Announce<wbr>Interval</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_index_.clientoptions.html#seed" class="tsd-kind-icon">seed</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_index_.clientoptions.html#trackers" class="tsd-kind-icon">trackers</a>
+								<a href="_switchboard_.trackeroptions.html#uri" class="tsd-kind-icon">uri</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_index_.trackeroptions.html" class="tsd-kind-icon">Tracker<wbr>Options</a>
-					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/_index_.html#enablelogging" class="tsd-kind-icon">enable<wbr>Logging</a>
+						<a href="../modules/_switchboard_.html#enablelogging" class="tsd-kind-icon">enable<wbr>Logging</a>
 					</li>
 				</ul>
 			</nav>

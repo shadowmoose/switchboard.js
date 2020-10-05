@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PeerConfig | switchboard.js</title>
+	<title>ClientOptions | switchboard.js</title>
 	<meta name="description" content="Documentation for switchboard.js">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_peer_.html">&quot;peer&quot;</a>
+					<a href="../modules/_switchboard_.html">&quot;switchboard&quot;</a>
 				</li>
 				<li>
-					<a href="_peer_.peerconfig.html">PeerConfig</a>
+					<a href="_switchboard_.clientoptions.html">ClientOptions</a>
 				</li>
 			</ul>
-			<h1>Interface PeerConfig</h1>
+			<h1>Interface ClientOptions</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>These are the options each Peer object accepts in its constructor.</p>
+						<p>These are the options that the Switchboard accepts as configuration.</p>
 					</div>
 				</div>
 			</section>
@@ -78,7 +78,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PeerConfig</span>
+						<span class="target">ClientOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -89,11 +89,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_peer_.peerconfig.html#rtcansweropts" class="tsd-kind-icon">rtc<wbr>Answer<wbr>Opts</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_peer_.peerconfig.html#rtcofferopts" class="tsd-kind-icon">rtc<wbr>Offer<wbr>Opts</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_peer_.peerconfig.html#rtcpeeropts" class="tsd-kind-icon">rtc<wbr>Peer<wbr>Opts</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_peer_.peerconfig.html#trickleice" class="tsd-kind-icon">trickleICE</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_peer_.peerconfig.html#trickletimeout" class="tsd-kind-icon">trickle<wbr>Timeout</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_switchboard_.clientoptions.html#clientblacklistduration" class="tsd-kind-icon">client<wbr>Blacklist<wbr>Duration</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_switchboard_.clientoptions.html#clientmaxretries" class="tsd-kind-icon">client<wbr>Max<wbr>Retries</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_switchboard_.clientoptions.html#clienttimeout" class="tsd-kind-icon">client<wbr>Timeout</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_switchboard_.clientoptions.html#seed" class="tsd-kind-icon">seed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_switchboard_.clientoptions.html#trackers" class="tsd-kind-icon">trackers</a></li>
 							</ul>
 						</section>
 					</div>
@@ -102,93 +102,78 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="rtcansweropts" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> rtc<wbr>Answer<wbr>Opts</h3>
-					<div class="tsd-signature tsd-kind-icon">rtc<wbr>Answer<wbr>Opts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RTCAnswerOptions</span></div>
+					<a name="clientblacklistduration" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> client<wbr>Blacklist<wbr>Duration</h3>
+					<div class="tsd-signature tsd-kind-icon">client<wbr>Blacklist<wbr>Duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/peer.ts#L30">src/peer.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/switchboard.ts#L35">src/switchboard.ts:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The options to pass directly into <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createAnswer" class="external">createAnswer()</a>.</p>
+							<p>If set, this is the duration (in milliseconds) that a client will be prevented from reconnecting to this session,
+							once they exceed the max retry limit. Pass 0 for no blacklist. Also accepts Infinity.</p>
 						</div>
-						<dl class="tsd-comment-tags">
-							<dt>see</dt>
-							<dd><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCAnswerOptions" class="external">https://developer.mozilla.org/en-US/docs/Web/API/RTCAnswerOptions</a></p>
-							</dd>
-						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="rtcofferopts" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> rtc<wbr>Offer<wbr>Opts</h3>
-					<div class="tsd-signature tsd-kind-icon">rtc<wbr>Offer<wbr>Opts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RTCOfferOptions</span></div>
+					<a name="clientmaxretries" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> client<wbr>Max<wbr>Retries</h3>
+					<div class="tsd-signature tsd-kind-icon">client<wbr>Max<wbr>Retries<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/peer.ts#L35">src/peer.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/switchboard.ts#L29">src/switchboard.ts:29</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The options to pass directly into <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createOffer" class="external">createOffer()</a>.</p>
+							<p>The maximum attempts a client gets to successfully authenticate, before becoming blacklisted.</p>
 						</div>
-						<dl class="tsd-comment-tags">
-							<dt>see</dt>
-							<dd><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCOfferOptions" class="external">https://developer.mozilla.org/en-US/docs/Web/API/RTCOfferOptions</a></p>
-							</dd>
-						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="rtcpeeropts" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> rtc<wbr>Peer<wbr>Opts</h3>
-					<div class="tsd-signature tsd-kind-icon">rtc<wbr>Peer<wbr>Opts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RTCConfiguration</span></div>
+					<a name="clienttimeout" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> client<wbr>Timeout</h3>
+					<div class="tsd-signature tsd-kind-icon">client<wbr>Timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/peer.ts#L25">src/peer.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/switchboard.ts#L24">src/switchboard.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Options to pass directly into the RTCPeerConnection constructor.</p>
+							<p>The time (in milliseconds) before a client is disconnected automatically.</p>
 						</div>
-						<dl class="tsd-comment-tags">
-							<dt>see</dt>
-							<dd><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration" class="external">https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration</a></p>
-							</dd>
-						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="trickleice" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> trickleICE</h3>
-					<div class="tsd-signature tsd-kind-icon">trickleICE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
+					<a name="seed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> seed</h3>
+					<div class="tsd-signature tsd-kind-icon">seed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/peer.ts#L16">src/peer.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/switchboard.ts#L40">src/switchboard.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <code>true</code>, enable Trickle ICE. In this context, &#39;off&#39; really means that the offer will be created without waiting.</p>
+							<p>If provided, the given ID will be used to reconnect as a past identity. Otherwise, a new one will be created.</p>
 						</div>
-						<p>This is <code>false</code> by default.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="trickletimeout" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> trickle<wbr>Timeout</h3>
-					<div class="tsd-signature tsd-kind-icon">trickle<wbr>Timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<a name="trackers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> trackers</h3>
+					<div class="tsd-signature tsd-kind-icon">trackers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="_switchboard_.trackeroptions.html" class="tsd-signature-type">TrackerOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/peer.ts#L20">src/peer.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/bd6b89e/src/switchboard.ts#L19">src/switchboard.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If using Trickle ICE, wait up to this long after the first ICE Candidate arrives.</p>
+							<p>A list of strings and/or <a href="_switchboard_.trackeroptions.html">TrackerOptions</a> config objects.</p>
 						</div>
 					</div>
 				</section>
@@ -200,10 +185,10 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_peer_.html">&quot;peer&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_switchboard_.html">&quot;switchboard&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -214,32 +199,41 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_peer_.peer.html" class="tsd-kind-icon">Peer</a>
+						<a href="../classes/_switchboard_.switchboard.html" class="tsd-kind-icon">Switchboard</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/_switchboard_.testpeer.html" class="tsd-kind-icon">Test<wbr>Peer</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_peer_.peerconfig.html" class="tsd-kind-icon">Peer<wbr>Config</a>
+						<a href="_switchboard_.clientoptions.html" class="tsd-kind-icon">Client<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_peer_.peerconfig.html#rtcansweropts" class="tsd-kind-icon">rtc<wbr>Answer<wbr>Opts</a>
+								<a href="_switchboard_.clientoptions.html#clientblacklistduration" class="tsd-kind-icon">client<wbr>Blacklist<wbr>Duration</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_peer_.peerconfig.html#rtcofferopts" class="tsd-kind-icon">rtc<wbr>Offer<wbr>Opts</a>
+								<a href="_switchboard_.clientoptions.html#clientmaxretries" class="tsd-kind-icon">client<wbr>Max<wbr>Retries</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_peer_.peerconfig.html#rtcpeeropts" class="tsd-kind-icon">rtc<wbr>Peer<wbr>Opts</a>
+								<a href="_switchboard_.clientoptions.html#clienttimeout" class="tsd-kind-icon">client<wbr>Timeout</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_peer_.peerconfig.html#trickleice" class="tsd-kind-icon">trickleICE</a>
+								<a href="_switchboard_.clientoptions.html#seed" class="tsd-kind-icon">seed</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_peer_.peerconfig.html#trickletimeout" class="tsd-kind-icon">trickle<wbr>Timeout</a>
+								<a href="_switchboard_.clientoptions.html#trackers" class="tsd-kind-icon">trackers</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_switchboard_.trackeroptions.html" class="tsd-kind-icon">Tracker<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/_switchboard_.html#enablelogging" class="tsd-kind-icon">enable<wbr>Logging</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
