@@ -4,7 +4,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 module.exports = {
 	devtool: 'source-map',
-	entry: './src/index.ts',
+	entry: './src/switchboard.ts',
 	target: "web",
 	output: {
 		filename: 'main.js',
@@ -29,6 +29,6 @@ module.exports = {
 		fs: 'empty'
 	},
 	plugins: [
-		//new BundleAnalyzerPlugin()
+		// new BundleAnalyzerPlugin()
 	]
 };

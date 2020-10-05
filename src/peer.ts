@@ -1,22 +1,38 @@
 
-// TODO: https://stackoverflow.com/questions/35504214/how-to-addtrack-in-mediastream-in-webrtc
-// https://stackoverflow.com/questions/29655160/handling-the-process-of-handling-ice-candidates-when-using-a-peerconnection/29922146
-
-// Connection basics: https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample
-
 // Debugging: chrome://webrtc-internals/
 
 
 import Subscribable from "./subscribable";
-import {PeerWrapper} from "./tracker";
 
+/**
+ * These are the options each Peer object accepts in its constructor.
+ */
 export interface PeerConfig {
-    initiator: boolean;
-    trickleICE: boolean;
-    trickleTimeout: number;
-    rtcPeerOpts: RTCConfiguration;
-    rtcAnswerOpts: RTCOfferOptions;
-    rtcOfferOpts: RTCOfferOptions;
+    /**
+     * If `true`, enable Trickle ICE. In this context, 'off' really means that the offer will be created without waiting.
+     *
+     * This is `false` by default.
+     */
+    trickleICE?: boolean;
+    /**
+     * If using Trickle ICE, wait up to this long after the first ICE Candidate arrives.
+     */
+    trickleTimeout?: number;
+    /**
+     * Options to pass directly into the RTCPeerConnection constructor.
+     * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration}
+     */
+    rtcPeerOpts?: RTCConfiguration;
+    /**
+     * The options to pass directly into {@link https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createAnswer createAnswer()}.
+     * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/RTCAnswerOptions}
+     */
+    rtcAnswerOpts?: RTCAnswerOptions;
+    /**
+     * The options to pass directly into {@link https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createOffer createOffer()}.
+     * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/RTCOfferOptions}
+     */
+    rtcOfferOpts?: RTCOfferOptions;
 }
 
 
@@ -24,13 +40,133 @@ const META_CHANNEL = '_meta';
 
 
 // noinspection JSUnusedGlobalSymbols
+export interface Peer {
+    /**
+     * Triggered when this Peer has created a handshake packet that must be sent to the remote Peer.
+     * If `trickle ICE` is enabled, this may also contain ICE candidates.
+     *
+     * Implementations should not worry about the content of this message, and should just relay it.
+     *
+     * The remote peer should receive this data, then call {@link handshake handshake(data)} with it to continue the process.
+     *
+     * Call {@link handshake handshake()} with no arguments to start this process on the initiator's side only.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    on(event: 'handshake', callback: {(data: string): void}): () => void;
+
+    /**
+     * Triggered when this Peer has connected. This will only ever trigger once, on the initial connect.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    on(event: 'connect', callback: Function): () => void;
+
+    /**
+     * Triggered when this Peer's connection has become stable.
+     * This will be triggered multiple times if new Media channels are added/removed.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     * @see {@link addMedia}
+     */
+    on(event: 'ready', callback: Function): () => void;
+
+    /**
+     * Triggered when this Peer's default DataChannel receives a MessageEvent.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    on(event: 'message', callback: {(message: MessageEvent): void}): () => void;
+
+    /**
+     * Triggered when this Peer's default DataChannel receives a MessageEvent.
+     *
+     * This is functionally the same as {@link on on('message')}, and fires with it,
+     * except that it receives only the Event data.
+     * This callback has been implemented for better cross-compatibility.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    on(event: 'data', callback: {(data: string|ArrayBuffer|Blob|ArrayBufferView): void}): () => void;
+
+    /**
+     * Triggered when a new {@link https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel RTCDataChannel} is created.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    on(event: 'dataChannel', callback: {(peer: RTCDataChannel): void}): () => void;
+
+    /**
+     * Triggered when a new {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaStream MediaStream} is created from the remote Peer.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    on(event: 'stream', callback: {(peer: MediaStream): void}): () => void;
+
+    /**
+     * Triggered when an Error is raised. This does not always mean the Peer must disconnect.
+     * @param event
+     * @param callback A function that can receive the Error, if any, that caused termination.
+     * @returns A function to call, in order to unsubscribe.
+     */
+    on(event: 'error', callback: {(err: Error): void}): () => void;
+
+    /**
+     * Triggered when this Peer has been closed, either locally or by the remote end.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    on(event: 'close', callback: Function): () => void;
+
+    /**
+     * Triggered when all ICE discovery finishes (or the configured timer expires), if Trickle ICE is enabled.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     * @see {@link PeerConfig}
+     */
+    on(event: 'iceFinished', callback: Function): () => void;
+
+    /**
+     * Triggered when trickle ICE discovers another value, if `trickle ICE` is enabled.
+     *
+     * If enabled, the `handshake` event already handles emitting these in the format it expects.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     * @see {@link PeerConfig}
+     */
+    on(event: 'iceEvent', callback: {(err: RTCPeerConnectionIceEvent): void}): () => void;
+}
+
+// noinspection JSUnusedGlobalSymbols
+/**
+ * This is a wrapper for a RTCPeerConnection.
+ * It greatly simplifies the process of interacting with WebRTC, and adds some much-needed features.
+ *
+ * The largest feature added in this wrapper is the ability to establish new Media channels without re-negotiating over
+ * a websocket connection. To accomplish this, the wrapper establishes an internal DataChannel to communicate.
+ *
+ * The wrapper also creates a second, default DataChannel which can be automatically used for peer communications.
+ * Both of these channels are prearranged out-of-band, so they cost very little to create.
+ */
 export class Peer extends Subscribable{
     private readonly pc: RTCPeerConnection;
     private readonly timers: any[] = [];
     private readonly config: Partial<PeerConfig>;
     private readonly awaitICE: Promise<null>;
     private readonly dataChannels: Record<string, RTCDataChannel> = {};
+    private readonly dataSendQueue: Record<string, any[]> = {};
     private readonly pendingCandidates: any[] = [];
+    private initiator = false;
     private closed = false;
     private hasConnected = false;
 
@@ -40,7 +176,10 @@ export class Peer extends Subscribable{
         this.pc = new RTCPeerConnection(this.config.rtcPeerOpts);
 
         this.addDataChannel(META_CHANNEL, {id: 0, negotiated: true}).onmessage = this.inBand.bind(this);
-        this.addDataChannel("default", {id: 1, negotiated: true});
+        this.addDataChannel("default", {id: 1, negotiated: true}).onmessage = message => {
+            this.emit('message', message);
+            this.emit('data', message.data)
+        }
 
         this.awaitICE = new Promise((res) => {
             this.pc.onicecandidate = (iceEvent: RTCPeerConnectionIceEvent) => {
@@ -56,6 +195,7 @@ export class Peer extends Subscribable{
             this.registerDataChannel(ch.channel);
         })
         this.pc.addEventListener('connectionstatechange', this.onConnectionState.bind(this));
+        this.pc.onsignalingstatechange = this.onConnectionState.bind(this);
         this.pc.onnegotiationneeded = async () => {
             if (this.dataChannels[META_CHANNEL].readyState === 'open') {
                 await this.pc.setLocalDescription(await this.pc.createOffer());
@@ -66,20 +206,27 @@ export class Peer extends Subscribable{
     }
 
     /**
+     * Emit a ready event, and an Open event if one hasn't already been sent.
+     * @private
+     */
+    private emitReady() {
+        this.emit('ready');
+        if (!this.hasConnected) {
+            this.hasConnected = true;
+            this.emit('connect');
+        }
+    }
+
+    /**
      * Triggered when the connection state changes for the current connection.
      * Handles emitting some events.
      * @param ev
      * @private
      */
     private onConnectionState(ev: Event) {
-        switch (this.pc.connectionState) {
+        const state: string = this.pc.connectionState || this.pc.signalingState;
+        switch (state) {
             case "new":
-                break;
-            case "connected":
-                this.emit('ready');
-                if (this.hasConnected) break;
-                this.hasConnected = true;
-                this.emit('connect');
                 break;
             case "disconnected":
             case "closed":
@@ -147,13 +294,14 @@ export class Peer extends Subscribable{
      *
      * After an initial back-and-forth (unless Trickle ICE is enabled), no additional Handshake data should be required.
      * Any subsequent negotiations will be handled internally via DataChannels.
-     * @param data
+     * @param data The data sent from the remote peer's `handshake` event, or none to initiate the handshake.
+     * @see {@link https://webrtc.org/getting-started/peer-connections}
      */
     async handshake(data: any = 'initiate') {
         if (this.isClosed) return;
 
         if (data === 'initiate') {
-            this.config.initiator = true;
+            this.initiator = true;
             this.emit('handshake', JSON.stringify(await this.makeOffer()))
             return;
         }
@@ -182,7 +330,7 @@ export class Peer extends Subscribable{
                 this.fatalError(err);
             }
         }
-        if (!data.sdp && !data.candidate && !data.renegotiate && !data.transceiverRequest) {
+        if (!data.sdp && !data.candidate) {
             this.fatalError(new Error('handshake received invalid data!'))
         }
     }
@@ -197,7 +345,7 @@ export class Peer extends Subscribable{
         if (description) {
             // Check for 'glare', AKA an incoming offer while we're already waiting on a response:
             if (description.type == "offer" && this.pc.signalingState != "stable") {
-                if (this.config.initiator) return;  // Host ignores this collision, knowing client will handle it.
+                if (this.initiator) return;  // Host ignores this collision, knowing client will handle it.
                 // NOTE: Intentional Promise.all: https://blog.mozilla.org/webrtc/perfect-negotiation-in-webrtc/
                 await Promise.all([
                     this.pc.setLocalDescription({type: "rollback"}),
@@ -220,7 +368,7 @@ export class Peer extends Subscribable{
      * @param err
      * @private
      */
-    private fatalError(err: Error) {
+    fatalError(err: Error) {
         if (this.isClosed) return null;
         this.emit('error', err);
         this.close();
@@ -304,9 +452,17 @@ export class Peer extends Subscribable{
         if (channelName !== META_CHANNEL) {
             ch.addEventListener('open', () => this.emit('dataChannel', ch));
         } else {
+            ch.addEventListener('open', () => this.emitReady());
             ch.addEventListener('close', () => this.fatalError(new Error('Core data channel died.')));
         }
         ch.addEventListener('error', err => this.fatalError(err.error));
+        ch.addEventListener('open', () => {
+            const pending = this.dataSendQueue[ch.label] || [];
+            for (const d of pending) {
+                ch.send(d);
+            }
+            delete this.dataSendQueue[ch.label];
+        });
     }
 
     /**
@@ -321,6 +477,7 @@ export class Peer extends Subscribable{
             throw Error('Cannot create channel name that already exists: ' + channelName);
         }
         const ch = this.pc.createDataChannel(channelName, opts);
+        ch.binaryType = "arraybuffer";
 
         this.registerDataChannel(ch);
 
@@ -372,8 +529,13 @@ export class Peer extends Subscribable{
      */
     send(data: string|ArrayBuffer|Blob|ArrayBufferView, channelName: string = 'default') {
         try {
-            // @ts-ignore
-            return this.dataChannels[channelName]?.send(data);
+            if (this.dataChannels[channelName].readyState !== 'open') {
+                this.dataSendQueue[channelName] = this.dataSendQueue[channelName] || [];
+                this.dataSendQueue[channelName].push(data);
+            } else {
+                // @ts-ignore
+                return this.dataChannels[channelName]?.send(data);
+            }
         } catch (err) {
             this.fatalError(err);
         }
@@ -388,96 +550,10 @@ export class Peer extends Subscribable{
         this.send(JSON.stringify(data), META_CHANNEL);
     }
 
-    emit(event: 'dataChannel'|'iceFinished'|'error'|'handshake'|'close'|'stream'|'ready'|'connect'|'iceEvent', data?: any) {
+    emit(event: 'message'|'data'|'dataChannel'|'iceFinished'|'error'|'handshake'|'close'|'stream'|'ready'|'connect'|'iceEvent', data?: any) {
         super.emit(event, data);
     }
 }
 
 export default Peer;
 
-export interface Peer {
-    /**
-     * Triggered when this Peer has created a handshake packet that must be sent to the remote Peer.
-     * If `trickle ICE` is enabled, this may also contain ICE candidates.
-     *
-     * Implementations should not worry about the content of this message, and should just relay it.
-     *
-     * The remote peer should receive this data, then call {@link handshake handshake(data)} with it to continue the process.
-     *
-     * Call {@link handshake handshake()} with no arguments to start this process on the initiator's side only.
-     * @param event
-     * @param callback
-     * @returns A function to call, in order to unsubscribe.
-     */
-    on(event: 'handshake', callback: {(data: string): void}): () => void;
-
-    /**
-     * Triggered when this Peer has connected. This will only ever trigger once, on the initial connect.
-     * @param event
-     * @param callback
-     * @returns A function to call, in order to unsubscribe.
-     */
-    on(event: 'connect', callback: Function): () => void;
-
-    /**
-     * Triggered when this Peer's connection has become stable.
-     * This will be triggered multiple times if new Media channels are added/removed.
-     * @param event
-     * @param callback
-     * @returns A function to call, in order to unsubscribe.
-     * @see {@link addMedia}
-     */
-    on(event: 'ready', callback: Function): () => void;
-
-    /**
-     * Triggered when a new {@link https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel RTCDataChannel} is created.
-     * @param event
-     * @param callback
-     * @returns A function to call, in order to unsubscribe.
-     */
-    on(event: 'dataChannel', callback: {(peer: RTCDataChannel): void}): () => void;
-
-    /**
-     * Triggered when a new {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaStream MediaStream} is created from the remote Peer.
-     * @param event
-     * @param callback
-     * @returns A function to call, in order to unsubscribe.
-     */
-    on(event: 'stream', callback: {(peer: MediaStream): void}): () => void;
-
-    /**
-     * Triggered when an Error is raised. This does not always mean the Peer must disconnect.
-     * @param event
-     * @param callback A function that can receive the Error, if any, that caused termination.
-     * @returns A function to call, in order to unsubscribe.
-     */
-    on(event: 'error', callback: {(err: Error): void}): () => void;
-
-    /**
-     * Triggered when this Peer has been closed, either locally or by the remote end.
-     * @param event
-     * @param callback
-     * @returns A function to call, in order to unsubscribe.
-     */
-    on(event: 'close', callback: Function): () => void;
-
-    /**
-     * Triggered when all ICE discovery finishes (or the configured timer expires), if Trickle ICE is enabled.
-     * @param event
-     * @param callback
-     * @returns A function to call, in order to unsubscribe.
-     * @see {@link PeerConfig}
-     */
-    on(event: 'iceFinished', callback: Function): () => void;
-
-    /**
-     * Triggered when trickle ICE discovers another value, if `trickle ICE` is enabled.
-     *
-     * If enabled, the `handshake` event already handles emitting these in the format it expects.
-     * @param event
-     * @param callback
-     * @returns A function to call, in order to unsubscribe.
-     * @see {@link PeerConfig}
-     */
-    on(event: 'iceEvent', callback: {(err: RTCPeerConnectionIceEvent): void}): () => void;
-}

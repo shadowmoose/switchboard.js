@@ -13,7 +13,8 @@ export default class Subscribable {
     /**
      * Listen for events that are emitted of a specific type.
      * @param event
-     * @param callback A function which, when called, will unregister the callback.
+     * @param callback
+     * @returns A function which, when called, will unregister the callback.
      */
     public on(event: string, callback: any) {
         this.events[event] = this.events[event] || new Set();

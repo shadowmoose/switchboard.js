@@ -1,5 +1,5 @@
 import nacl from 'tweetnacl';
-import Peer, {Options as PeerOptions} from 'simple-peer';
+import Peer, {PeerConfig} from './peer';
 import Subscribable from "./subscribable";
 import {ConnectionFailedError} from "./errors";
 
@@ -23,10 +23,9 @@ export function setLogging(enabled: boolean, callback: any = console.debug) {
 }
 
 /**
- * Wrapper for the `simple-peer` Peer object, contains the extra metadata that the TrackerConnector will append.
+ * Wrapper for the {@link Peer} object, contains the extra metadata that the TrackerConnector will append.
  */
-export class PeerWrapper extends Peer {
-    private permanentHandlers: Record<string, any[]> = {};
+export class ConnectedPeer extends Peer {
     private offer: Offer|null = null;
     public readonly offerID: string = Buffer.from(nacl.randomBytes(20)).toString('hex');
 
@@ -41,63 +40,28 @@ export class PeerWrapper extends Peer {
     public timeoutTracker: any = null;
 
     /**
-     * Register an event that cannot be cleared.
-     * Used internally to guarantee certain events (close, etc.) are detected.
-     * @param event
-     * @param handler
-     */
-    public permanent(event: string, handler: any) {
-        this.permanentHandlers[event] = this.permanentHandlers[event] || [];
-        this.permanentHandlers[event].push(handler);
-        this.on(event, handler);
-    }
-
-    public removeAllListeners(event?: string): this {
-        super.removeAllListeners(event);
-
-        const events = event? [event] : Object.keys(this.permanentHandlers);
-        events.forEach( event => {
-            const handlers = this.permanentHandlers[event];
-            if (handlers) {
-                handlers.forEach(h => this.on(event, h))
-            }
-        })
-
-        return this;
-    }
-
-    // noinspection JSUnusedGlobalSymbols
-    /**
-     * If this Peer is currently connected.
-     */
-    get connected(): boolean {
-        // @ts-ignore
-        return super.connected;
-    }
-
-    /**
      * Generates an Offer object from this Peer. If one already exists, returns that instead.
      */
-    async makeOffer(): Promise<Offer> {
+    async generateOffer(): Promise<Offer> {
         if (this.offer) return this.offer;
 
         return new Promise((res, rej) => {
-            const onErr = (err: any) => {
+            const cleanup = this.once('error', (err: any) => {
                 debug('Failed to generate peer offer: ' + err);
                 rej(err);
-            };
+            });
 
-            this.once('signal', (offer: any) => {
+            this.once('handshake', (offer: string) => {
                 const off: Offer = {
                     offer,
                     offer_id: ''+this.offerID
                 };
                 this.offer = off;
-                this.removeListener('error', onErr);
+                cleanup();
                 res(off);
             });
 
-            this.once('error', onErr);
+            this.handshake();
         });
     }
 }
@@ -156,7 +120,7 @@ export interface TrackerConnector {
      * @param callback
      * @returns A function to call, in order to unsubscribe.
      */
-    on(event: 'peer', callback: {(peer: PeerWrapper): void}): () => void;
+    on(event: 'peer', callback: {(peer: ConnectedPeer): void}): () => void;
 
     /**
      * Triggered when this TrackerConnector is unrecoverably killed.
@@ -177,12 +141,12 @@ export class TrackerConnector extends Subscribable{
     private readonly url: string;
     private readonly peerID: string;
     private readonly infoHash: string;
-    private readonly peerConfig: Partial<PeerOptions>;
+    private readonly peerConfig: PeerConfig;
     private readonly isBlacklisted: Function;
     private shouldReconnect: boolean = true;
     private timer: any = null;
     private sock: WebSocket|null = null;
-    private initiatorPeers: Record<string, PeerWrapper> = {};
+    private initiatorPeers: Record<string, ConnectedPeer> = {};
     private currentAnnounceInterval: number;
     private introPending: boolean = true;
     private connectTries: number = 0;
@@ -203,7 +167,7 @@ export class TrackerConnector extends Subscribable{
     constructor(trackerURL: string,
                 peerID: string,
                 infoHash: string,
-                peerConfig: Partial<PeerOptions>,
+                peerConfig: PeerConfig,
                 isBlacklisted: Function,
                 announceInterval: number,
                 wantedPeerCount: number
@@ -363,7 +327,7 @@ export class TrackerConnector extends Subscribable{
             const peer = this.makePeer(false);
 
             peer.id = msg.peer_id;
-            peer.once('signal', answer => {
+            peer.once('handshake', (answer: string) => {
                 const params: any = {
                     action: 'announce',
                     info_hash: this.infoHash,
@@ -376,23 +340,24 @@ export class TrackerConnector extends Subscribable{
 
                 this.send(params);
             });
-            peer.once('error', () => {
-                peer.destroy();
+            peer.once('error', (err: any) => {
+                debug(err);
+                console.warn('PEER ERROR:', err);
+                peer.close();
             });
             peer.timeoutTracker = setTimeout(() => {
-                peer.destroy();
+                peer.close();
             }, 15000);
-            peer.signal(msg.offer);
+            peer.handshake(msg.offer).catch(console.error);
         }
 
         // Peer has accepted one of our offers:
         if (msg.answer && msg.peer_id && msg.offer_id) {
-            debug('Accepting Peer:', msg.offer_id, msg.peer_id);
             const peer = this.initiatorPeers[msg.offer_id];
 
             if (peer) {
                 peer.id = msg.peer_id;
-                peer.signal(msg.answer);
+                peer.handshake(msg.answer).catch(console.error);
             } else {
                 debug('Missing tracker peer:', msg);
             }
@@ -423,7 +388,7 @@ export class TrackerConnector extends Subscribable{
             for (let i=0; i < missing; i++) {
                 this.makePeer(true);
             }
-            ret.offers = await Promise.all(Object.values(this.initiatorPeers).map(p => p.makeOffer()));
+            ret.offers = await Promise.all(Object.values(this.initiatorPeers).map(p => p.generateOffer()));
         }
 
         return ret;
@@ -437,27 +402,26 @@ export class TrackerConnector extends Subscribable{
      * @param killPeer {boolean} If the offer is no longer valid, cancel the peer if true.
      * @private
      */
-    private retractOffer(peer: PeerWrapper, killPeer: boolean = true) {
+    private retractOffer(peer: ConnectedPeer, killPeer: boolean = true) {
         debug('Retracting:', peer.offerID, '- kill:', killPeer);
 
         if (killPeer) {
-            peer.destroy();
+            peer.close();
         }
         delete this.initiatorPeers[peer.offerID];
     }
 
     /**
-     * Generates a simple-peer object, using the config provided in the creation of this Tracker.
+     * Generates a peer object, using the config provided in the creation of this Tracker.
      *
      * Automatically registers the Peer to clear its own offering if a connection is established.
      * @param initiator {boolean} If this Peer will be an initiator - and thus should generate an offer.
      * @private
      */
-    private makePeer(initiator: boolean): PeerWrapper {
-        const peer = new PeerWrapper({
+    private makePeer(initiator: boolean): ConnectedPeer {
+        const peer = new ConnectedPeer({
             ...this.peerConfig,
-            trickle: false,
-            initiator
+            trickleICE: false
         });
 
         peer.once('connect', () => {
@@ -485,7 +449,7 @@ export class TrackerConnector extends Subscribable{
      * @param peer The Peer object that has just become open for data transmission.
      * @private
      */
-    private onPeerConnected(peer: PeerWrapper) {
+    private onPeerConnected(peer: ConnectedPeer) {
         debug('Tracker connected to peer:', peer, peer.id);
         this.emit('peer', peer);
     }

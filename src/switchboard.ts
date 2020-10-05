@@ -1,10 +1,10 @@
-import {TrackerConnector, PeerWrapper, setLogging} from './tracker'
+import {TrackerConnector, ConnectedPeer, setLogging} from './tracker'
 import Subscribable from "./subscribable";
 import {ClientAuthError, ConnectionFailedError} from "./errors";
 import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 import sha1 from 'sha1';
-import {Options as PeerOptions} from "simple-peer";
+import {PeerConfig} from "./peer";
 import Peer from './peer';
 
 export class TestPeer extends Peer{}  // TODO: Remove export.
@@ -47,7 +47,7 @@ export interface TrackerOptions {
     /** If true, the whole Switchboard will fail (and disconnect from all trackers) if this tracker fails to connect. */
     isRequired?: boolean;
     /** Optionally overwrite client values passed into each `simple-peer` Peer created by this tracker. */
-    customPeerOpts?: Partial<PeerOptions>;
+    customPeerOpts?: PeerConfig;
     /**
      * The interval, in milliseconds, that each tracker should re-announce.
      * Don't change this unless you know what you're doing.
@@ -90,7 +90,7 @@ export interface Switchboard {
      * @param callback
      * @returns A function to call, in order to unsubscribe.
      */
-    on(event: 'peer', callback: {(peer: PeerWrapper): void}): () => void;
+    on(event: 'peer', callback: {(peer: ConnectedPeer): void}): () => void;
 
     /**
      * Emitted when any connected Peer has an error.
@@ -116,7 +116,7 @@ export interface Switchboard {
      * @param callback A function that can receive the PeerWrapper that was blacklisted.
      * @returns A function to call, in order to unsubscribe.
      */
-    on(event: 'peer-blacklisted', callback: {(peer: PeerWrapper): void}): () => void;
+    on(event: 'peer-blacklisted', callback: {(peer: ConnectedPeer): void}): () => void;
 
     /**
      * Emitted when a non-fatal error occurs. You should not assume that the Switchboard is broken based off these.
@@ -165,7 +165,7 @@ export class Switchboard extends Subscribable {
     private trackerOpts: TrackerOptions[] = [];
     private blacklist: Record<string, number> = {};
     private trackers: Set<TrackerConnector> = new Set();
-    private connected: Record<string, PeerWrapper> = {};
+    private connected: Record<string, ConnectedPeer> = {};
     private infoHash: string = '';
     private killed: boolean = false;
     private wantedPeerCount: number = 0;
@@ -234,7 +234,7 @@ export class Switchboard extends Subscribable {
         }
 
         for (const trk of this.trackerOpts) {
-            const cfg: Partial<PeerOptions> = trk.customPeerOpts||{};
+            const cfg: PeerConfig = trk.customPeerOpts||{};
             const announce = trk.trackerAnnounceInterval || DEFAULT_ANNOUNCE_RATE;
             const t = new TrackerConnector(trk.uri, this.peerID, this.infoHash, cfg, this.shouldBlockConnection.bind(this), announce, this.wantedPeerCount);
 
@@ -342,7 +342,7 @@ export class Switchboard extends Subscribable {
      * @param peer The peer to (potentially) blacklist.
      * @param increment The amount of failures to increment. Defaults to instantly blacklisting.
      */
-    addPeerFailure(peer: PeerWrapper, increment?: number) {
+    addPeerFailure(peer: ConnectedPeer, increment?: number) {
         if (!increment) increment = this.opts.clientMaxRetries || Infinity;
         if (this.isBlackListed(peer.id)) return;
 
@@ -365,12 +365,12 @@ export class Switchboard extends Subscribable {
      * @param peer The new Peer that has connected.
      * @private
      */
-    private onPeer(peer: PeerWrapper) {
+    private onPeer(peer: ConnectedPeer) {
         this.connected[peer.id] = peer;
 
         peer.timeoutTracker = setTimeout(() => {
             this.addPeerFailure(peer, 1);
-            peer.destroy();
+            peer.close();
         }, this.opts.clientTimeout || DEFAULT_CLIENT_TIMEOUT);
 
         peer.permanent('close', () => {
@@ -382,17 +382,17 @@ export class Switchboard extends Subscribable {
             this.emit('peer-error', err);
         });
 
-        peer.once('data', data => {
+        peer.once('data', (data: ArrayBuffer) => {
             try {
                 clearTimeout(peer.timeoutTracker);
-                if (Switchboard.verifyPacket(peer.id, data, this.wantedSpecificID)) {
+                if (Switchboard.verifyPacket(peer.id, new Uint8Array(data), this.wantedSpecificID)) {
                     delete this.blacklist[peer.id];
                     this.emit('peer', peer);
                 }
             } catch (err) {
                 this.emit('warn', err);
                 this.addPeerFailure(peer, 1);
-                peer.destroy();
+                peer.close();
             }
         });
 
@@ -401,7 +401,7 @@ export class Switchboard extends Subscribable {
             peer.send(this.makeSigPacket());
         } catch (err) {
             this.emit('warn', err);
-            peer.destroy(new ClientAuthError('Failed to send handshake.'));
+            peer.fatalError(new ClientAuthError('Failed to send handshake.'));
         }
     }
 
