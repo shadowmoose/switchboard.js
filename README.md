@@ -15,9 +15,12 @@ Switchboard handles all the intricacies involved with reconnection and peer disc
 All of this works out of the box in just a few lines of code, and requires zero server setup on the developer's behalf.
 
 ## Installation
+
 For developers working in a node/typescript environment, ```npm i switchboard.js``` or ```yarn add switchboard.js```.
 
 If you'd prefer a direct bundle for use in a browser script tag, [grab the latest release link from the jsDelivr global CDN](https://www.jsdelivr.com/package/npm/switchboard.js).
+
+For more help, [check out the documentation](https://shadowmoose.github.io/switchboard.js).
 
 ## Enough talk, give me an example
 
@@ -70,7 +73,7 @@ and you can [read more about those here](https://shadowmoose.github.io/switchboa
 
 ## Okay, so how's it work?
 Switchboard is lightweight, small, simple, and blazingly-fast.
-This was accomplished by completely rewriting the tracker-handling code, instead of relying on existing libraries.
+This was accomplished by writing the WebRTC code completely from scratch, instead of relying on existing libraries.
 Skipping the usual bloated WebRTC libraries in favor of direct API access has several major advantages:
 
 + __Smaller Bundle Size:__ While it works with all WebRTC implementations, Switchboard doesn't import any of the usual bloated WebRTC libraries!
