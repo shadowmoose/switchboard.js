@@ -10,13 +10,16 @@
 	-->
 	<script src="https://unpkg.com/switchboard.js"></script>
 </head>
-<body>
+<body style="font-family: Arial, Helvetica, sans-serif;">
 
 <h1>Video lobby</h1>
 <div id="message"></div>
-<div id="hostOnly">
-	<label for="fileIn">Select a video to share:</label> <input id="fileIn" type="file" accept="video/*"/>
+<div id="hostOnly" style="border: 1px solid black;margin: 3px;">
+	<div id="inputs">
+		<label for="fileIn">Select a video to share:</label> <input id="fileIn" type="file" accept="video/*"/>
+	</div>
 	<div id="clientLink"></div>
+	<div style="color: dimgray">Note: If you tab out of this window, some browsers may degrade video performance (and thus streaming as well).</div>
 </div>
 <video controls autoplay style="max-width: 100%; max-height: 600px"></video>
 
@@ -26,7 +29,7 @@
 	const peers = [];
 	const URL = window.URL || window.webkitURL;
 	const videoNode = document.querySelector('video');
-	const inputNode = document.querySelector('input');
+	const inputNode = document.getElementById('fileIn');
 	const log = function (message, isError) {
 		const element = document.querySelector('#message')
 		element.innerHTML = message;
@@ -60,74 +63,110 @@
 </script>
 
 <script>
-	// WebRTC Stuff:
-	const sb = new switchboard.Switchboard({seed: isHost? localStorage['secretSeed'] : null});
-	let hostStream = null;
+	/**
+	 * Trigger WebRTC Stuff
+	 */
+	function start() {
+		//switchboard.enableLogging(true);
+		const sb = new switchboard.Switchboard({seed: isHost ? localStorage['secretSeed'] : null});
+		/**
+		 * @type MediaStream
+		 */
+		let hostStream = null;
 
-	if (isHost) {
-		sb.host();
-		localStorage['secretSeed'] = sb.secretSeed;
-		document.getElementById('clientLink').innerHTML = `<a href="#${sb.peerID}" target="_blank">Connect to this client link to share video.</a>`;
-	} else {
-		sb.findHost(window.location.hash.substr(1));
-	}
-
-	sb.on('warn', (err) => {
-		console.warn('client error:' + err);
-	})
-
-	sb.on('kill', () => {
-		console.warn('Client killed.');
-	})
-
-	sb.on('peer', (peer) => {
-		// Receive new peers as they connect, and update the UI:
-		peers.push(peer);
-		updateCount();
-		console.log(`Connected to peer:  ${peer.id}`);
-
-		peer.on('error', (err) => {
-			console.error('Peer error:' + err);
-		});
-		peer.on('close', () => {
-			// Detect when Peer disconnects:
-			peers.splice(peers.findIndex(p => p.id === peer.id), 1);
-			updateCount();
-		})
 		if (isHost) {
-			if (hostStream) peer.addStream(hostStream);
+			sb.host();
+			localStorage['secretSeed'] = sb.secretSeed;
+			document.getElementById('clientLink').innerHTML = `<a href="#${sb.peerID}" target="_blank">Connect to this client link to share video.</a>`;
 		} else {
-			console.debug('Waiting for stream...');
-			peer.on('stream', stream => {
-				console.debug('Got stream from host!');
-				// got remote video stream, now let's show it in a video tag
-				if ('srcObject' in videoNode) {
-					videoNode.srcObject = stream
-				} else {
-					videoNode.src = window.URL.createObjectURL(stream) // for older browsers
-				}
-				videoNode.play()
-			})
-			peer.on('signal', () => {
-				console.debug('Signal')
-			})
+			sb.findHost(window.location.hash.substr(1));
 		}
-	});
 
-	// TODO: https://stackoverflow.com/questions/35504214/how-to-addtrack-in-mediastream-in-webrtc
-	
-	if (isHost) {
-		videoNode.onplay = function() {
-			if (!hostStream) {
-				hostStream = videoNode.captureStream();
+		sb.on('peer-seen', peer => {
+			console.debug('saw peer:', peer);
+		})
+
+		sb.on('warn', (err) => {
+			console.warn('client error:' + err);
+		})
+
+		sb.on('kill', () => {
+			console.warn('Client killed.');
+		})
+
+		sb.on('peer', (peer) => {
+			// Receive new peers as they connect, and update the UI:
+			peers.push(peer);
+			updateCount();
+			console.log(`Connected to peer:  ${peer.id}`);
+
+			peer.on('error', (err) => {
+				console.error('Peer error:' + err);
+			});
+			peer.on('close', () => {
+				// Detect when Peer disconnects:
+				peers.splice(peers.findIndex(p => p.id === peer.id), 1);
+				updateCount();
+			})
+
+			peer.on('message', msg => {
+				console.log('Message:', msg);
+			})
+
+			peer.send('test message');
+
+			if (isHost) {
+				if (hostStream) peer.addMedia(hostStream);
+			} else {
+				console.debug('Waiting for stream...');
+				peer.on('stream', stream => {
+					console.debug('Got stream from host!');
+					// got remote video stream, now let's show it in a video tag
+					if ('srcObject' in videoNode) {
+						videoNode.srcObject = stream
+					} else {
+						videoNode.src = window.URL.createObjectURL(stream) // for older browsers
+					}
+					videoNode.play()
+				})
+				peer.on('signal', () => {
+					console.debug('Signal')
+				})
+			}
+		});
+
+		if (isHost) {
+			videoNode.onloadeddata = async function () {
+				videoNode.muted = true;  // Mute on host tab just to avoid echo in demo.
+				if (hostStream) {
+					hostStream.getTracks().forEach(t => {
+						t.stop();
+						hostStream.removeTrack(t);
+					})
+				}
+
+				hostStream = await (videoNode.mozCaptureStream ? videoNode.mozCaptureStream() : videoNode.captureStream());
 				for (const p of peers) {
 					console.log('Sending stream to client...', hostStream, p);
-					p.addStream(hostStream)
+					p.addMedia(hostStream).catch(console.error);
 				}
-			}
-		};
+			};
+		}
 	}
 
+	if (isHost) {
+		start()
+	} else {
+		// Client has to interact with page for video to play.
+		const btn = document.createElement('button');
+		btn.onclick = () => {
+			btn.style.display = 'none';
+			start();
+		};
+		btn.innerText = 'Join Host';
+		document.body.append(btn);
+		console.log('client')
+	}
 </script>
 </body>
 </html>
