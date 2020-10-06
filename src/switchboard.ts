@@ -5,9 +5,6 @@ import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 import sha1 from 'sha1';
 import {PeerConfig} from "./peer";
-import Peer from './peer';
-
-export class TestPeer extends Peer{}  // TODO: Remove export.
 
 /**
  * These are the options that the Switchboard accepts as configuration.

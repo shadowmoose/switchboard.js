@@ -3,9 +3,16 @@
 
 __This is a Work in Progress. It may not even be functional currently.__
 
-Switchboard.js is a library built to help securely connect users in peer-to-peer networks. It's specifically designed to work even for developers deploying static sites (say, through [GitHub Pages](https://shadowmoose.github.io/switchboard.js/examples/chat-swarm.html)) without an available middleman [signaling](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling) server to handle peer discovery or authorization. With Switchboard it's possible to deploy anything from a fully in-browser file server, to a media streaming service, or even vast online multiplayer applications - all within a single browser tab powered by static HTML.
+Switchboard.js is a library built to help securely connect users in peer-to-peer networks.
+It's specifically designed to work even for developers deploying static sites (say, through [GitHub Pages](https://shadowmoose.github.io/switchboard.js/examples/chat-swarm.html#example))
+without an available middleman [signaling](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
+server to handle peer discovery or authorization.
+With Switchboard it's possible to deploy anything from a fully in-browser file server, to a media streaming service,
+or even vast online multiplayer applications - all within a single browser tab powered by static HTML.
 
-With switchboard you can establish traditional `client->host` connections, or even connect *full swarms of clients* together. Switchboard handles all the intricacies involved with reconnection and peer discovery, and uses cryptographic peer IDs to securely connect without the risk of impersonators. All of this works out of the box in just a few lines of code, and requires zero server setup on the developer's behalf.
+With switchboard you can establish traditional `client->host` connections, or even connect *full swarms of clients* together.
+Switchboard handles all the intricacies involved with reconnection and peer discovery, and uses cryptographic peer IDs to securely connect without the risk of impersonators.
+All of this works out of the box in just a few lines of code, and requires zero server setup on the developer's behalf.
 
 ## Installation
 For developers working in a node/typescript environment, ```npm i switchboard.js``` or ```yarn add switchboard.js```.
@@ -57,7 +64,7 @@ localStorage['secretSeed'] = c.secretSeed; // Store this identity for use later 
 // The browser will now reuse the same identity whenever it reloads!
 ```
 You can see the code is pretty much the same either way, thanks to the simple API.
-For more examples, see [the examples directory, deployed to github-pages](https://shadowmoose.github.io/switchboard.js/examples/).
+For more examples, see [the examples directory, deployed to github-pages](https://shadowmoose.github.io/switchboard.js/examples/index.html).
 There are also many more advanced ways to customize the behavior of Switchboard, including hooking events and authorization,
 and you can [read more about those here](https://shadowmoose.github.io/switchboard.js)
 
