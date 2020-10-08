@@ -5,7 +5,7 @@
     "target": "es6",
     "outDir": "./build/module",
     "declaration": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "esModuleInterop": true,
     "removeComments": false
   },

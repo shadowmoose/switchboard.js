@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/shadowmoose/switchboard.js",
   "license": "MIT",
-  "main": "build/module/switchboard.js",
-  "types": "build/module/switchboard.d.ts",
+  "main": "build/module/index.js",
+  "types": "build/module/index.d.ts",
   "browser": "build/browser/main.js",
   "scripts": {
     "start:dev": "webpack-dev-server --mode development --progress --color",

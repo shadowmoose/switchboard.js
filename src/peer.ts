@@ -120,11 +120,20 @@ export interface Peer {
 
     /**
      * Triggered when this Peer has been closed, either locally or by the remote end.
+     * See the 'disconnect' event if you only wish to detect unexpected disconnections.
      * @param event
      * @param callback
      * @returns A function to call, in order to unsubscribe.
      */
     on(event: 'close', callback: Function): () => void;
+
+    /**
+     * Triggered when this Peer has been unexpectedly disconnected.
+     * @param event
+     * @param callback
+     * @returns A function to call, in order to unsubscribe.
+     */
+    on(event: 'disconnect', callback: Function): () => void;
 
     /**
      * Triggered when all ICE discovery finishes (or the configured timer expires), if Trickle ICE is enabled.
@@ -256,12 +265,15 @@ export class Peer extends Subscribable{
     /**
      * Permanently close this Peer, and kill any running background timers.
      */
-    close() {
-        this.closed = true;
-        this.timers.forEach(t => clearTimeout(t));
-        this.timers.splice(0, this.timers.length);
-        this.pc.close();
-        this.emit('close');
+    close(intentional: boolean = true) {
+        if (!this.closed) {
+            this.closed = true;
+            this.timers.forEach(t => clearTimeout(t));
+            this.timers.splice(0, this.timers.length);
+            this.pc.close();
+            this.emit('close');
+            if (!intentional) this.emit('disconnect')
+        }
     }
 
     /**
@@ -550,7 +562,7 @@ export class Peer extends Subscribable{
         this.send(JSON.stringify(data), META_CHANNEL);
     }
 
-    emit(event: 'message'|'data'|'dataChannel'|'iceFinished'|'error'|'handshake'|'close'|'stream'|'ready'|'connect'|'iceEvent', data?: any) {
+    emit(event: 'message'|'data'|'dataChannel'|'iceFinished'|'error'|'handshake'|'close'|'stream'|'ready'|'connect'|'iceEvent'|'disconnect', data?: any) {
         super.emit(event, data);
     }
 }
