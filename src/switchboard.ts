@@ -170,10 +170,10 @@ export class Switchboard extends Subscribable {
     private _fullID: string|null = null;
 
     /**
-     * Creates a new Matchmaker.
+     * Creates a new Switchboard matchmaker.
      *
      * To start finding peers, call one of: [{@link host}, {@link findHost}, {@link swarm}].
-     * @param opts Extra optional config values that this Matchmaker will use.
+     * @param opts Extra optional config values that this instance will use.
      */
     constructor(opts?: ClientOptions) {
         super();
@@ -477,6 +477,19 @@ export class Switchboard extends Subscribable {
      */
     static makeSeed() {
         return bs58.encode(nacl.randomBytes(32));
+    }
+
+    /**
+     * Get the (full) ID that a given seed string will use.
+     * @param seedString The string Seed, can be generated using {@link makeSeed}.
+     * @param getFullID If the returned ID should be the full-length ID, or the short version.
+     */
+    static getIdFromSeed(seedString: string, getFullID: boolean = true) {
+        const pub = this.makeCryptoPair(seedString).publicKey;
+        if (getFullID) {
+            return this.makeFullID(pub);
+        }
+        return this.makeID(pub);
     }
 
     /**
