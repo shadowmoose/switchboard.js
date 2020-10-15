@@ -1,5 +1,5 @@
 [![switch](https://i.imgur.com/oK9kwVl.png)](https://shadowmoose.github.io/switchboard.js)
-# switchboard.js [![Build Docs](https://github.com/shadowmoose/switchboard.js/workflows/Build%20Docs/badge.svg)](https://shadowmoose.github.io/switchboard.js)[![npm](https://img.shields.io/npm/v/switchboard.js)![npm bundle size](https://img.shields.io/bundlephobia/minzip/switchboard.js?label=bundle%20size)](https://www.npmjs.com/package/switchboard.js) ![Lines of Code](https://raw.githubusercontent.com/shadowmoose/switchboard.js/image-data/loc-badge.svg)
+# switchboard.js [![Build Docs](https://github.com/shadowmoose/switchboard.js/workflows/Build%20Docs/badge.svg)](https://shadowmoose.github.io/switchboard.js)[![npm](https://img.shields.io/npm/v/switchboard.js)![npm bundle size](https://img.shields.io/bundlephobia/minzip/switchboard.js?label=bundle%20size)](https://www.npmjs.com/package/switchboard.js)![Lines of Code](https://raw.githubusercontent.com/shadowmoose/switchboard.js/image-data/loc-badge.svg)
 
 __This is a Work in Progress. It may not even be functional currently.__
 
