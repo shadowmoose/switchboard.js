@@ -9,7 +9,7 @@ import Subscribable from "./subscribable";
  */
 export interface PeerConfig {
     /**
-     * If `true`, enable Trickle ICE. In this context, 'off' really means that the offer will be created without waiting.
+     * If `true`, enable Trickle ICE. In this context, 'true' really means that the offer will be created without waiting.
      *
      * This is `false` by default.
      */
@@ -182,7 +182,18 @@ export class Peer extends Subscribable{
     constructor(config: Partial<PeerConfig>) {
         super();
         this.config = config || {};
-        this.pc = new RTCPeerConnection(this.config.rtcPeerOpts);
+        this.pc = new RTCPeerConnection(Object.assign({
+            iceServers: [
+                {
+                    url: "stun:global.stun.twilio.com:3478?transport=udp",
+                    urls: "stun:global.stun.twilio.com:3478?transport=udp"
+                },
+                {
+                    url: "stun:stun.l.google.com:19302",
+                    urls: "stun:stun.l.google.com:19302"
+                }
+            ]
+        }, this.config.rtcPeerOpts));
 
         this.addDataChannel(META_CHANNEL, {id: 0, negotiated: true}).onmessage = this.inBand.bind(this);
         this.addDataChannel("default", {id: 1, negotiated: true}).onmessage = message => {
@@ -202,7 +213,7 @@ export class Peer extends Subscribable{
         });
         this.pc.addEventListener('datachannel', ch => {
             this.registerDataChannel(ch.channel);
-        })
+        });
         this.pc.addEventListener('connectionstatechange', this.onConnectionState.bind(this));
         this.pc.onsignalingstatechange = this.onConnectionState.bind(this);
         this.pc.onnegotiationneeded = async () => {
@@ -402,8 +413,10 @@ export class Peer extends Subscribable{
             if (idx >= 0) this.timers.splice(idx, 1);
         }
 
+        cb = cb.bind(this);
+
         ret = setTimeout(() => {
-            cb.bind(this);
+            cb();
             clear();
         }, timeout);
 
@@ -417,13 +430,14 @@ export class Peer extends Subscribable{
      */
     private async waitForICE() {
         if (this.config.trickleICE) return null;
-
         return Promise.race([
             this.awaitICE,
             new Promise((res) => {
-                this.makeTimer(this.config.trickleTimeout || 1000, res)
+                this.makeTimer(this.config.trickleTimeout || 2000, res)
             })
-        ]).then(() => this.emit('iceFinished'));
+        ]).then(() => {
+            this.emit('iceFinished');
+        });
     }
 
     /**
