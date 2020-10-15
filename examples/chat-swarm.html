@@ -98,7 +98,8 @@
 		});
 
 		sb.on('connected', () => {
-			log('All possible trackers connected!', '#4db12e')
+			log('All possible trackers connected!', '#4db12e');
+			log(`Swarm Hash: ${sb.infoHash}`)
 		})
 	</script>
 </body>
