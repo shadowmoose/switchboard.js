@@ -303,11 +303,18 @@ export class Switchboard extends Subscribable {
     }
 
     /**
-     * Kill all connections to the tracker servers.
+     * Kill all connections to the tracker servers, and optionally the Peers connected as well.
+     * @param error The error to be emitted by this object's "kill" event, or null.
+     * @param killPeers If true, also close all active Peer connections.
      */
-    kill(error?: Error) {
+    kill(error?: Error, killPeers?: boolean) {
         this.killed = true;
         this.trackers.forEach(t => t.kill());
+        if (killPeers) {
+            for (const p of Object.values(this.connected)) {
+                p.close(true);
+            }
+        }
         this.emit('kill', error||null);
     }
 
@@ -363,6 +370,9 @@ export class Switchboard extends Subscribable {
      * @private
      */
     private onPeer(peer: ConnectedPeer) {
+        if (this.connected[peer.id] || Object.keys(this.connected).length >= this.wantedPeerCount) {
+            return peer.close(true);
+        }
         this.connected[peer.id] = peer;
 
         peer.timeoutTracker = setTimeout(() => {
