@@ -18,7 +18,7 @@ All of this works out of the box in just a few lines of code, and requires zero 
 
 For developers working in a node/typescript environment, ```npm i switchboard.js``` or ```yarn add switchboard.js```.
 
-If you'd prefer a direct bundle for use in a browser script tag, [grab the latest release link from the jsDelivr global CDN](https://www.jsdelivr.com/package/npm/switchboard.js).
+If you'd prefer a direct bundle for use in a browser script tag, [grab the latest release link from the jsDelivr global CDN](https://cdn.jsdelivr.net/npm/switchboard.js/dist/index-browser.min.js).
 
 For more help, [check out the documentation](https://shadowmoose.github.io/switchboard.js).
 
