@@ -105,7 +105,7 @@ c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Switchboard <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;switchboard.js&#x27;</span>;
 
 <span class="hljs-comment">// Load a secret code from storage, or one will auto-generate if one isn&#x27;t already saved:</span>
-<span class="hljs-keyword">const</span> c = <span class="hljs-keyword">new</span> Switchboard({seed: <span class="hljs-built_in">localStorage</span>[<span class="hljs-string">&#x27;secretSeed&#x27;</span>]});
+<span class="hljs-keyword">const</span> c = <span class="hljs-keyword">new</span> Switchboard({<span class="hljs-attr">seed</span>: <span class="hljs-built_in">localStorage</span>[<span class="hljs-string">&#x27;secretSeed&#x27;</span>]});
 
 <span class="hljs-comment">// Connect to the host:</span>
 c.findHost(<span class="hljs-string">&#x27;Host-ID&#x27;</span>);
