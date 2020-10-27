@@ -153,8 +153,8 @@ export class Switchboard extends Subscribable {
      *
      * If you wish to know a valid seed before running Matchmaking, you can pre-generate a Seed using {@link makeSeed}.
      *
-     * @see {@link ClientOptions.secretID} for assigning this value.
-     * @see {@link Matchmaker.makeSeed} for pre-generating an ID.
+     * @see {@link SBClientOptions.seed} for assigning this value.
+     * @see {@link Switchboard.makeSeed} for pre-generating an ID.
      */
     public readonly secretSeed: string;
     private readonly opts: SBClientOptions;
