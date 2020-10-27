@@ -1,4 +1,6 @@
-on: [push]
+on:
+  push:
+    branches: [master, ]
 
 name: Build Docs
 
@@ -9,18 +11,18 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v1
-        
+
       - name: Setup node
         uses: actions/setup-node@v1
         with:
           node-version: '12'
-        
+
       - name: Install packages
         uses: bahmutov/npm-install@v1
-        
+
       - name: Build Docs
         run: |
-          npm run-script build-docs
+          yarn build-docs
           mv ./examples ./docs/
 
       - name: Deploy to Web

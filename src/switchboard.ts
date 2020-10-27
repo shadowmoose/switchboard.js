@@ -9,7 +9,7 @@ import {PeerConfig} from "./peer";
 /**
  * These are the options that the Switchboard accepts as configuration.
  */
-export interface ClientOptions {
+export interface SBClientOptions {
     /**
      * A list of strings and/or {@link TrackerOptions} config objects.
      */
@@ -157,7 +157,7 @@ export class Switchboard extends Subscribable {
      * @see {@link Matchmaker.makeSeed} for pre-generating an ID.
      */
     public readonly secretSeed: string;
-    private readonly opts: ClientOptions;
+    private readonly opts: SBClientOptions;
     private readonly cryptoKeys: nacl.SignKeyPair;
     private trackerOpts: TrackerOptions[] = [];
     private blacklist: Record<string, number> = {};
@@ -174,8 +174,9 @@ export class Switchboard extends Subscribable {
      *
      * To start finding peers, call one of: [{@link host}, {@link findHost}, {@link swarm}].
      * @param opts Extra optional config values that this instance will use.
+     * @see {@link SBClientOptions}
      */
-    constructor(opts?: ClientOptions) {
+    constructor(opts?: SBClientOptions) {
         super();
 
         this.opts = opts || {};

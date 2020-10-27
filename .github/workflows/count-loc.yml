@@ -24,6 +24,7 @@ jobs:
         run: |
           echo "Scanned: ${{ steps.badge.outputs.counted_files }}";
           echo "Line Count: ${{ steps.badge.outputs.total_lines }}";
+
       - name: Deploy to image-data branch
         uses: peaceiris/actions-gh-pages@v3
         with:

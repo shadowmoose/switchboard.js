@@ -1,3 +1,3 @@
-export {Switchboard} from './switchboard';
-export {ConnectedPeer, TrackerConnector} from './tracker';
-export {ConnectionFailedError, ClientAuthError} from './errors';
+export * from './switchboard';
+export * from './tracker';
+export * from './errors';

@@ -1,57 +1,67 @@
 {
-  "name": "switchboard.js",
-  "version": "0.0.0",
-  "description": "Decentralized peering without a middleman server",
-  "author": "ShadowMoose",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shadowmoose/switchboard.js.git"
-  },
-  "keywords": [
-    "webRTC",
-    "matchmaking",
-    "p2p",
-    "peer-to-peer"
-  ],
-  "bugs": {
-    "url": "https://github.com/shadowmoose/switchboard.js/issues"
-  },
-  "homepage": "https://github.com/shadowmoose/switchboard.js",
-  "license": "MIT",
-  "main": "build/module/index.js",
-  "types": "build/module/index.d.ts",
-  "browser": "build/browser/main.js",
-  "scripts": {
-    "start:dev": "webpack-dev-server --mode development --progress --color",
-    "server": "node examples/server.js",
-    "build-module": "npx rimraf build/module/ && tsc --build tsconfig.module.json",
-    "build-browser": "npx rimraf build/browser/ && webpack --mode production",
-    "build-docs": "npx typedoc src --out docs --excludeNotExported --mode modules",
-    "prepublishOnly": "npm run-script build-browser && npm run-script build-module"
-  },
-  "devDependencies": {
-    "@types/bs58": "^4.0.1",
-    "@types/node": "^14.0.26",
-    "@types/sha1": "^1.1.2",
-    "@types/ws": "^7.2.6",
-    "bittorrent-tracker": "^9.15.0",
-    "rimraf": "^3.0.2",
-    "ts-loader": "^8.0.1",
-    "typedoc": "^0.17.8",
-    "typescript": "^3.9.7",
-    "webpack": "^4.44.0",
-    "webpack-bundle-analyzer": "^3.8.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "dependencies": {
-    "bs58": "^4.0.1",
-    "isomorphic-ws": "^4.0.1",
-    "sha1": "^1.1.1",
-    "tweetnacl": "^1.0.3",
-    "ws": "^7.3.1"
-  },
-  "files": [
-    "build"
-  ]
+    "name": "switchboard.js",
+    "version": "0.0.0",
+    "license": "MIT",
+    "author": "ShadowMoose",
+    "description": "Decentralized peering without a middleman server",
+    "homepage": "https://github.com/shadowmoose/switchboard.js",
+    "keywords": [],
+    "umdName": "switchboard",
+    "buildEntryPoint": "index",
+    "main": "dist/index.js",
+    "module": "dist/index.es.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/shadowmoose/switchboard.js.git"
+    },
+    "bugs": "https://github.com/shadowmoose/switchboard.js/issues",
+    "scripts": {
+        "build": "rollup -c rollup.config.ts",
+        "watch": "rollup -c rollup.config.ts --watch",
+        "test": "jest",
+        "build-docs": "typedoc src --out docs --excludeNotExported --mode modules",
+        "prepublishOnly": "yarn build"
+    },
+    "devDependencies": {
+        "@lopatnov/rollup-plugin-uglify": "^2.1.0",
+        "@types/jest": "^26.0.9",
+        "@types/node": "^14.0.26",
+        "@types/rollup-plugin-json": "^3.0.2",
+        "@types/typescript": "^2.0.0",
+        "jest": "^26.2.2",
+        "jest-config": "^26.2.2",
+        "rollup": "^2.23.1",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-json": "^4.0.0",
+        "rollup-plugin-node-polyfills": "^0.2.1",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-sourcemaps": "^0.6.2",
+        "rollup-plugin-typescript2": "^0.27.2",
+        "terser": "^5.0.0",
+        "ts-jest": "^26.1.4",
+        "typedoc": "^0.19.2",
+        "typescript": "^3.9.7",
+        "@types/bs58": "^4.0.1",
+        "@types/sha1": "^1.1.2",
+        "@types/ws": "^7.2.6",
+        "bittorrent-tracker": "^9.15.0",
+        "rimraf": "^3.0.2",
+        "ts-loader": "^8.0.1",
+        "webpack": "^4.44.0",
+        "webpack-bundle-analyzer": "^3.8.0",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "peerDependencies": {},
+    "dependencies": {
+        "bs58": "^4.0.1",
+        "isomorphic-ws": "^4.0.1",
+        "sha1": "^1.1.1",
+        "tweetnacl": "^1.0.3",
+        "ws": "^7.3.1"
+    }
 }
