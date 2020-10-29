@@ -1,6 +1,6 @@
 # [![switch](https://i.imgur.com/oK9kwVl.png)](https://shadowmoose.github.io/switchboard.js)
 
-![Tests](https://github.com/shadowmoose/switchboard.js/workflows/Test%20Package/badge.svg) [![npm](https://img.shields.io/npm/v/switchboard.js) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/switchboard.js?label=bundle%20size)](https://www.npmjs.com/package/switchboard.js) ![Lines of Code](https://raw.githubusercontent.com/shadowmoose/switchboard.js/image-data/loc-badge.svg)
+![Tests](https://github.com/shadowmoose/switchboard.js/workflows/Test%20Package/badge.svg) [![npm](https://img.shields.io/npm/v/switchboard.js) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/switchboard.js?label=bundle%20size)](https://www.npmjs.com/package/switchboard.js) ![Lines of Code](https://raw.githubusercontent.com/shadowmoose/switchboard.js/image-data/loc-badge.svg) [![](https://data.jsdelivr.com/v1/package/npm/switchboard.js/badge)](https://www.jsdelivr.com/package/npm/switchboard.js)
 
 Switchboard.js is a library built to help securely connect users in peer-to-peer networks.
 It's specifically designed to work even for developers deploying static sites (say, through [GitHub Pages](https://shadowmoose.github.io/switchboard.js/examples/chat-swarm.html#example))
@@ -17,7 +17,7 @@ All of this works out of the box in just a few lines of code, and requires zero 
 
 For developers working in a node/typescript environment, ```npm i switchboard.js``` or ```yarn add switchboard.js```.
 
-If you'd prefer a direct bundle for use in a browser script tag, [grab the latest release link from the jsDelivr global CDN](https://cdn.jsdelivr.net/npm/switchboard.js/dist/index-browser.min.js).
+If you'd prefer a direct bundle for use in a browser script tag, [grab the latest release link from the jsDelivr global CDN](https://www.jsdelivr.com/package/npm/switchboard.js).
 
 For more help, [check out the documentation](https://shadowmoose.github.io/switchboard.js).
 
