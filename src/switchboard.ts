@@ -41,9 +41,11 @@ export interface SBClientOptions {
 export interface TrackerOptions {
     /** The WebSocket URI to join. */
     uri: string;
+
     /** If true, the whole Switchboard will fail (and disconnect from all trackers) if this tracker fails to connect. */
     isRequired?: boolean;
-    /** Optionally overwrite client values passed into each `simple-peer` Peer created by this tracker. */
+
+    /** Optionally overwrite client values passed into each Peer created by this tracker. */
     customPeerOpts?: PeerConfig;
     /**
      * The interval, in milliseconds, that each tracker should re-announce.
@@ -232,7 +234,7 @@ export class Switchboard extends Subscribable {
         }
 
         for (const trk of this.trackerOpts) {
-            const cfg: PeerConfig = trk.customPeerOpts||{};
+            const cfg: PeerConfig = Object.assign({}, trk.customPeerOpts||{}, {trickleICE: false});
             const announce = trk.trackerAnnounceInterval || DEFAULT_ANNOUNCE_RATE;
             const t = new TrackerConnector(trk.uri, this.peerID, this.infoHash, cfg, this.shouldBlockConnection.bind(this), announce, this.wantedPeerCount);
 

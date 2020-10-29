@@ -9,13 +9,15 @@ import Subscribable from "./subscribable";
  */
 export interface PeerConfig {
     /**
-     * If `true`, enable Trickle ICE. In this context, 'true' really means that the offer will be created without waiting.
+     * If `true`, enable Trickle ICE.
+     * If disabled, each peer will gather ICE candidates for {@link trickleTimeout} ms before being considered "ready".
      *
-     * This is `false` by default.
+     * This is `false` by default. Switchboard requires that this be disabled.
      */
     trickleICE?: boolean;
     /**
-     * If using Trickle ICE, wait up to this long after the first ICE Candidate arrives.
+     * If not using Trickle ICE, wait up to this long for ICE Candidate to arrive.
+     * For connections that are very slow, you may see more reliable results by increasing this value.
      */
     trickleTimeout?: number;
     /**
@@ -50,6 +52,8 @@ export interface Peer {
      * The remote peer should receive this data, then call {@link handshake handshake(data)} with it to continue the process.
      *
      * Call {@link handshake handshake()} with no arguments to start this process on the initiator's side only.
+     *
+     * _If you are using Switchboard, these handshake events will be handled automatically for you._
      * @param event
      * @param callback
      * @returns A function to call, in order to unsubscribe.
