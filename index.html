@@ -128,13 +128,13 @@ c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs
 				<a href="#okay-so-how39s-it-work" id="okay-so-how39s-it-work" style="color: inherit; text-decoration: none;">
 					<h2>Okay, so how&#39;s it work?</h2>
 				</a>
-				<p>Switchboard is lightweight, small, simple, and blazingly-fast.
+				<p>Switchboard is lightweight, small, simple, and extremely fast.
 					This was accomplished by writing the WebRTC code completely from scratch, instead of relying on existing libraries.
 				Skipping the usual bloated WebRTC libraries in favor of direct API access has several major advantages:</p>
 				<ul>
-					<li><strong>Smaller Bundle Size:</strong> While it works with all WebRTC implementations, Switchboard doesn&#39;t import any of the usual bloated WebRTC libraries!</li>
-					<li><strong>TypeScript:</strong> Rewriting the common stuff in TypeScript gets us full tree-shaking, easy reference for the API, and <a href="https://shadowmoose.github.io/switchboard.js">great documentation.</a></li>
-					<li><strong>Lower-Level:</strong> Switchboard also gets faster access to do fancy things - such as rejecting unwanted Peers before they can even establish a connection.</li>
+					<li><strong>Fewer Dependencies:</strong> Because it sits right on top of the built-in browser WebRTC API, we can avoid the giant dependency stacks the more common libraries come with.</li>
+					<li><strong>Bundling and Types:</strong> Rewriting the common stuff in TypeScript gets us full tree-shaking for a minimal bundle size, easy reference for the API, and <a href="https://shadowmoose.github.io/switchboard.js">great documentation.</a></li>
+					<li><strong>Faster:</strong> Switchboard manages its own connections and authentication, so it can establish and validate incoming connections much faster - typically before the connection is even fully established!</li>
 				</ul>
 				<a href="#so-there-aren39t-any-servers-involved" id="so-there-aren39t-any-servers-involved" style="color: inherit; text-decoration: none;">
 					<h2>So there aren&#39;t any servers involved?</h2>
