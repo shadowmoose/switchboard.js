@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "license": "MIT",
     "author": "ShadowMoose",
-    "description": "Decentralized peering without a middleman server",
+    "description": "Lightweight, blazing-fast WebRTC peer-to-peer connections - no setup required.",
     "homepage": "https://github.com/shadowmoose/switchboard.js",
     "keywords": [],
     "umdName": "switchboard",
