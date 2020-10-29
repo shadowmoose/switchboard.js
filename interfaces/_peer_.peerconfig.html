@@ -107,7 +107,7 @@
 					<div class="tsd-signature tsd-kind-icon">rtc<wbr>Answer<wbr>Opts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RTCAnswerOptions</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/85b98ac/src/peer.ts#L30">src/peer.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L32">src/peer.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -127,7 +127,7 @@
 					<div class="tsd-signature tsd-kind-icon">rtc<wbr>Offer<wbr>Opts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RTCOfferOptions</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/85b98ac/src/peer.ts#L35">src/peer.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L37">src/peer.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -147,7 +147,7 @@
 					<div class="tsd-signature tsd-kind-icon">rtc<wbr>Peer<wbr>Opts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RTCConfiguration</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/85b98ac/src/peer.ts#L25">src/peer.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L27">src/peer.ts:27</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -167,14 +167,15 @@
 					<div class="tsd-signature tsd-kind-icon">trickleICE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/85b98ac/src/peer.ts#L16">src/peer.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L17">src/peer.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <code>true</code>, enable Trickle ICE. In this context, &#39;true&#39; really means that the offer will be created without waiting.</p>
+							<p>If <code>true</code>, enable Trickle ICE.
+							If disabled, each peer will gather ICE candidates for <a href="_peer_.peerconfig.html#trickletimeout">trickleTimeout</a> ms before being considered &quot;ready&quot;.</p>
 						</div>
-						<p>This is <code>false</code> by default.</p>
+						<p>This is <code>false</code> by default. Switchboard requires that this be disabled.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -183,12 +184,13 @@
 					<div class="tsd-signature tsd-kind-icon">trickle<wbr>Timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/85b98ac/src/peer.ts#L20">src/peer.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L22">src/peer.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If using Trickle ICE, wait up to this long after the first ICE Candidate arrives.</p>
+							<p>If not using Trickle ICE, wait up to this long for ICE Candidate to arrive.
+							For connections that are very slow, you may see more reliable results by increasing this value.</p>
 						</div>
 					</div>
 				</section>
