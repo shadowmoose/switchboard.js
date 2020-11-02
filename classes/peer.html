@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ConnectedPeer | switchboard.js</title>
+	<title>Peer | switchboard.js</title>
 	<meta name="description" content="Documentation for switchboard.js">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_tracker_.html">&quot;tracker&quot;</a>
-				</li>
-				<li>
-					<a href="_tracker_.connectedpeer.html">ConnectedPeer</a>
+					<a href="peer.html">Peer</a>
 				</li>
 			</ul>
-			<h1>Class ConnectedPeer</h1>
+			<h1>Class Peer</h1>
 		</div>
 	</div>
 </header>
@@ -70,18 +67,28 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Wrapper for the <a href="_peer_.peer.html">Peer</a> object, contains the extra metadata that the TrackerConnector will append.</p>
+						<p>This is a wrapper for a RTCPeerConnection.
+						It greatly simplifies the process of interacting with WebRTC, and adds some much-needed features.</p>
 					</div>
+					<p>The largest feature added in this wrapper is the ability to establish new Media channels without re-negotiating over
+					a websocket connection. To accomplish this, the wrapper establishes an internal DataChannel to communicate.</p>
+					<p>The wrapper also creates a second, default DataChannel which can be automatically used for peer communications.
+					Both of these channels are prearranged out-of-band, so they cost very little to create.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_peer_.peer.html" class="tsd-signature-type">Peer</a>
+						<span class="tsd-signature-type">Subscribable</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">ConnectedPeer</span>
+								<span class="target">Peer</span>
+								<ul class="tsd-hierarchy">
+									<li>
+										<a href="connectedpeer.html" class="tsd-signature-type">ConnectedPeer</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
@@ -91,145 +98,206 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="peer.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="peer.html#awaitice" class="tsd-kind-icon">awaitICE</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="peer.html#closed" class="tsd-kind-icon">closed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="peer.html#config" class="tsd-kind-icon">config</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="peer.html#datachannels" class="tsd-kind-icon">data<wbr>Channels</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="peer.html#datasendqueue" class="tsd-kind-icon">data<wbr>Send<wbr>Queue</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="peer.html#hasconnected" class="tsd-kind-icon">has<wbr>Connected</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="peer.html#initiator" class="tsd-kind-icon">initiator</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="peer.html#pc" class="tsd-kind-icon">pc</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="peer.html#pendingcandidates" class="tsd-kind-icon">pending<wbr>Candidates</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="peer.html#timers" class="tsd-kind-icon">timers</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tracker_.connectedpeer.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tracker_.connectedpeer.html#offer" class="tsd-kind-icon">offer</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tracker_.connectedpeer.html#offerid" class="tsd-kind-icon">offerID</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tracker_.connectedpeer.html#timeouttracker" class="tsd-kind-icon">timeout<wbr>Tracker</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#isclosed" class="tsd-kind-icon">is<wbr>Closed</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#isconnected" class="tsd-kind-icon">is<wbr>Connected</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#isready" class="tsd-kind-icon">is<wbr>Ready</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="peer.html#isclosed" class="tsd-kind-icon">is<wbr>Closed</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="peer.html#isconnected" class="tsd-kind-icon">is<wbr>Connected</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="peer.html#isready" class="tsd-kind-icon">is<wbr>Ready</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#adddatachannel" class="tsd-kind-icon">add<wbr>Data<wbr>Channel</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#addmedia" class="tsd-kind-icon">add<wbr>Media</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#close" class="tsd-kind-icon">close</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_tracker_.connectedpeer.html#emit" class="tsd-kind-icon">emit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-private"><a href="_tracker_.connectedpeer.html#fatalerror" class="tsd-kind-icon">fatal<wbr>Error</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tracker_.connectedpeer.html#generateoffer" class="tsd-kind-icon">generate<wbr>Offer</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#handshake" class="tsd-kind-icon">handshake</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#makeanswer" class="tsd-kind-icon">make<wbr>Answer</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#makeoffer" class="tsd-kind-icon">make<wbr>Offer</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_tracker_.connectedpeer.html#on" class="tsd-kind-icon">on</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#once" class="tsd-kind-icon">once</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#removedatachannel" class="tsd-kind-icon">remove<wbr>Data<wbr>Channel</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tracker_.connectedpeer.html#send" class="tsd-kind-icon">send</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="peer.html#adddatachannel" class="tsd-kind-icon">add<wbr>Data<wbr>Channel</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="peer.html#addmedia" class="tsd-kind-icon">add<wbr>Media</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="peer.html#close" class="tsd-kind-icon">close</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="peer.html#emit" class="tsd-kind-icon">emit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="peer.html#emitready" class="tsd-kind-icon">emit<wbr>Ready</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="peer.html#fatalerror" class="tsd-kind-icon">fatal<wbr>Error</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="peer.html#handshake" class="tsd-kind-icon">handshake</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="peer.html#inband" class="tsd-kind-icon">in<wbr>Band</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="peer.html#makeanswer" class="tsd-kind-icon">make<wbr>Answer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="peer.html#makeoffer" class="tsd-kind-icon">make<wbr>Offer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="peer.html#maketimer" class="tsd-kind-icon">make<wbr>Timer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="peer.html#on" class="tsd-kind-icon">on</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="peer.html#onconnectionstate" class="tsd-kind-icon">on<wbr>Connection<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="peer.html#ontrack" class="tsd-kind-icon">on<wbr>Track</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="peer.html#once" class="tsd-kind-icon">once</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="peer.html#registerdatachannel" class="tsd-kind-icon">register<wbr>Data<wbr>Channel</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="peer.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="peer.html#removedatachannel" class="tsd-kind-icon">remove<wbr>Data<wbr>Channel</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="peer.html#send" class="tsd-kind-icon">send</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="peer.html#sendmeta" class="tsd-kind-icon">send<wbr>Meta</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="peer.html#waitforice" class="tsd-kind-icon">wait<wbr>ForICE</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Connected<wbr>Peer<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_peer_.peerconfig.html" class="tsd-signature-type">PeerConfig</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tracker_.connectedpeer.html" class="tsd-signature-type">ConnectedPeer</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Peer<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/peerconfig.html" class="tsd-signature-type">PeerConfig</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="peer.html" class="tsd-signature-type">Peer</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L184">src/peer.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L184">src/peer.ts:184</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>config: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_peer_.peerconfig.html" class="tsd-signature-type">PeerConfig</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>config: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/peerconfig.html" class="tsd-signature-type">PeerConfig</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_tracker_.connectedpeer.html" class="tsd-signature-type">ConnectedPeer</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="peer.html" class="tsd-signature-type">Peer</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="awaitice" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> awaitICE</h3>
+					<div class="tsd-signature tsd-kind-icon">awaitICE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/tracker.ts#L35">src/tracker.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L178">src/peer.ts:178</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The ID this peer has used to identify themselves, cross-tracker.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="offer" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> offer</h3>
-					<div class="tsd-signature tsd-kind-icon">offer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Offer</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
+					<a name="closed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> closed</h3>
+					<div class="tsd-signature tsd-kind-icon">closed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/tracker.ts#L29">src/tracker.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L183">src/peer.ts:183</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="offerid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> offerID</h3>
-					<div class="tsd-signature tsd-kind-icon">offerID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = Buffer.from(nacl.randomBytes(20)).toString(&#x27;hex&#x27;)</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="config" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> config</h3>
+					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/peerconfig.html" class="tsd-signature-type">PeerConfig</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/tracker.ts#L30">src/tracker.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L177">src/peer.ts:177</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="timeouttracker" class="tsd-anchor"></a>
-					<h3>timeout<wbr>Tracker</h3>
-					<div class="tsd-signature tsd-kind-icon">timeout<wbr>Tracker<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = null</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="datachannels" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> data<wbr>Channels</h3>
+					<div class="tsd-signature tsd-kind-icon">data<wbr>Channels<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">RTCDataChannel</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/tracker.ts#L40">src/tracker.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L179">src/peer.ts:179</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Store the ping timeout with each peer.</p>
-						</div>
-					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="datasendqueue" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> data<wbr>Send<wbr>Queue</h3>
+					<div class="tsd-signature tsd-kind-icon">data<wbr>Send<wbr>Queue<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L180">src/peer.ts:180</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="hasconnected" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> has<wbr>Connected</h3>
+					<div class="tsd-signature tsd-kind-icon">has<wbr>Connected<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L184">src/peer.ts:184</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="initiator" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> initiator</h3>
+					<div class="tsd-signature tsd-kind-icon">initiator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L182">src/peer.ts:182</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="pc" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> pc</h3>
+					<div class="tsd-signature tsd-kind-icon">pc<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RTCPeerConnection</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L175">src/peer.ts:175</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="pendingcandidates" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> pending<wbr>Candidates</h3>
+					<div class="tsd-signature tsd-kind-icon">pending<wbr>Candidates<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L181">src/peer.ts:181</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="timers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> timers</h3>
+					<div class="tsd-signature tsd-kind-icon">timers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L176">src/peer.ts:176</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Accessors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="isclosed" class="tsd-anchor"></a>
 					<h3>is<wbr>Closed</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isClosed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#isclosed">isClosed</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L297">src/peer.ts:297</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L297">src/peer.ts:297</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -241,18 +309,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="isconnected" class="tsd-anchor"></a>
 					<h3>is<wbr>Connected</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isConnected<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#isconnected">isConnected</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L304">src/peer.ts:304</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L304">src/peer.ts:304</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -264,18 +331,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="isready" class="tsd-anchor"></a>
 					<h3>is<wbr>Ready</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isReady<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#isready">isReady</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L311">src/peer.ts:311</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L311">src/peer.ts:311</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -290,18 +356,17 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="adddatachannel" class="tsd-anchor"></a>
 					<h3>add<wbr>Data<wbr>Channel</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">add<wbr>Data<wbr>Channel<span class="tsd-signature-symbol">(</span>channelName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">RTCDataChannelInit</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RTCDataChannel</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#adddatachannel">addDataChannel</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L505">src/peer.ts:505</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L505">src/peer.ts:505</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -313,7 +378,7 @@
 									<dd><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel" class="external">RTCDataChannel</a></p>
 									</dd>
 									<dt>see</dt>
-									<dd><p><a href="_tracker_.connectedpeer.html#send">send</a></p>
+									<dd><p><a href="peer.html#send">send</a></p>
 									</dd>
 								</dl>
 							</div>
@@ -336,18 +401,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="addmedia" class="tsd-anchor"></a>
 					<h3>add<wbr>Media</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">add<wbr>Media<span class="tsd-signature-symbol">(</span>media<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MediaStream</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">MediaStreamTrack</span><span class="tsd-signature-symbol">[]</span>, existingStream<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">MediaStream</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MediaStream</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#addmedia">addMedia</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L541">src/peer.ts:541</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L541">src/peer.ts:541</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -386,18 +450,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="close" class="tsd-anchor"></a>
 					<h3>close</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">close<span class="tsd-signature-symbol">(</span>intentional<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#close">close</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L283">src/peer.ts:283</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L283">src/peer.ts:283</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -415,19 +478,18 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="emit" class="tsd-anchor"></a>
 					<h3>emit</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">emit<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"message"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"data"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"dataChannel"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"iceFinished"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"error"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"handshake"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"close"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"stream"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"ready"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"connect"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"iceEvent"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"disconnect"</span>, data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#emit">emit</a></p>
 								<p>Overrides Subscribable.emit</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L583">src/peer.ts:583</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L583">src/peer.ts:583</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -443,18 +505,39 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="emitready" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> emit<wbr>Ready</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">emit<wbr>Ready<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L236">src/peer.ts:236</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Emit a ready event, and an Open event if one hasn&#39;t already been sent.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="fatalerror" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> fatal<wbr>Error</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-private">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
 						<li class="tsd-signature tsd-kind-icon">fatal<wbr>Error<span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#fatalerror">fatalError</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L398">src/peer.ts:398</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L398">src/peer.ts:398</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -473,39 +556,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="generateoffer" class="tsd-anchor"></a>
-					<h3>generate<wbr>Offer</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">generate<wbr>Offer<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Offer</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/tracker.ts#L45">src/tracker.ts:45</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Generates an Offer object from this Peer. If one already exists, returns that instead.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Offer</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="handshake" class="tsd-anchor"></a>
 					<h3>handshake</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">handshake<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#handshake">handshake</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L327">src/peer.ts:327</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L327">src/peer.ts:327</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -536,18 +596,45 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="inband" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> in<wbr>Band</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">in<wbr>Band<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MessageEvent</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L370">src/peer.ts:370</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>handle &quot;in-band&quot; negotiations via the internal metadata DataChannel.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>message: <span class="tsd-signature-type">MessageEvent</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="makeanswer" class="tsd-anchor"></a>
 					<h3>make<wbr>Answer</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">make<wbr>Answer<span class="tsd-signature-symbol">(</span>incomingDescription<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RTCSessionDescription</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RTCSessionDescription</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#makeanswer">makeAnswer</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L464">src/peer.ts:464</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L464">src/peer.ts:464</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -568,18 +655,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="makeoffer" class="tsd-anchor"></a>
 					<h3>make<wbr>Offer</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">make<wbr>Offer<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RTCSessionDescription</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#makeoffer">makeOffer</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L451">src/peer.ts:451</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L451">src/peer.ts:451</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -592,10 +678,42 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="maketimer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> make<wbr>Timer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">make<wbr>Timer<span class="tsd-signature-symbol">(</span>timeout<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">clear</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L412">src/peer.ts:412</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Build a timer that is managed by this Peer, and cancelled when the Peer closes.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>timeout: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>cb: <span class="tsd-signature-type">Function</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">clear</span></h4>
+							<p>A callback to clear the timeout.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="on" class="tsd-anchor"></a>
 					<h3>on</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"handshake"</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></li>
 						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"connect"</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></li>
 						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"ready"</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></li>
@@ -612,10 +730,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L61">src/peer.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L61">src/peer.ts:61</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -624,8 +741,8 @@
 									If <code>trickle ICE</code> is enabled, this may also contain ICE candidates.</p>
 								</div>
 								<p>Implementations should not worry about the content of this message, and should just relay it.</p>
-								<p>The remote peer should receive this data, then call <a href="_tracker_.connectedpeer.html#handshake">handshake(data)</a> with it to continue the process.</p>
-								<p>Call <a href="_tracker_.connectedpeer.html#handshake">handshake()</a> with no arguments to start this process on the initiator&#39;s side only.</p>
+								<p>The remote peer should receive this data, then call <a href="peer.html#handshake">handshake(data)</a> with it to continue the process.</p>
+								<p>Call <a href="peer.html#handshake">handshake()</a> with no arguments to start this process on the initiator&#39;s side only.</p>
 								<p><em>If you are using Switchboard, these handshake events will be handled automatically for you.</em></p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -672,10 +789,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L69">src/peer.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L69">src/peer.ts:69</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -709,10 +825,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L79">src/peer.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L79">src/peer.ts:79</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -722,7 +837,7 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>see</dt>
-									<dd><p><a href="_tracker_.connectedpeer.html#addmedia">addMedia</a></p>
+									<dd><p><a href="peer.html#addmedia">addMedia</a></p>
 									</dd>
 								</dl>
 							</div>
@@ -752,10 +867,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L87">src/peer.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L87">src/peer.ts:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -807,17 +921,16 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L99">src/peer.ts:99</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L99">src/peer.ts:99</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Triggered when this Peer&#39;s default DataChannel receives a MessageEvent.</p>
 								</div>
-								<p>This is functionally the same as <a href="_tracker_.connectedpeer.html#on">on(&#39;message&#39;)</a>, and fires with it,
+								<p>This is functionally the same as <a href="peer.html#on">on(&#39;message&#39;)</a>, and fires with it,
 									except that it receives only the Event data.
 								This callback has been implemented for better cross-compatibility.</p>
 							</div>
@@ -865,10 +978,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L107">src/peer.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L107">src/peer.ts:107</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -920,10 +1032,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L115">src/peer.ts:115</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L115">src/peer.ts:115</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -975,10 +1086,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L123">src/peer.ts:123</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L123">src/peer.ts:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1033,10 +1143,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L132">src/peer.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L132">src/peer.ts:132</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1071,10 +1180,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L140">src/peer.ts:140</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L140">src/peer.ts:140</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1108,10 +1216,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L149">src/peer.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L149">src/peer.ts:149</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1120,7 +1227,7 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>see</dt>
-									<dd><p><a href="../interfaces/_peer_.peerconfig.html">PeerConfig</a></p>
+									<dd><p><a href="../interfaces/peerconfig.html">PeerConfig</a></p>
 									</dd>
 								</dl>
 							</div>
@@ -1150,10 +1257,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#on">on</a></p>
 								<p>Overrides Subscribable.on</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L160">src/peer.ts:160</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L160">src/peer.ts:160</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1163,7 +1269,7 @@
 								<p>If enabled, the <code>handshake</code> event already handles emitting these in the format it expects.</p>
 								<dl class="tsd-comment-tags">
 									<dt>see</dt>
-									<dd><p><a href="../interfaces/_peer_.peerconfig.html">PeerConfig</a></p>
+									<dd><p><a href="../interfaces/peerconfig.html">PeerConfig</a></p>
 									</dd>
 								</dl>
 							</div>
@@ -1211,6 +1317,63 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="onconnectionstate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> on<wbr>Connection<wbr>State</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Connection<wbr>State<span class="tsd-signature-symbol">(</span>ev<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Event</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L250">src/peer.ts:250</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Triggered when the connection state changes for the current connection.
+									Handles emitting some events.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ev: <span class="tsd-signature-type">Event</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="ontrack" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> on<wbr>Track</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Track<span class="tsd-signature-symbol">(</span>ev<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RTCTrackEvent</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L272">src/peer.ts:272</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Called when a new Media Stream/Track is added by the remote Peer.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ev: <span class="tsd-signature-type">RTCTrackEvent</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="once" class="tsd-anchor"></a>
 					<h3>once</h3>
@@ -1222,16 +1385,16 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Subscribable.once</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/subscribable.ts#L39">src/subscribable.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/subscribable.ts#L35">src/subscribable.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Same as <a href="_tracker_.connectedpeer.html#on">on()</a>, but only triggers one time &amp; automatically cleans up.</p>
+									<p>Same as <a href="peer.html#on">on()</a>, but only triggers one time &amp; automatically cleans up.</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>see</dt>
-									<dd><p><a href="_tracker_.connectedpeer.html#on">on</a> for the available specific events.</p>
+									<dd><p><a href="peer.html#on">on</a> for the available specific events.</p>
 									</dd>
 								</dl>
 							</div>
@@ -1248,6 +1411,34 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="registerdatachannel" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> register<wbr>Data<wbr>Channel</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">register<wbr>Data<wbr>Channel<span class="tsd-signature-symbol">(</span>ch<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RTCDataChannel</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L478">src/peer.ts:478</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Internal. Registers event handlers for the channel, and adds it to the tracked list of channels.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ch: <span class="tsd-signature-type">RTCDataChannel</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="removealllisteners" class="tsd-anchor"></a>
 					<h3>remove<wbr>All<wbr>Listeners</h3>
@@ -1259,7 +1450,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Subscribable.removeAllListeners</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/subscribable.ts#L81">src/subscribable.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/subscribable.ts#L77">src/subscribable.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1279,18 +1470,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="removedatachannel" class="tsd-anchor"></a>
 					<h3>remove<wbr>Data<wbr>Channel</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">remove<wbr>Data<wbr>Channel<span class="tsd-signature-symbol">(</span>channelName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#removedatachannel">removeDataChannel</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L521">src/peer.ts:521</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L521">src/peer.ts:521</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1310,18 +1500,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="send" class="tsd-anchor"></a>
 					<h3>send</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">send<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ArrayBuffer</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Blob</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ArrayBufferView</span>, channelName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_peer_.peer.html">Peer</a>.<a href="_peer_.peer.html#send">send</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/f44f999/src/peer.ts#L560">src/peer.ts:560</a></li>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L560">src/peer.ts:560</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1330,7 +1519,7 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>see</dt>
-									<dd><p><a href="_tracker_.connectedpeer.html#adddatachannel">addDataChannel</a></p>
+									<dd><p><a href="peer.html#adddatachannel">addDataChannel</a></p>
 									</dd>
 								</dl>
 							</div>
@@ -1353,6 +1542,57 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="sendmeta" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> send<wbr>Meta</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">send<wbr>Meta<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L579">src/peer.ts:579</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Internal send method, for ease of use.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>data: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="waitforice" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> wait<wbr>ForICE</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">wait<wbr>ForICE<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/peer.ts#L435">src/peer.ts:435</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Wait for trickle ICE to finish, up to a given timeout - starting after the first candidate is received.
+									if <code>trickleICE</code> is set, this does not wait.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -1361,105 +1601,144 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_index_.html">&quot;index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_peer_.html">&quot;peer&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_switchboard_.html">&quot;switchboard&quot;</a>
-					</li>
-					<li class="current tsd-kind-module">
-						<a href="../modules/_tracker_.html">&quot;tracker&quot;</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="connectedpeer.html" class="tsd-kind-icon">Connected<wbr>Peer</a>
+					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_tracker_.connectedpeer.html" class="tsd-kind-icon">Connected<wbr>Peer</a>
+					<li class="current tsd-kind-class">
+						<a href="peer.html" class="tsd-kind-icon">Peer</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tracker_.connectedpeer.html#id" class="tsd-kind-icon">id</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="peer.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_tracker_.connectedpeer.html#offer" class="tsd-kind-icon">offer</a>
+								<a href="peer.html#awaitice" class="tsd-kind-icon">awaitICE</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tracker_.connectedpeer.html#offerid" class="tsd-kind-icon">offerID</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#closed" class="tsd-kind-icon">closed</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tracker_.connectedpeer.html#timeouttracker" class="tsd-kind-icon">timeout<wbr>Tracker</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#config" class="tsd-kind-icon">config</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#isclosed" class="tsd-kind-icon">is<wbr>Closed</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#datachannels" class="tsd-kind-icon">data<wbr>Channels</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#isconnected" class="tsd-kind-icon">is<wbr>Connected</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#datasendqueue" class="tsd-kind-icon">data<wbr>Send<wbr>Queue</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#isready" class="tsd-kind-icon">is<wbr>Ready</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#hasconnected" class="tsd-kind-icon">has<wbr>Connected</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#adddatachannel" class="tsd-kind-icon">add<wbr>Data<wbr>Channel</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#initiator" class="tsd-kind-icon">initiator</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#addmedia" class="tsd-kind-icon">add<wbr>Media</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#pc" class="tsd-kind-icon">pc</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#close" class="tsd-kind-icon">close</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#pendingcandidates" class="tsd-kind-icon">pending<wbr>Candidates</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#emit" class="tsd-kind-icon">emit</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#timers" class="tsd-kind-icon">timers</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-private">
-								<a href="_tracker_.connectedpeer.html#fatalerror" class="tsd-kind-icon">fatal<wbr>Error</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="peer.html#isclosed" class="tsd-kind-icon">is<wbr>Closed</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="peer.html#isconnected" class="tsd-kind-icon">is<wbr>Connected</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="peer.html#isready" class="tsd-kind-icon">is<wbr>Ready</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_tracker_.connectedpeer.html#generateoffer" class="tsd-kind-icon">generate<wbr>Offer</a>
+								<a href="peer.html#adddatachannel" class="tsd-kind-icon">add<wbr>Data<wbr>Channel</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="peer.html#addmedia" class="tsd-kind-icon">add<wbr>Media</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="peer.html#close" class="tsd-kind-icon">close</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="peer.html#emit" class="tsd-kind-icon">emit</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#emitready" class="tsd-kind-icon">emit<wbr>Ready</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#fatalerror" class="tsd-kind-icon">fatal<wbr>Error</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="peer.html#handshake" class="tsd-kind-icon">handshake</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#inband" class="tsd-kind-icon">in<wbr>Band</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="peer.html#makeanswer" class="tsd-kind-icon">make<wbr>Answer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="peer.html#makeoffer" class="tsd-kind-icon">make<wbr>Offer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#maketimer" class="tsd-kind-icon">make<wbr>Timer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="peer.html#on" class="tsd-kind-icon">on</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#onconnectionstate" class="tsd-kind-icon">on<wbr>Connection<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#ontrack" class="tsd-kind-icon">on<wbr>Track</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#handshake" class="tsd-kind-icon">handshake</a>
+								<a href="peer.html#once" class="tsd-kind-icon">once</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#registerdatachannel" class="tsd-kind-icon">register<wbr>Data<wbr>Channel</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#makeanswer" class="tsd-kind-icon">make<wbr>Answer</a>
+								<a href="peer.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#makeoffer" class="tsd-kind-icon">make<wbr>Offer</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="peer.html#removedatachannel" class="tsd-kind-icon">remove<wbr>Data<wbr>Channel</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#on" class="tsd-kind-icon">on</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="peer.html#send" class="tsd-kind-icon">send</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#once" class="tsd-kind-icon">once</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#sendmeta" class="tsd-kind-icon">send<wbr>Meta</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#removedatachannel" class="tsd-kind-icon">remove<wbr>Data<wbr>Channel</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tracker_.connectedpeer.html#send" class="tsd-kind-icon">send</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="peer.html#waitforice" class="tsd-kind-icon">wait<wbr>ForICE</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="_tracker_.trackerconnector.html" class="tsd-kind-icon">Tracker<wbr>Connector</a>
+					<li class=" tsd-kind-class">
+						<a href="switchboard.html" class="tsd-kind-icon">Switchboard</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/_tracker_.announcepacket.html" class="tsd-kind-icon">Announce<wbr>Packet</a>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/peerconfig.html" class="tsd-kind-icon">Peer<wbr>Config</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/_tracker_.html#setlogging" class="tsd-kind-icon">set<wbr>Logging</a>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/sbclientoptions.html" class="tsd-kind-icon">SBClient<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/trackeroptions.html" class="tsd-kind-icon">Tracker<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#default_trackers" class="tsd-kind-icon">DEFAULT_<wbr>TRACKERS</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#enablelogging" class="tsd-kind-icon">enable<wbr>Logging</a>
 					</li>
 				</ul>
 			</nav>
@@ -1471,7 +1750,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
@@ -1480,13 +1759,17 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-			</ul>
-			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 		</div>
 	</div>

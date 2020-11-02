@@ -66,15 +66,92 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Modules</h3>
+							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-module"><a href="modules/_index_.html" class="tsd-kind-icon">&quot;index&quot;</a></li>
-								<li class="tsd-kind-module"><a href="modules/_peer_.html" class="tsd-kind-icon">&quot;peer&quot;</a></li>
-								<li class="tsd-kind-module"><a href="modules/_switchboard_.html" class="tsd-kind-icon">&quot;switchboard&quot;</a></li>
-								<li class="tsd-kind-module"><a href="modules/_tracker_.html" class="tsd-kind-icon">&quot;tracker&quot;</a></li>
+								<li class="tsd-kind-class"><a href="classes/connectedpeer.html" class="tsd-kind-icon">Connected<wbr>Peer</a></li>
+								<li class="tsd-kind-class"><a href="classes/peer.html" class="tsd-kind-icon">Peer</a></li>
+								<li class="tsd-kind-class"><a href="classes/switchboard.html" class="tsd-kind-icon">Switchboard</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Interfaces</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface"><a href="interfaces/peerconfig.html" class="tsd-kind-icon">Peer<wbr>Config</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/sbclientoptions.html" class="tsd-kind-icon">SBClient<wbr>Options</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/trackeroptions.html" class="tsd-kind-icon">Tracker<wbr>Options</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Variables</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable"><a href="globals.html#default_trackers" class="tsd-kind-icon">DEFAULT_<wbr>TRACKERS</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function"><a href="globals.html#enablelogging" class="tsd-kind-icon">enable<wbr>Logging</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="default_trackers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> DEFAULT_<wbr>TRACKERS</h3>
+					<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>TRACKERS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [&#x27;wss://tracker.sloppyta.co:443/announce&#x27;,&#x27;wss://tracker.files.fm:7073/announce&#x27;,&#x27;wss://tracker.openwebtorrent.com&#x27;,&#x27;wss://tracker.btorrent.xyz&#x27;]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/switchboard.ts#L66">src/switchboard.ts:66</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The default list of tracker URLs to use for matchmaking. To change these, pass a new list in at <a href="interfaces/sbclientoptions.html#trackers">SBClientOptions.trackers</a>.</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="enablelogging" class="tsd-anchor"></a>
+					<h3>enable<wbr>Logging</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">enable<wbr>Logging<span class="tsd-signature-symbol">(</span>enabled<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadowmoose/switchboard.js/blob/e141610/src/switchboard.ts#L538">src/switchboard.ts:538</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Enable/disable library-wide debug logging. Optionally provide your own custom logging callback.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>enabled: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If logging should be enabled.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> callback: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = console.debug</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Pass a custom function if you wish to override the default <code>console.debug</code> behavior.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -84,22 +161,34 @@
 					<li class="globals current ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_index_.html">&quot;index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_peer_.html">&quot;peer&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_switchboard_.html">&quot;switchboard&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_tracker_.html">&quot;tracker&quot;</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/connectedpeer.html" class="tsd-kind-icon">Connected<wbr>Peer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/peer.html" class="tsd-kind-icon">Peer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/switchboard.html" class="tsd-kind-icon">Switchboard</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/peerconfig.html" class="tsd-kind-icon">Peer<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/sbclientoptions.html" class="tsd-kind-icon">SBClient<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/trackeroptions.html" class="tsd-kind-icon">Tracker<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#default_trackers" class="tsd-kind-icon">DEFAULT_<wbr>TRACKERS</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#enablelogging" class="tsd-kind-icon">enable<wbr>Logging</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
@@ -110,13 +199,26 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 		</div>
 	</div>
