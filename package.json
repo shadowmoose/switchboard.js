@@ -24,7 +24,7 @@
         "build": "rollup -c rollup.config.ts",
         "watch": "rollup -c rollup.config.ts --watch",
         "test": "jest",
-        "build-docs": "typedoc src --out docs --excludeNotExported --mode modules",
+        "build-docs": "typedoc src --out docs --excludeNotExported --stripInternal --mode file",
         "prepublishOnly": "yarn build"
     },
     "devDependencies": {

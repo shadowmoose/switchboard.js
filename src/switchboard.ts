@@ -54,15 +54,22 @@ export interface TrackerOptions {
     trackerAnnounceInterval?: number;
 }
 
+/** @internal */
 const DEFAULT_MAX_RETRIES = 2;
+/** @internal */
 const DEFAULT_CLIENT_TIMEOUT = 150000;
+/** @internal */
 const SHORT_ID_LENGTH = 20;
+/**
+ * The default list of tracker URLs to use for matchmaking. To change these, pass a new list in at {@link SBClientOptions.trackers}.
+ */
 const DEFAULT_TRACKERS: string[] = [
     'wss://tracker.sloppyta.co:443/announce',
     'wss://tracker.files.fm:7073/announce',
     'wss://tracker.openwebtorrent.com',
     'wss://tracker.btorrent.xyz'
 ];
+/** @internal */
 const DEFAULT_ANNOUNCE_RATE = 50000;
 
 
@@ -145,7 +152,11 @@ export interface Switchboard {
     on(event: 'tracker-connect', callback: {(tracker: TrackerOptions): void}): () => void;
 }
 
-
+/**
+ * This is the main entrypoint for Switchboard.js.
+ *
+ * This class manages all connections, and abstracts away all the complex details of WebRTC + Matchmaking.
+ */
 export class Switchboard extends Subscribable {
     /**
      * This is the secret ID generated for use in cryptography.

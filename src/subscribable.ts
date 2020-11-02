@@ -1,10 +1,6 @@
 /**
- * @hidden
- * @internal
- */
-
-/**
  * Basic event emitter implementation, to avoid extra requirements.
+ * @internal
  */
 export default class Subscribable {
     private events: Record<string, Set<any>> = {};

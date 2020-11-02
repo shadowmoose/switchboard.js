@@ -37,7 +37,7 @@ export interface PeerConfig {
     rtcOfferOpts?: RTCOfferOptions;
 }
 
-
+/** @internal */
 const META_CHANNEL = '_meta';
 
 
