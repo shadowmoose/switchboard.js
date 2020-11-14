@@ -218,7 +218,9 @@ export class TrackerConnector extends Subscribable{
         this.sock?.close();
         this.setAnnounceTimer(null);
         [...Object.values(this.initiatorPeers)].forEach(p => this.retractOffer(p, true));
-        this.emit('disconnect');
+        if (this.didConnect) {
+            this.emit('disconnect');
+        }
     }
 
     /**
@@ -299,8 +301,7 @@ export class TrackerConnector extends Subscribable{
         debug('Incoming Tracker Data:', msg);
 
         if (msg['failure reason']) {
-            console.error('Tracker error response:', msg['failure reason']);
-            return this.kill();
+            return this.kill(new Error(`Tracker error response: "${msg['failure reason']}"`));
         }
 
         this.didConnect = true;
