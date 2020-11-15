@@ -140,7 +140,7 @@ export interface Peer {
     on(event: 'disconnect', callback: Function): () => void;
 
     /**
-     * Triggered when all ICE discovery finishes (or the configured timer expires), if Trickle ICE is enabled.
+     * Triggered when all ICE discovery finishes (or the configured timer expires).
      * @param event
      * @param callback
      * @returns A function to call, in order to unsubscribe.
@@ -209,6 +209,9 @@ export class Peer extends Subscribable{
             this.pc.onicecandidate = (iceEvent: RTCPeerConnectionIceEvent) => {
                 this.emit('iceEvent', iceEvent);
                 if (iceEvent.candidate === null){
+                    if (this.config.trickleICE) {
+                        this.emit('iceFinished')
+                    }
                     res()
                 } else if (this.config.trickleICE) {
                     this.emit('handshake', JSON.stringify(iceEvent));
