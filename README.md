@@ -34,7 +34,7 @@ const c = new Switchboard();
 c.swarm('test-swarm');
 
 // Listen for new peer connections as you/they join the swarm:
-c.subscribe('peer', (peer) => {
+c.on('peer', (peer) => {
     console.log('Connected to peer:', peer.id, peer);
     peer.send('Hello there!');
     peer.on('data', (data: any) => console.log('Received:', data));
@@ -56,7 +56,7 @@ c.findHost('Host-ID');
 // c.host();
 
 // Listen for the Host - they can be online already, or pop online in the future:
-c.subscribe('peer', (peer) => {
+c.on('peer', (peer) => {
     console.log('Connected to the Host:', peer.id, peer);
     peer.send('Hello there, Mr. Host!');
     peer.on('data', (data: any) => console.log('Received from host:', data));
