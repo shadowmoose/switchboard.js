@@ -94,7 +94,7 @@
 c.swarm(<span class="hljs-string">&#x27;test-swarm&#x27;</span>);
 
 <span class="hljs-comment">// Listen for new peer connections as you/they join the swarm:</span>
-c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">peer</span>) =&gt;</span> {
+c.on(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">peer</span>) =&gt;</span> {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Connected to peer:&#x27;</span>, peer.id, peer);
     peer.send(<span class="hljs-string">&#x27;Hello there!&#x27;</span>);
     peer.on(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Received:&#x27;</span>, data));
@@ -113,7 +113,7 @@ c.findHost(<span class="hljs-string">&#x27;Host-ID&#x27;</span>);
 <span class="hljs-comment">// c.host();</span>
 
 <span class="hljs-comment">// Listen for the Host - they can be online already, or pop online in the future:</span>
-c.subscribe(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">peer</span>) =&gt;</span> {
+c.on(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">peer</span>) =&gt;</span> {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Connected to the Host:&#x27;</span>, peer.id, peer);
     peer.send(<span class="hljs-string">&#x27;Hello there, Mr. Host!&#x27;</span>);
     peer.on(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Received from host:&#x27;</span>, data));
