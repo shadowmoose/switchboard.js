@@ -66,7 +66,7 @@ localStorage['secretSeed'] = c.secretSeed; // Store this identity for use later 
 // The browser will now reuse the same identity whenever it reloads!
 ```
 You can see the code is pretty much the same either way, thanks to the simple API.
-For more examples, see [the examples directory, deployed to github-pages](https://shadowmoose.github.io/switchboard.js/examples/index.html).
+For more examples - such as creating and destroying media streams live, as you need them - see [the examples directory, deployed to github-pages](https://shadowmoose.github.io/switchboard.js/examples/index.html).
 There are also many more advanced ways to customize the behavior of Switchboard, including hooking events and authorization,
 and you can [read more about those here](https://shadowmoose.github.io/switchboard.js/globals.html)
 
