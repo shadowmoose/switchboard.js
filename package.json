@@ -21,7 +21,7 @@
     },
     "bugs": "https://github.com/shadowmoose/switchboard.js/issues",
     "scripts": {
-        "build": "cross-env tsc && rollup -c rollup.config.ts",
+        "build": "cross-env rimraf ./dist/ && tsc && rollup -c rollup.config.ts",
         "watch": "rollup -c rollup.config.ts --watch",
         "test": "jest",
         "build-docs": "typedoc src --out docs --excludeNotExported --stripInternal --mode file",
