@@ -15,7 +15,7 @@ All of this works out of the box in just a few lines of code, and requires zero 
 
 ## Installation
 
-For developers working in a node/typescript environment, ```npm i switchboard.js``` or ```yarn add switchboard.js```.
+For developers working with a package manager, ```npm i switchboard.js``` or ```yarn add switchboard.js```.
 
 If you'd prefer a direct bundle for use in a browser script tag, [grab the latest release link from the jsDelivr global CDN](https://www.jsdelivr.com/package/npm/switchboard.js).
 
