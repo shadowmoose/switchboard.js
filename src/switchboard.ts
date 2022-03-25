@@ -12,6 +12,7 @@ import {PeerConfig} from "./peer";
 export interface SBClientOptions {
     /**
      * A list of strings and/or {@link TrackerOptions} config objects.
+     * If provided, this list will replace all the default trackers SwitchBoard otherwise uses or looks up.
      */
     trackers?: (string|TrackerOptions)[];
 
@@ -35,6 +36,12 @@ export interface SBClientOptions {
      * If provided, the given ID will be used to reconnect as a past identity. Otherwise, a new one will be created.
      */
     seed?: string;
+
+    /**
+     * If provided (and true), Switchboard will NOT automatically check the excellent tracker list provided over at
+     * https://github.com/ngosang/trackerslist for additonal trackers.
+     */
+    skipExtraTrackers?: boolean;
 }
 
 /** Custom configuration for client Trackers. */
@@ -47,11 +54,17 @@ export interface TrackerOptions {
 
     /** Optionally overwrite client values passed into each Peer created by this tracker. */
     customPeerOpts?: PeerConfig;
+
     /**
      * The interval, in milliseconds, that each tracker should re-announce.
      * Don't change this unless you know what you're doing.
      */
     trackerAnnounceInterval?: number;
+
+    /**
+     * Optionally override the amount of time to wait for this tracker to connect.
+     */
+    connectTimeoutMs?: number;
 }
 
 /** @internal */
@@ -59,15 +72,15 @@ const DEFAULT_MAX_RETRIES = 2;
 /** @internal */
 const DEFAULT_CLIENT_TIMEOUT = 150000;
 /** @internal */
+const DEFAULT_WS_TIMEOUT = 5000;
+/** @internal */
 const SHORT_ID_LENGTH = 20;
 /**
  * The default list of tracker URLs to use for matchmaking. To change these, pass a new list in at {@link SBClientOptions.trackers}.
  */
 const DEFAULT_TRACKERS: string[] = [
-    'wss://tracker.sloppyta.co:443/announce',
     'wss://tracker.files.fm:7073/announce',
     'wss://tracker.openwebtorrent.com',
-    'wss://tracker.btorrent.xyz'
 ];
 /** @internal */
 const DEFAULT_ANNOUNCE_RATE = 50000;
@@ -233,7 +246,7 @@ export class Switchboard extends Subscribable {
      * Connect to all Trackers, and register event handling internally.
      * @param swarmID ID to use for the swarm. This is hashed into an InfoHash.
      */
-    private start(swarmID: string) {
+    private async start(swarmID: string) {
         this.infoHash = sha1(swarmID);
 
         let canEmit = true;
@@ -244,10 +257,31 @@ export class Switchboard extends Subscribable {
             }
         }
 
+        if (!this.opts.skipExtraTrackers && !this.opts?.trackers) {
+            await fetch("https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ws.txt")
+                .then(async raw => {
+                    const res = await raw.text();
+                    res.split("\n")
+                        .map(r=>r.trim())
+                        .filter(r=>r.startsWith("wss://"))
+                        .forEach(t => {
+                            this.trackerOpts.push({
+                                uri: `${t}`
+                            });
+                        });
+                }).catch(err => {
+                    this.emit('warn', err);
+                });
+        }
+
+        const filtered: string[] = [];
+        this.trackerOpts = this.trackerOpts.filter(t=>!filtered.includes(t.uri) && filtered.push(t.uri))
+
         for (const trk of this.trackerOpts) {
             const cfg: PeerConfig = Object.assign({}, trk.customPeerOpts||{}, {trickleICE: false});
             const announce = trk.trackerAnnounceInterval || DEFAULT_ANNOUNCE_RATE;
-            const t = new TrackerConnector(trk.uri, this.peerID, this.infoHash, cfg, this.shouldBlockConnection.bind(this), announce, this.wantedPeerCount);
+            const timeout = trk.connectTimeoutMs || DEFAULT_WS_TIMEOUT;
+            const t = new TrackerConnector(trk.uri, this.peerID, this.infoHash, cfg, this.shouldBlockConnection.bind(this), announce, this.wantedPeerCount, timeout);
 
             t.on('kill', (err) => {
                 if (this.killed) return;

@@ -159,7 +159,9 @@ export class TrackerConnector extends Subscribable{
     private connectTries: number = 0;
     private trackerID: string|null = null;
     private didConnect: boolean = false;
+    private connectionTimer: any;
     private readonly wantedPeerCount: number;
+    private trackerTimeout: number;
 
     /**
      * Create and connect to a new Tracker, using a websocket URL.
@@ -170,6 +172,7 @@ export class TrackerConnector extends Subscribable{
      * @param isBlacklisted A function, which decides if a given Peer ID may connect pre-handshake.
      * @param announceInterval The interval, in milliseconds, that this tracker will re-announce.
      * @param wantedPeerCount The total number of peers ideally wanted from this tracker each announce.
+     * @param trackerTimeoutMs The total time to wait before timing out. This may also happen sooner if the tracker resolves faster.
      */
     constructor(trackerURL: string,
                 peerID: string,
@@ -177,7 +180,8 @@ export class TrackerConnector extends Subscribable{
                 peerConfig: PeerConfig,
                 isBlacklisted: Function,
                 announceInterval: number,
-                wantedPeerCount: number
+                wantedPeerCount: number,
+                trackerTimeoutMs: number
     ) {
         super();
         this.url = trackerURL;
@@ -187,6 +191,7 @@ export class TrackerConnector extends Subscribable{
         this.peerConfig = peerConfig;
         this.currentAnnounceInterval = announceInterval;
         this.wantedPeerCount = wantedPeerCount;
+        this.trackerTimeout = trackerTimeoutMs || 5000;
     }
 
     /**
@@ -200,6 +205,11 @@ export class TrackerConnector extends Subscribable{
      * Connect to this tracker. Creates a new WebSocket & binds callbacks.
      */
     connect() {
+        this.connectionTimer = setTimeout(() => {
+            if (!this.didConnect) {
+                this.onError(new Error("Failed to connect in time!"));
+            }
+        }, this.trackerTimeout);
         this.sock = new WebSocket(this.url);
         this.sock.onclose = this.reconnect.bind(this);
         this.sock.onerror = this.onError.bind(this);
@@ -215,7 +225,9 @@ export class TrackerConnector extends Subscribable{
      */
     private close() {
         debug('closing tracker socket.');
-        this.sock?.close();
+        try {
+            this.sock?.close();
+        } catch (ignored) {}
         this.setAnnounceTimer(null);
         [...Object.values(this.initiatorPeers)].forEach(p => this.retractOffer(p, true));
         if (this.didConnect) {
@@ -270,6 +282,7 @@ export class TrackerConnector extends Subscribable{
         this.send(intro);
         this.setAnnounceTimer(this.currentAnnounceInterval);
         this.emit('connect');
+        clearTimeout(this.connectionTimer);
     }
 
     /**
@@ -279,7 +292,7 @@ export class TrackerConnector extends Subscribable{
      * @param error
      * @private
      */
-    private onError(error: Event) {
+    private onError(error: Event|Error) {
         debug('WS Error:', error, this.url);
         if (this.didConnect) {
             this.didConnect = false;
@@ -350,7 +363,6 @@ export class TrackerConnector extends Subscribable{
             });
             peer.once('error', (err: any) => {
                 debug(err);
-                console.warn('PEER ERROR:', err);
                 peer.close();
             });
             peer.timeoutTracker = setTimeout(() => {
