@@ -1,4 +1,4 @@
-# [![switch](https://i.imgur.com/oK9kwVl.png)](https://shadowmoose.github.io/switchboard.js)
+# [![switch](https://raw.githubusercontent.com/shadowmoose/switchboard.js/image-data/Switchboard.js.png)](https://shadowmoose.github.io/switchboard.js)
 
 ![Tests](https://github.com/shadowmoose/switchboard.js/workflows/Test%20Package/badge.svg) [![npm](https://img.shields.io/npm/v/switchboard.js) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/switchboard.js?label=bundle%20size)](https://www.npmjs.com/package/switchboard.js) ![Lines of Code](https://raw.githubusercontent.com/shadowmoose/switchboard.js/image-data/loc-badge.svg) [![](https://data.jsdelivr.com/v1/package/npm/switchboard.js/badge)](https://www.jsdelivr.com/package/npm/switchboard.js)
 
