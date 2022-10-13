@@ -31,6 +31,9 @@
 		let swarmID = window.location.hash.substr(1);
 		document.getElementById('inText').focus();
 
+		const sb = new switchboard.Switchboard();
+		const peers = [];
+
 		/** Simple log function to display text. */
 		function log(txt, col='black'){
 			console.log(txt);
@@ -49,7 +52,7 @@
 			txt.value = '';
 		}
 
-		/** Cosmetic function, unpdates the count of connected users. */
+		/** Cosmetic function, updates the count of connected users. */
 		function updateCount() {
 			document.getElementById('connected').innerText = `Connected: ${peers.length}`;
 		}
@@ -62,13 +65,15 @@
 		log(`Joining swarm ID: <span style="color: #5f99db">${swarmID}</span>`);
 
 		// Connect to the chosen swarm ID:
-		const sb = new switchboard.Switchboard();
-		const peers = [];
-
 		sb.swarm(swarmID);
 
 		sb.on('warn', (err) => {
-			log('client error:' + err, 'red');
+			if (!err.message?.includes('No-Retry')) {
+				// If the error isn't related to websocket connections, display it in chat.
+				log('client error:' + err, 'red');
+			} else {
+				console.error(err);
+			}
 		})
 
 		sb.on('kill', () => {
@@ -92,14 +97,14 @@
 				updateCount();
 			})
 			peer.on('data', data => {
+				const msg = data.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 				// Log incoming messages from this Peer:
-				log(`<b style="color: ${randomColor}">[${peer.id}]:</b> ${data}`);
+				log(`<b style="color: ${randomColor}">[${peer.id}]:</b> ${msg}`);
 			});
 		});
 
 		sb.on('connected', () => {
-			log('All possible trackers connected!', '#4db12e');
-			log(`Swarm Hash: ${sb.infoHash}`)
+			log(`Connected to ${sb.trackerCount} available trackers!`, '#4db12e');
 		});
 		sb.on('peer-seen', peer => {
 			console.log('\t+Saw peer:', peer);

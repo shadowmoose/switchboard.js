@@ -23,6 +23,10 @@ export function setLogging(enabled: boolean, callback: any = console.debug) {
     }
 }
 
+export function getLogger() {
+    return debug;
+}
+
 /**
  * Wrapper for a Switchboard-specific {@link Peer} object, containing extra metadata from Trackers.
  *

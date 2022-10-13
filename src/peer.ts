@@ -308,11 +308,58 @@ export class Peer extends Subscribable{
         return this.pc.connectionState === 'connected';
     }
 
+    get isSignalStable() {
+        return this.pc.signalingState === "stable"
+    }
+
     /**
      * If this Peer is currently connected, and has its internal channel open for communication.
      */
     get isReady() {
-        return !this.isClosed && this.isConnected && this.dataChannels[META_CHANNEL].readyState === 'open';
+        return !this.isClosed && this.isConnected && this.isSignalStable && this.dataChannels[META_CHANNEL].readyState === 'open';
+    }
+
+    get remoteSdp() {
+        return Peer.formatSdp(this.pc.remoteDescription?.sdp);
+    }
+
+    get localSdp() {
+        return Peer.formatSdp(this.pc.localDescription?.sdp);
+    }
+
+    /**
+     * Some browsers (Mozilla) mess with the SDP layout, for no real reason...
+     * This is an attempt to support all browser SDP formats by filtering to the specific bits we expect to be useful.
+     * @private
+     */
+    private static formatSdp(sdp: string | undefined) {
+
+        if (!sdp) return null;
+        const sdpl = sdp.toLowerCase();
+
+        function pick(arr: string[], ...numbs: number[]) {
+            if (!arr) return null;
+            return numbs.map(n => arr[n]).join(' ');
+        }
+        const findVals: [string, Function][] = [
+            ['a=fingerprint:', (l: string) => l],
+            ['o=', (l: string) => pick(l.split(/\s/m), 1, 2)],
+            ['a=candidate:', (l: string) => pick(l.split(/\s/m), 0, 1, 2, 3, 4)],
+            ['a=ice-pwd', (l: string) => pick(l.split(/\s/m), 0, 1)],
+            ['a=ice-ufrag', (l: string) => pick(l.split(/\s/m), 0, 1)],
+        ];
+        const found: string[] = [];
+
+        sdpl.split('\n').forEach(line => {
+            return findVals.forEach(fv => {
+                // @ts-ignore
+                if (line.replaceAll(/\s/gm, '').startsWith(fv[0])) {
+                    found.push(fv[1](line));
+                }
+            })
+        })
+
+        return found.filter(v=>!!v).sort().join('\n');
     }
 
     /**
@@ -449,7 +496,7 @@ export class Peer extends Subscribable{
 
     /**
      * Builds a connection request.
-     * The non-initiator should call `makeAccept` with this.
+     * The non-initiator should call `makeAnswer` with this.
      */
     async makeOffer(): Promise<RTCSessionDescription | null> {
         return this.pc.createOffer(this.config.rtcOfferOpts)

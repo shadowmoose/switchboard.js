@@ -1,10 +1,13 @@
-import {TrackerConnector, ConnectedPeer, setLogging} from './tracker'
+// noinspection ExceptionCaughtLocallyJS
+
+import {TrackerConnector, ConnectedPeer, setLogging, getLogger} from './tracker'
 import Subscribable from "./subscribable";
 import {ClientAuthError, ConnectionFailedError} from "./errors";
 import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 import sha1 from 'sha1';
 import {PeerConfig} from "./peer";
+import BufferWrapper from "./buffer";
 
 /**
  * These are the options that the Switchboard accepts as configuration.
@@ -389,6 +392,15 @@ export class Switchboard extends Subscribable {
     }
 
     /**
+     * Returns a count of the Trackers currently processing or connected.
+     * This will include broken trackers that have not yet timed out.
+     * For more reliable detection of tracker activity, subscribe to the emitted tracker events.
+     */
+    get trackerCount() {
+        return this.trackers.size;
+    }
+
+    /**
      * Increases a Peer's failure count - potentially resulting in their blacklisting.
      * If increment is not given, the Peer will be automatically blacklisted.
      * @param peer The peer to (potentially) blacklist.
@@ -440,7 +452,10 @@ export class Switchboard extends Subscribable {
         peer.once('data', (data: ArrayBuffer) => {
             try {
                 clearTimeout(peer.timeoutTracker);
-                if (Switchboard.verifyPacket(peer.id, new Uint8Array(data), this.wantedSpecificID)) {
+                if (!peer.isSignalStable || !peer.localSdp || !peer.remoteSdp) {
+                    throw Error("Cannot validate peer handshake - peer connection is not stable!")
+                }
+                if (Switchboard.verifyPacket(peer.id, new Uint8Array(data), this.wantedSpecificID, peer.remoteSdp)) {
                     delete this.blacklist[peer.id];
                     this.emit('peer', peer);
                 }
@@ -452,12 +467,17 @@ export class Switchboard extends Subscribable {
         });
 
         try {
+            if (!peer.localSdp) throw Error("Peer is missing a local SDP, and cannot sign a packet properly!")
             // Send a signed auth packet:
-            peer.send(this.makeSigPacket());
+            peer.send(this.makeSigPacket(peer.localSdp));
         } catch (err) {
             this.emit('warn', err);
             peer.fatalError(new ClientAuthError('Failed to send handshake.'));
         }
+    }
+
+    protected emit(event: 'connected'|'warn'|'peer-error'|'peer'|'kill'|'tracker-connect'|'peer-seen'|'peer-blacklisted', val?: any) {
+        super.emit(event, val);
     }
 
     /**
@@ -465,18 +485,18 @@ export class Switchboard extends Subscribable {
      * @see {@link verifyPacket}
      * @private
      */
-    private makeSigPacket() {
+    private makeSigPacket(localSdp: string) {
+        getLogger()('Local SDP: ' + localSdp);
         const pub = this.cryptoKeys.publicKey;
-        const sig = nacl.sign.detached(pub, this.cryptoKeys.secretKey);
-        const ret = new Uint8Array(1 + pub.length + sig.length);
-        ret.set([pub.length]);
-        ret.set(pub, 1);
-        ret.set(sig, pub.length+1);
-        return ret;
-    }
-
-    protected emit(event: 'connected'|'warn'|'peer-error'|'peer'|'kill'|'tracker-connect'|'peer-seen'|'peer-blacklisted', val?: any) {
-        super.emit(event, val);
+        const sdpHash = new TextEncoder().encode(sha1(Buffer.from(localSdp)));
+        const sig = nacl.sign.detached(new BufferWrapper([pub, sdpHash]).generate(), this.cryptoKeys.secretKey);
+        const writer = new BufferWrapper();
+        writer.writeInt(pub.length);
+        writer.writeInt(sdpHash.length);
+        writer.write(pub);
+        writer.write(sdpHash);
+        writer.write(sig);
+        return writer.generate();
     }
 
     /**
@@ -489,12 +509,16 @@ export class Switchboard extends Subscribable {
      * @param peerID The (short) ID of the Peer responsible for this packet.
      * @param packet The binary packet received.
      * @param wantedID If a specific Host ID is desired, restrict it to this.
+     * @param remoteSdp The value of the current SDP config from the Remote connection.
      * @private
      */
-    private static verifyPacket(peerID: string, packet: Uint8Array, wantedID: string|null): boolean {
-        const pubLen = packet.slice(0,1)[0];
-        const pub = packet.slice(1, pubLen+1);
-        const sig = packet.slice(1+pubLen);
+    private static verifyPacket(peerID: string, packet: Uint8Array, wantedID: string|null, remoteSdp: string): boolean {
+        const reader = new BufferWrapper([packet]);
+        const pubLen = reader.readInt();
+        const sdpLen = reader.readInt();
+        const pub = reader.read(pubLen);
+        const sdp = reader.read(sdpLen);
+        const sig = reader.readRemaining();
 
         if (wantedID && Switchboard.makeFullID(pub).substr(0, wantedID.length) !== wantedID) {
             throw new ClientAuthError('The full client ID does not match the desired ID!');
@@ -502,11 +526,18 @@ export class Switchboard extends Subscribable {
         if (Switchboard.makeID(pub) !== peerID) {
             throw new ClientAuthError('Mismatch with provided peer ID during auth!');
         }
-        const match = nacl.sign.detached.verify(pub, sig, pub);
+        const match = nacl.sign.detached.verify(new BufferWrapper([pub, sdp]).generate(), sig, pub);
         if (!match) {
             throw new ClientAuthError('The signature did not match the packet created by the client.');
         }
 
+        const hashedRemote = new TextEncoder().encode(sha1(Buffer.from(remoteSdp)));
+        getLogger()('Remote SDP:', remoteSdp);
+
+        if (!BufferWrapper.areEqual(sdp, hashedRemote) || !remoteSdp) {
+            // This validation is intended to protect against MitM attacks.
+            throw new ClientAuthError(`The provided signed SDP hash does not match the current remote SDP hash!`);
+        }
         return match;
     }
 
