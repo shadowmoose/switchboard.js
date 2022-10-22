@@ -1,6 +1,6 @@
 // noinspection ExceptionCaughtLocallyJS
 
-import {TrackerConnector, ConnectedPeer, setLogging, getLogger} from './tracker'
+import {ConnectedPeer, TrackerConnector, TrackerConnectorInterface} from './tracker'
 import Subscribable from "./subscribable";
 import {ClientAuthError, ConnectionFailedError} from "./errors";
 import nacl from 'tweetnacl';
@@ -8,11 +8,25 @@ import bs58 from 'bs58';
 import sha1 from 'sha1';
 import {PeerConfig} from "./peer";
 import BufferWrapper from "./buffer";
+import {SHORT_ID_LENGTH} from "./shared";
+import {getLogger, setLogging} from "./logger";
+import {ConnectionTypeOptions, SpsConnector} from "./sps-connector";
+
+const debug = getLogger('switchboard');
 
 /**
  * These are the options that the Switchboard accepts as configuration.
  */
 export interface SBClientOptions {
+    /**
+     * For additional security, long-form IDs can be enabled.
+     * These IDs are longer and potentially more difficult to share.
+     * All clients wishing to connect together must use the same value for this setting.
+     *
+     * Defaults to false, using shorter IDs.
+     */
+    useLongIds?: boolean;
+
     /**
      * A list of strings and/or {@link TrackerOptions} config objects.
      * If provided, this list will replace all the default trackers SwitchBoard otherwise uses or looks up.
@@ -42,7 +56,7 @@ export interface SBClientOptions {
 
     /**
      * If provided (and true), Switchboard will NOT automatically check the excellent tracker list provided over at
-     * https://github.com/ngosang/trackerslist for additonal trackers.
+     * https://github.com/ngosang/trackerslist for additional trackers.
      */
     skipExtraTrackers?: boolean;
 }
@@ -68,6 +82,22 @@ export interface TrackerOptions {
      * Optionally override the amount of time to wait for this tracker to connect.
      */
     connectTimeoutMs?: number;
+
+    /**
+     * If set to true, this tracker must be running the custom Switchboard Peering Server.
+     * This allows for self-hosting more streamlined peering servers, rather than relying on tracker protocol.
+     */
+    isNativeServer?: boolean;
+
+    /**
+     * If using the native Switchboard Peering Server which requires a passcode, it can be set here.
+     */
+    passCode?: string;
+
+    /**
+     * If specified, Switchboard will only attempt to reconnect to this tracker this many times before giving up.
+     */
+    maxReconnectAttempts?: number;
 }
 
 /** @internal */
@@ -76,8 +106,6 @@ const DEFAULT_MAX_RETRIES = 2;
 const DEFAULT_CLIENT_TIMEOUT = 150000;
 /** @internal */
 const DEFAULT_WS_TIMEOUT = 5000;
-/** @internal */
-const SHORT_ID_LENGTH = 20;
 /**
  * The default list of tracker URLs to use for matchmaking. To change these, pass a new list in at {@link SBClientOptions.trackers}.
  */
@@ -89,7 +117,6 @@ const DEFAULT_TRACKERS: string[] = [
 const DEFAULT_ANNOUNCE_RATE = 50000;
 
 
-// noinspection JSUnusedGlobalSymbols
 export interface Switchboard {
     /**
      * Emitted when all possible trackers have connected.
@@ -151,7 +178,7 @@ export interface Switchboard {
     /**
      * Triggered when this Switchboard is unrecoverably killed.
      *
-     * If this is emitted, the Switchboard is dead.
+     * If this is emitted, this Switchboard is dead.
      * You should create a new one if you need to reconnect.
      * @param event
      * @param callback A function that can receive the Error, if any, that caused termination.
@@ -190,24 +217,27 @@ export class Switchboard extends Subscribable {
     private readonly cryptoKeys: nacl.SignKeyPair;
     private trackerOpts: TrackerOptions[] = [];
     private blacklist: Record<string, number> = {};
-    private trackers: Set<TrackerConnector> = new Set();
+    private trackers: Set<TrackerConnectorInterface> = new Set();
     private connected: Record<string, ConnectedPeer> = {};
     private infoHash: string = '';
     private killed: boolean = false;
     private wantedPeerCount: number = 0;
     private wantedSpecificID: string|null = null;
     private _fullID: string|null = null;
+    private connectionMode: ConnectionTypeOptions = ConnectionTypeOptions.HOST;
+    private readonly realm: string;
 
     /**
      * Creates a new Switchboard matchmaker.
      *
      * To start finding peers, call one of: [{@link host}, {@link findHost}, {@link swarm}].
+     * @param realm Specify a "realm" name that is likely unique to your application to avoid cross-talk with other app's peers.
      * @param opts Extra optional config values that this instance will use.
      * @see {@link SBClientOptions}
      */
-    constructor(opts?: SBClientOptions) {
+    constructor(realm: string, opts?: SBClientOptions) {
         super();
-
+        this.realm = realm;
         this.opts = opts || {};
         this.secretSeed = this.opts.seed || Switchboard.makeSeed();
         this.cryptoKeys = Switchboard.makeCryptoPair(this.secretSeed);
@@ -225,10 +255,18 @@ export class Switchboard extends Subscribable {
 
     /**
      * The current ID this client is using.
-     * If additional security is desired when connecting to specific IDs, use {@link fullID}.
+     * By default, uses shorter IDs, but can be toggled with {@link SBClientOptions.useLongIds}.
      * @see {@link makeID}
      */
     get peerID(): string {
+        return this.opts.useLongIds ? this.fullID : this.shortID;
+    }
+
+    /**
+     * The short form of the local client ID.
+     * If additional security is desired when connecting to specific IDs, use {@link fullID}.
+     */
+    get shortID(): string {
         return this.fullID.substr(0, SHORT_ID_LENGTH);
     }
 
@@ -250,7 +288,7 @@ export class Switchboard extends Subscribable {
      * @param swarmID ID to use for the swarm. This is hashed into an InfoHash.
      */
     private async start(swarmID: string) {
-        this.infoHash = sha1(swarmID);
+        this.infoHash = sha1(this.realm + '::' + swarmID);
 
         let canEmit = true;
         const checkReady = () => {
@@ -277,14 +315,11 @@ export class Switchboard extends Subscribable {
                 });
         }
 
-        const filtered: string[] = [];
-        this.trackerOpts = this.trackerOpts.filter(t=>!filtered.includes(t.uri) && filtered.push(t.uri))
+        const filtered = new Set<string>();
+        this.trackerOpts = this.trackerOpts.filter(t=>!filtered.has(t.uri) && filtered.add(t.uri));
 
         for (const trk of this.trackerOpts) {
-            const cfg: PeerConfig = Object.assign({}, trk.customPeerOpts||{}, {trickleICE: false});
-            const announce = trk.trackerAnnounceInterval || DEFAULT_ANNOUNCE_RATE;
-            const timeout = trk.connectTimeoutMs || DEFAULT_WS_TIMEOUT;
-            const t = new TrackerConnector(trk.uri, this.peerID, this.infoHash, cfg, this.shouldBlockConnection.bind(this), announce, this.wantedPeerCount, timeout);
+            const t = this.makeConnector(trk);
 
             t.on('kill', (err) => {
                 if (this.killed) return;
@@ -313,6 +348,36 @@ export class Switchboard extends Subscribable {
         this.trackers.forEach(t => t.connect());
     }
 
+    private makeConnector(trk: TrackerOptions): TrackerConnectorInterface {
+        const cfg: PeerConfig = Object.assign({}, trk.customPeerOpts||{}, {trickleICE: false});
+        const timeout = trk.connectTimeoutMs || DEFAULT_WS_TIMEOUT;
+        const maxReconnects = trk.maxReconnectAttempts || 5
+
+        if (trk.isNativeServer) {
+            const pubKey = Array.from(this.cryptoKeys.publicKey);
+            const sigStr = Array.from(nacl.sign.detached(this.cryptoKeys.publicKey, this.cryptoKeys.secretKey));
+            const targId = this.wantedSpecificID || (this.connectionMode === ConnectionTypeOptions.SWARM ? this.infoHash : null);
+
+            return new SpsConnector({
+                uri: trk.uri,
+                fullId: this.fullID,
+                isBlacklisted: this.shouldBlockConnection.bind(this),
+                mode: this.connectionMode,
+                peerConfig: cfg,
+                pubKeySig: sigStr,
+                publicKey: pubKey,
+                targetHash: targId,
+                maxReconnects,
+                peerTimeout: this.opts.clientTimeout || DEFAULT_CLIENT_TIMEOUT,
+                passCode: trk.passCode || null
+            });
+        } else {
+            const announce = trk.trackerAnnounceInterval || DEFAULT_ANNOUNCE_RATE;
+            // WebTorrent requires short IDs. This is okay, because the final step of validation checks against full-length IDs if provided them.
+            return new TrackerConnector(trk.uri, this.shortID, this.infoHash, cfg, this.shouldBlockConnection.bind(this), announce, this.wantedPeerCount, timeout, maxReconnects);
+        }
+    }
+
     /**
      * Connect to trackers as a Host, listening for client Peers.
      * Clients looking for a specific Host via {@link findHost} will require that this is eventually called by the Host.
@@ -322,7 +387,8 @@ export class Switchboard extends Subscribable {
      */
     host(maxPeers?: number) {
         this.wantedPeerCount = maxPeers || 500;
-        this.start(this.peerID);
+        this.connectionMode = ConnectionTypeOptions.HOST;
+        return this.start(this.peerID);
     }
 
     /**
@@ -331,13 +397,14 @@ export class Switchboard extends Subscribable {
      *
      * For this to work, the Host *must* call {@link host}.
      * If the Host is not yet online, they will be located once they become available.
-     * @param hostID
+     * @param hostID The ID of the target host. If the Host is using long-form IDs, make sure this matches!
      * @see {@link host}
      */
     findHost(hostID: string) {
         this.wantedPeerCount = 1;
         this.wantedSpecificID = hostID;
-        this.start(hostID);
+        this.connectionMode = ConnectionTypeOptions.JOIN_HOST;
+        return this.start(hostID);
     }
 
     /**
@@ -350,7 +417,8 @@ export class Switchboard extends Subscribable {
      */
     swarm(swarmID: string, maxPeers?: number) {
         this.wantedPeerCount = maxPeers || 500;
-        this.start(swarmID);
+        this.connectionMode = ConnectionTypeOptions.SWARM;
+        return this.start(swarmID);
     }
 
     /**
@@ -371,14 +439,19 @@ export class Switchboard extends Subscribable {
 
     /**
      * Determine if a given PeerID can connect. Called by TrackerConnectors before a handshake is established.
-     * @param peerID
      * @private
      */
-    private shouldBlockConnection(peerID: string) {
-        this.emit('peer-seen', peerID);
+    private shouldBlockConnection(peerID: string, emitSeen: boolean = true) {
+        if (emitSeen) {
+            this.emit('peer-seen', peerID);
+        }
+        const shortest = Math.min(peerID.length, this.wantedSpecificID?.length || peerID.length);
+        const peerNorm = peerID.substr(0, shortest);
+        const wantedNorm = this.wantedSpecificID ? this.wantedSpecificID.substr(0, shortest) : null;
+
         return this.isBlackListed(peerID)
-            || (this.wantedSpecificID && peerID !== this.wantedSpecificID.substr(0, peerID.length)) // quick initial short-ID filter.
-            || this.connected[peerID]
+            || (this.wantedSpecificID && peerNorm !== wantedNorm) // quick initial ID filter.
+            || (!!this.connected[peerID])
             || Object.keys(this.blacklist).length >= this.wantedPeerCount;
     }
 
@@ -401,6 +474,13 @@ export class Switchboard extends Subscribable {
     }
 
     /**
+     * A list of all Peers currently connected to this Switchboard instance.
+     */
+    get connectedPeers() {
+        return Object.values(this.connected);
+    }
+
+    /**
      * Increases a Peer's failure count - potentially resulting in their blacklisting.
      * If increment is not given, the Peer will be automatically blacklisted.
      * @param peer The peer to (potentially) blacklist.
@@ -411,8 +491,7 @@ export class Switchboard extends Subscribable {
         if (this.isBlackListed(peer.id)) return;
 
         if (this.opts.clientBlacklistDuration) {
-            this.blacklist[peer.id] = this.blacklist[peer.id] || 0;
-            this.blacklist[peer.id] += increment;
+            this.blacklist[peer.id] = (this.blacklist[peer.id] || 0) + increment;
             if (this.isBlackListed(peer.id) && this.opts.clientBlacklistDuration != Infinity) {
                 this.emit('peer-blacklisted', peer);
                 setTimeout(() => {
@@ -455,6 +534,7 @@ export class Switchboard extends Subscribable {
                 if (!peer.isSignalStable || !peer.localSdp || !peer.remoteSdp) {
                     throw Error("Cannot validate peer handshake - peer connection is not stable!")
                 }
+
                 if (Switchboard.verifyPacket(peer.id, new Uint8Array(data), this.wantedSpecificID, peer.remoteSdp)) {
                     delete this.blacklist[peer.id];
                     this.emit('peer', peer);
@@ -476,6 +556,7 @@ export class Switchboard extends Subscribable {
         }
     }
 
+    /** @internal */
     protected emit(event: 'connected'|'warn'|'peer-error'|'peer'|'kill'|'tracker-connect'|'peer-seen'|'peer-blacklisted', val?: any) {
         super.emit(event, val);
     }
@@ -486,7 +567,7 @@ export class Switchboard extends Subscribable {
      * @private
      */
     private makeSigPacket(localSdp: string) {
-        getLogger()('Local SDP: ' + localSdp);
+        getLogger('Local SDP: ' + localSdp);
         const pub = this.cryptoKeys.publicKey;
         const sdpHash = new TextEncoder().encode(sha1(Buffer.from(localSdp)));
         const sig = nacl.sign.detached(new BufferWrapper([pub, sdpHash]).generate(), this.cryptoKeys.secretKey);
@@ -519,12 +600,13 @@ export class Switchboard extends Subscribable {
         const pub = reader.read(pubLen);
         const sdp = reader.read(sdpLen);
         const sig = reader.readRemaining();
+        const fullId = Switchboard.makeFullID(pub);
 
-        if (wantedID && Switchboard.makeFullID(pub).substr(0, wantedID.length) !== wantedID) {
+        if (wantedID && fullId.substr(0, wantedID.length) !== wantedID) {
             throw new ClientAuthError('The full client ID does not match the desired ID!');
         }
-        if (Switchboard.makeID(pub) !== peerID) {
-            throw new ClientAuthError('Mismatch with provided peer ID during auth!');
+        if (!peerID || fullId.substr(0, peerID.length) !== peerID) {
+            throw new ClientAuthError(`Mismatch with provided peer ID during auth! (${peerID}, ${fullId})`);
         }
         const match = nacl.sign.detached.verify(new BufferWrapper([pub, sdp]).generate(), sig, pub);
         if (!match) {
@@ -532,7 +614,7 @@ export class Switchboard extends Subscribable {
         }
 
         const hashedRemote = new TextEncoder().encode(sha1(Buffer.from(remoteSdp)));
-        getLogger()('Remote SDP:', remoteSdp);
+        debug('Remote SDP:', remoteSdp);
 
         if (!BufferWrapper.areEqual(sdp, hashedRemote) || !remoteSdp) {
             // This validation is intended to protect against MitM attacks.

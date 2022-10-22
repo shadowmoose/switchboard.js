@@ -24,9 +24,10 @@
         "build": "cross-env rimraf ./dist/ && tsc && rollup -c rollup.config.ts",
         "watch": "rollup -c rollup.config.ts --watch",
         "test": "jest",
-        "build-docs": "typedoc src --out docs --excludeNotExported --stripInternal --mode file",
+        "build-docs": "typedoc src --out docs --excludeNotExported --stripInternal --mode file --exclude src/peering-server/**.*",
         "prepublishOnly": "yarn build",
-        "pretest": "yarn build"
+        "pretest": "yarn build",
+        "run-server": "yarn ts-node src/peering-server/switchboard-peering-server.ts"
     },
     "devDependencies": {
         "@lopatnov/rollup-plugin-uglify": "^2.1.0",
@@ -52,6 +53,7 @@
         "terser": "^5.0.0",
         "ts-jest": "^26.1.4",
         "ts-loader": "^8.0.1",
+        "ts-node": "^10.9.1",
         "typedoc": "^0.19.2",
         "typescript": "^3.9.7",
         "webpack": "^4.44.0",
@@ -65,6 +67,6 @@
         "isomorphic-ws": "^4.0.1",
         "sha1": "^1.1.1",
         "tweetnacl": "^1.0.3",
-        "ws": "^7.3.1"
+        "ws": "^8.9.0"
     }
 }

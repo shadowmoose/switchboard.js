@@ -28,7 +28,7 @@ It's simple to start with Switchboard. Here's a sample that connects to a swarm 
 import Switchboard from 'switchboard.js';
 
 // Create new matchmaker:
-const c = new Switchboard();
+const c = new Switchboard('my-realm-name');  // Realm names keep applications separate
 
 // Connect to a test swarm of Peers - this can be any ID you'd like:
 c.swarm('test-swarm');
@@ -47,19 +47,19 @@ c.on('peer', (peer) => {
 import Switchboard from 'switchboard.js';
 
 // Load a secret code from storage, or one will auto-generate if one isn't already saved:
-const c = new Switchboard({seed: localStorage['secretSeed']});
+const c = new Switchboard('test-realm', {seed: localStorage['secretSeed']});
 
 // Connect to the host:
 c.findHost('Host-ID');
 
 // If we were the host instead:
-// c.host();
+c.host(); console.log('Connect to me:', c.peerID);
 
-// Listen for the Host - they can be online already, or pop online in the future:
+// Listen for the Host or clients - they can be online already, or pop online in the future:
 c.on('peer', (peer) => {
-    console.log('Connected to the Host:', peer.id, peer);
-    peer.send('Hello there, Mr. Host!');
-    peer.on('data', (data: any) => console.log('Received from host:', data));
+    console.log('Connected to a peer:', peer.id, peer);
+    peer.send('Hello there, buddy!');
+    peer.on('data', (data: any) => console.log('Received from peer:', data));
 })
 
 localStorage['secretSeed'] = c.secretSeed; // Store this identity for use later on reload.
@@ -87,3 +87,17 @@ Switchboard makes use of decentralized, public, battle-tested peering systems th
 Having multiple public trackers at its disposal makes Switchboard far more reliable than most services can hope to achieve. You can simply use the default list of public trackers, or provide your own. Built-in custom logic deals with these servers for you - and Switchboard won't fail unless none of the provided servers can be reached. Is one tracker offline or unreachable in a region? No problem - Switchboard will handle the disconnection, retries, and finding Peers via the other available trackers, all without requiring user intervention.
 
 If you have the resources and don't want to use public servers, it is trivial to spin up [your own private server](https://github.com/webtorrent/bittorrent-tracker). However, you don't need to worry about security when using public servers either. Switchboard uses public key encryption on top of a simple cryptographic ID fingerprint system for every single connection. Wherever you are, whatever you use, whenever you connect to somebody, you will always know they're exactly who they say they are.
+
+To use the built-in Switchboard Peering Server that you can self-host, simply provide the connection details as Tracker Configs, like so:
+
+```js
+const sb = new switchboard.Switchboard('TestRealm', {
+    trackers: [
+        {
+            uri: 'ws://localhost:8080',
+            isNativeServer: true,
+            passCode: '[PASSCODE SET ON SERVER, OR NULL]'
+        }
+    ]
+});
+```
