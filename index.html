@@ -88,7 +88,7 @@
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Switchboard <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;switchboard.js&#x27;</span>;
 
 <span class="hljs-comment">// Create new matchmaker:</span>
-<span class="hljs-keyword">const</span> c = <span class="hljs-keyword">new</span> Switchboard();
+<span class="hljs-keyword">const</span> c = <span class="hljs-keyword">new</span> Switchboard(<span class="hljs-string">&#x27;my-realm-name&#x27;</span>);  <span class="hljs-comment">// Realm names keep applications separate</span>
 
 <span class="hljs-comment">// Connect to a test swarm of Peers - this can be any ID you&#x27;d like:</span>
 c.swarm(<span class="hljs-string">&#x27;test-swarm&#x27;</span>);
@@ -104,19 +104,19 @@ c.on(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-functi
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Switchboard <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;switchboard.js&#x27;</span>;
 
 <span class="hljs-comment">// Load a secret code from storage, or one will auto-generate if one isn&#x27;t already saved:</span>
-<span class="hljs-keyword">const</span> c = <span class="hljs-keyword">new</span> Switchboard({<span class="hljs-attr">seed</span>: <span class="hljs-built_in">localStorage</span>[<span class="hljs-string">&#x27;secretSeed&#x27;</span>]});
+<span class="hljs-keyword">const</span> c = <span class="hljs-keyword">new</span> Switchboard(<span class="hljs-string">&#x27;test-realm&#x27;</span>, {<span class="hljs-attr">seed</span>: <span class="hljs-built_in">localStorage</span>[<span class="hljs-string">&#x27;secretSeed&#x27;</span>]});
 
 <span class="hljs-comment">// Connect to the host:</span>
 c.findHost(<span class="hljs-string">&#x27;Host-ID&#x27;</span>);
 
 <span class="hljs-comment">// If we were the host instead:</span>
-<span class="hljs-comment">// c.host();</span>
+c.host(); <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Connect to me:&#x27;</span>, c.peerID);
 
-<span class="hljs-comment">// Listen for the Host - they can be online already, or pop online in the future:</span>
+<span class="hljs-comment">// Listen for the Host or clients - they can be online already, or pop online in the future:</span>
 c.on(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">peer</span>) =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Connected to the Host:&#x27;</span>, peer.id, peer);
-    peer.send(<span class="hljs-string">&#x27;Hello there, Mr. Host!&#x27;</span>);
-    peer.on(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Received from host:&#x27;</span>, data));
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Connected to a peer:&#x27;</span>, peer.id, peer);
+    peer.send(<span class="hljs-string">&#x27;Hello there, buddy!&#x27;</span>);
+    peer.on(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">data: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Received from peer:&#x27;</span>, data));
 })
 
 <span class="hljs-built_in">localStorage</span>[<span class="hljs-string">&#x27;secretSeed&#x27;</span>] = c.secretSeed; <span class="hljs-comment">// Store this identity for use later on reload.</span>
@@ -143,6 +143,16 @@ c.on(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-functi
 				<p>Switchboard makes use of decentralized, public, battle-tested peering systems that exist online. Rather than relying on a single always-on server that the developer would have to set up, maintain, and secure - Switchboard piggybacks off the existing tracker infrastructure used web-wide by systems like WebTorrent. Switchboard will automatically connect to every tracker it is told about, to be sure it has multiple redundant fallbacks. </p>
 				<p>Having multiple public trackers at its disposal makes Switchboard far more reliable than most services can hope to achieve. You can simply use the default list of public trackers, or provide your own. Built-in custom logic deals with these servers for you - and Switchboard won&#39;t fail unless none of the provided servers can be reached. Is one tracker offline or unreachable in a region? No problem - Switchboard will handle the disconnection, retries, and finding Peers via the other available trackers, all without requiring user intervention.</p>
 				<p>If you have the resources and don&#39;t want to use public servers, it is trivial to spin up <a href="https://github.com/webtorrent/bittorrent-tracker">your own private server</a>. However, you don&#39;t need to worry about security when using public servers either. Switchboard uses public key encryption on top of a simple cryptographic ID fingerprint system for every single connection. Wherever you are, whatever you use, whenever you connect to somebody, you will always know they&#39;re exactly who they say they are.</p>
+				<p>To use the built-in Switchboard Peering Server that you can self-host, simply provide the connection details as Tracker Configs, like so:</p>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> sb = <span class="hljs-keyword">new</span> switchboard.Switchboard(<span class="hljs-string">&#x27;TestRealm&#x27;</span>, {
+    <span class="hljs-attr">trackers</span>: [
+        {
+            <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;ws://localhost:8080&#x27;</span>,
+            <span class="hljs-attr">isNativeServer</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">passCode</span>: <span class="hljs-string">&#x27;[PASSCODE SET ON SERVER, OR NULL]&#x27;</span>
+        }
+    ]
+});</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -155,9 +165,6 @@ c.on(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-functi
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="classes/bufferwrapper.html" class="tsd-kind-icon">Buffer<wbr>Wrapper</a>
-					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/connectedpeer.html" class="tsd-kind-icon">Connected<wbr>Peer</a>
 					</li>
@@ -181,9 +188,6 @@ c.on(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-functi
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#enablelogging" class="tsd-kind-icon">enable<wbr>Logging</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#getlogger" class="tsd-kind-icon">get<wbr>Logger</a>
 					</li>
 				</ul>
 			</nav>
@@ -209,9 +213,6 @@ c.on(<span class="hljs-string">&#x27;peer&#x27;</span>, <span class="hljs-functi
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
