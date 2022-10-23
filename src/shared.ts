@@ -36,3 +36,6 @@ export type MsgClientDirect = {
     targetClient?: string;
     data: string;
 }
+
+/** @internal */
+export const SPS_VERSION = 1.0;

@@ -8,12 +8,12 @@
     "keywords": [],
     "umdName": "switchboard",
     "buildEntryPoint": "index",
-    "main": "dist/index.js",
-    "module": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "browser": "dist/index-browser.min.js",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "browser": "./dist/index-browser.min.js",
     "files": [
-        "dist"
+        "./dist/"
     ],
     "repository": {
         "type": "git",
@@ -24,10 +24,11 @@
         "build": "cross-env rimraf ./dist/ && tsc && rollup -c rollup.config.ts",
         "watch": "rollup -c rollup.config.ts --watch",
         "test": "jest",
-        "build-docs": "typedoc src --out docs --excludeNotExported --stripInternal --mode file --exclude src/peering-server/**.*",
+        "build-docs": "typedoc src --out docs --excludeNotExported --stripInternal --mode file --exclude src/peering-server.ts",
         "prepublishOnly": "yarn build",
         "pretest": "yarn build",
-        "run-server": "yarn ts-node src/peering-server/switchboard-peering-server.ts"
+        "run-server": "ts-node src/peering-server.ts",
+        "build-standalone-server": "cross-env yarn build && yarn pkg ./dist/peering-server.js --out-path dist-standalone/"
     },
     "devDependencies": {
         "@lopatnov/rollup-plugin-uglify": "^2.1.0",
@@ -42,6 +43,7 @@
         "cross-env": "^7.0.3",
         "jest": "^26.2.2",
         "jest-config": "^26.2.2",
+        "pkg": "^5.8.0",
         "rimraf": "^3.0.2",
         "rollup": "^2.23.1",
         "rollup-plugin-commonjs": "^10.1.0",
@@ -64,6 +66,7 @@
     "peerDependencies": {},
     "dependencies": {
         "bs58": "^4.0.1",
+        "convict": "^6.2.3",
         "isomorphic-ws": "^4.0.1",
         "sha1": "^1.1.1",
         "tweetnacl": "^1.0.3",

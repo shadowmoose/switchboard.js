@@ -3,6 +3,7 @@
 dist/
 docs/
 coverage/
+dist-standalone/
 
 # Logs
 logs

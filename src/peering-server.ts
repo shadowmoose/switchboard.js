@@ -1,8 +1,20 @@
 import WebSocket, {Server} from "ws";
 import nacl from "tweetnacl";
 import sha1 from "sha1";
-import {ClientIntroPacket, MsgClientDirect, SHORT_ID_LENGTH, WsMessageType, WsServerMessage} from "../shared";
+import {
+    ClientIntroPacket,
+    MsgClientDirect,
+    SHORT_ID_LENGTH,
+    SPS_VERSION,
+    WsMessageType,
+    WsServerMessage
+} from "./shared";
 import Timeout = NodeJS.Timeout;
+import {getLogger, setLogging} from "./logger";
+const convict = require('convict');
+
+export {setLogging} from './logger';
+const debug = getLogger('server');
 
 /**
  * @internal
@@ -27,15 +39,14 @@ type ChannelInfo = {
 }
 
 
-let PASS_CODE: string | null = null;
 const clients = new Map<string, SocketInfo>();
 const channels: Record<string, ChannelInfo> = {};
 
 
-async function validate(ws: WebSocket, sockInfo: SocketInfo) {
+async function validate(ws: WebSocket, sockInfo: SocketInfo, passCode: string | null) {
     const introPacket: ClientIntroPacket = await readWait(ws, 15000);
 
-    if (PASS_CODE && introPacket.passCode !== PASS_CODE) {
+    if (passCode && introPacket.passCode !== passCode) {
         throw new Error('Passcode mismatch.');
     }
 
@@ -81,7 +92,7 @@ async function validate(ws: WebSocket, sockInfo: SocketInfo) {
 }
 
 function onClientMessage(ws: WebSocket, message: string, sockId: string) {
-    console.debug(`Message:`, `[${sockId}]`, message.substr(0,  50) + '...');
+    debug(`Message:`, `[${sockId}]`, message.substr(0,  50) + '...');
     try {
         // All messages here should be handshake stages, targeted at a specific User ID.
         const packet: MsgClientDirect = JSON.parse(message);
@@ -93,7 +104,7 @@ function onClientMessage(ws: WebSocket, message: string, sockId: string) {
             });
         }
     } catch (err) {
-        console.error(err);
+        debug(err);
         ws.terminate();
     }
 }
@@ -125,7 +136,7 @@ function readWait(ws: WebSocket, timeout = 0): Promise<any> {
         let to: Timeout|null = null;
         if (timeout) {
             to = setTimeout(() => {
-                console.warn("Read timed out for client.");
+                debug("Read timed out for client.");
                 ws.close();
             }, timeout)
         }
@@ -151,10 +162,19 @@ function sendChannel(channel: string, data: WsServerMessage) {
     });
 }
 
-export function startServer(password: string | null | undefined, port: number, pingWithText: boolean = true, pingFreq = 30000) {
-    PASS_CODE = password || null;
+/** @internal */
+type WsServerOpts = {
+    passCode: string | null;
+    port: number;
+    host: string;
+    pingWithText: boolean;
+    pingFrequency: number;
+    statPrintFrequency: number;
+}
 
-    const wss = new Server({ port });
+export function startServer(opts: WsServerOpts) {
+    const {passCode, port, host, pingWithText, pingFrequency, statPrintFrequency} = opts;
+    const wss = new Server({ port, host });
 
     wss.on('connection', function connection(ws: WebSocket) {
         const sockInfo: SocketInfo = {
@@ -167,7 +187,7 @@ export function startServer(password: string | null | undefined, port: number, p
         }
 
         ws.on('close', () => {
-            console.debug("Disconnected:", sockInfo.id);
+            debug("Disconnected:", sockInfo.id);
             if (sockInfo.id) {
                 clients.delete(sockInfo.id);
                 if (sockInfo.channel) removeChannelListener(sockInfo.channel, sockInfo.id);
@@ -182,10 +202,10 @@ export function startServer(password: string | null | undefined, port: number, p
         });
 
         // @ts-ignore
-        console.debug(`Connected:`, sockInfo.ws._socket?.remoteAddress);
+        debug(`Connected:`, sockInfo.ws._socket?.remoteAddress);
 
-        validate(ws, sockInfo).then(() => {
-            console.debug(`Validated:`, sockInfo.id);
+        validate(ws, sockInfo, passCode).then(() => {
+            debug(`Validated:`, sockInfo.id);
 
             ws.on('message', data => {
                 const str = data.toString();
@@ -195,7 +215,7 @@ export function startServer(password: string | null | undefined, port: number, p
             });
 
         }).catch(err => {
-            console.error('Validation Error:', err.message);
+            debug('Validation Error:', err.message);
             try {
                 ws.send('dc');
             } catch (_ignored){}
@@ -203,28 +223,115 @@ export function startServer(password: string | null | undefined, port: number, p
         })
     });
 
-    let interval = setInterval(function ping() {
+    const pingInterval = setInterval(function ping() {
         clients.forEach(function each(client, key) {
             if (key === client.shortId) return;
             if (!client.isAlive) {
-                console.debug("Socket missed ping:", client.id);
+                debug("Socket missed ping:", client.id);
                 return client.ws.terminate();
             }
             client.isAlive = false;
             pingWithText ? client.ws.send('ping') : client.ws.ping();
         });
-    }, pingFreq);
+    }, pingFrequency * 1000);
+
+    const statPrint = statPrintFrequency ? setInterval(() => {
+        const mem = process.memoryUsage();
+        const formatMemoryUsage = (data: number) => `${Math.round(data / 1024 / 1024 * 100) / 100} MB`;
+        debug('(STATS)', `channels: ${Object.keys(channels).length.toLocaleString()}`, '|', 'clients:', (clients.size/2).toLocaleString(), '|', 'memory used:', formatMemoryUsage(mem.heapUsed));
+    }, statPrintFrequency * 1000) : null;
 
     wss.on('close', function close() {
-        clearInterval(interval);
-        console.log("WebSocket server closed.");
+        clearInterval(pingInterval);
+        if (statPrint) clearInterval(statPrint);
+        debug("WebSocket server closed.");
     });
-
-    console.log("WebSocket server started.", wss.address());
 
     return wss;
 }
 
+
+
 if (require.main === module) {
-    startServer(process.env.SWITCHBOARD_PASSCODE, 8080);
+    const argConfig = {
+        host: {
+            doc: 'The host address to bind.',
+            format: 'String',
+            default: 'localhost',
+            env: 'SPS_HOST',
+            arg: 'host'
+        },
+        port: {
+            doc: 'The port to bind.',
+            format: 'port',
+            default: 8080,
+            env: 'SPS_PORT',
+            arg: 'port'
+        },
+        pass: {
+            doc: 'The passcode to use for this server.',
+            format: 'String',
+            default: '',
+            env: 'SPS_PASS',
+            arg: 'pass'
+        },
+        quiet: {
+            doc: 'Silence the logging when running standalone.',
+            format: 'Boolean',
+            default: false,
+            env: 'SPS_QUIET',
+            arg: 'quiet'
+        },
+        statPrintFreq: {
+            doc: 'How frequently, in seconds, to print server stats. Use 0 to disable.',
+            format: 'Number',
+            default: 60,
+            env: 'SPS_STAT_FREQ',
+            arg: 'stats'
+        },
+        pingWithText: {
+            doc: 'If true, sends pings using actual WebSocket messages.',
+            format: 'Boolean',
+            default: true,
+            env: 'SPS_PING_TEXT',
+            arg: 'ping_text'
+        },
+        pingFreq: {
+            doc: 'How frequently, in seconds, to ping connected clients.',
+            format: 'Number',
+            default: 60,
+            env: 'SPS_PING_FREQ',
+            arg: 'ping'
+        },
+    };
+    const config = convict(argConfig);
+    config.validate({allowed: 'strict'});
+
+    console.log(`\t[ Switchboard Peering Server - v${SPS_VERSION} ]`)
+
+    if (process.argv.includes('-h') || process.argv.includes('--help')) {
+        console.log("Supported Arguments/Environment variables:");
+
+        let eg = 'ts-node --transpile-only src/peering-server.ts ';
+
+        Object.entries(argConfig).forEach(ent => {
+            const v = ent[1];
+            console.log(`\t--${v.arg} [${v.format}]`, `(env:${v.env})`, v.doc, `Default "${v.default}"`);
+            eg += `--${v.arg} "${v.default}" `
+        });
+        console.log("EG:", eg.trim());
+        process.exit(0);
+    }
+
+    setLogging(!config.get('quiet'), console.log);
+    startServer({
+        host: config.get('host'),
+        port: config.get('port'),
+        passCode: config.get('pass'),
+        pingFrequency: config.get('pingFreq'),
+        pingWithText: config.get('pingWithText'),
+        statPrintFrequency: config.get('statPrintFreq')
+    });
+
+    console.log("WebSocket server started.", `ws://${config.get('host')}:${config.get('port')}`);
 }
