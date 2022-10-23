@@ -12,8 +12,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@v1
 
-      - name: Setup node
-        uses: actions/setup-node@v1
+      - name: Setup latest Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
 
       - name: Install packages
         uses: bahmutov/npm-install@v1

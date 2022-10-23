@@ -11,10 +11,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
+      - name: Setup latest Node.js
+        uses: actions/setup-node@v3
         with:
-          registry-url: https://registry.npmjs.org
+          node-version: latest
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
