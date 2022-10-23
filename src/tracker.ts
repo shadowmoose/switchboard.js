@@ -2,30 +2,10 @@ import nacl from 'tweetnacl';
 import Peer, {PeerConfig} from './peer';
 import Subscribable from "./subscribable";
 import {ConnectionFailedError} from "./errors";
+import {getLogger} from "./logger";
 
-// noinspection JSUnusedLocalSymbols
-/**
- * @hidden The debug-logging method. Defaults to noop.
- */
-let debug = (...args: any)=>{};
 
-/**
- * Enable/disable debug logging. Optionally provide your own custom logging callback.
- * @param enabled If logging should be enabled.
- * @param callback Pass a custom function if you wish to override the default `console.debug` behavior.
- * @internal
- */
-export function setLogging(enabled: boolean, callback: any = console.debug) {
-    if (enabled) {
-        debug = callback;
-    } else {
-        debug = ()=>{};
-    }
-}
-
-export function getLogger() {
-    return debug;
-}
+const debug = getLogger('tracker');
 
 /**
  * Wrapper for a Switchboard-specific {@link Peer} object, containing extra metadata from Trackers.
@@ -68,7 +48,7 @@ export class ConnectedPeer extends Peer {
                 res(off);
             });
 
-            this.handshake();
+            this.handshake('', true);
         });
     }
 }
@@ -106,7 +86,11 @@ interface Offer {
 }
 
 
-export interface TrackerConnector {
+/**
+ * The exposed Tracker properties and methods.
+ * @internal
+ */
+export interface TrackerConnectorInterface {
     /**
      * Triggered when the connection is lost to the Tracker server.
      * @param event
@@ -138,6 +122,23 @@ export interface TrackerConnector {
      * @returns A function to call, in order to unsubscribe.
      */
     on(event: 'kill', callback: {(err: Error|null): void}): () => void;
+
+    /**
+     * Determine if this Tracker is open and available.
+     */
+    isOpen: boolean;
+
+    /**
+     * Connect to this tracker. Creates a new WebSocket & binds callbacks.
+     */
+    connect(): void;
+
+    /**
+     * Kill this WebSocket connection to the Tracker, and disable reconnection.
+     *
+     * Peers connected to via this tracker will NOT be closed by calling this.
+     */
+    kill(): void;
 }
 
 
@@ -148,7 +149,7 @@ export interface TrackerConnector {
  * @internal
  * @hidden
  */
-export class TrackerConnector extends Subscribable{
+export class TrackerConnector extends Subscribable implements TrackerConnectorInterface{
     private readonly url: string;
     private readonly peerID: string;
     private readonly infoHash: string;
@@ -165,7 +166,8 @@ export class TrackerConnector extends Subscribable{
     private didConnect: boolean = false;
     private connectionTimer: any;
     private readonly wantedPeerCount: number;
-    private trackerTimeout: number;
+    private readonly trackerTimeout: number;
+    private readonly maxReconnectAttempts: number;
 
     /**
      * Create and connect to a new Tracker, using a websocket URL.
@@ -177,6 +179,7 @@ export class TrackerConnector extends Subscribable{
      * @param announceInterval The interval, in milliseconds, that this tracker will re-announce.
      * @param wantedPeerCount The total number of peers ideally wanted from this tracker each announce.
      * @param trackerTimeoutMs The total time to wait before timing out. This may also happen sooner if the tracker resolves faster.
+     * @param maxReconnectAttempts The maximum allowed attempts to reconnect before killing this tracker.
      */
     constructor(trackerURL: string,
                 peerID: string,
@@ -185,7 +188,8 @@ export class TrackerConnector extends Subscribable{
                 isBlacklisted: Function,
                 announceInterval: number,
                 wantedPeerCount: number,
-                trackerTimeoutMs: number
+                trackerTimeoutMs: number,
+                maxReconnectAttempts: number
     ) {
         super();
         this.url = trackerURL;
@@ -196,6 +200,7 @@ export class TrackerConnector extends Subscribable{
         this.currentAnnounceInterval = announceInterval;
         this.wantedPeerCount = wantedPeerCount;
         this.trackerTimeout = trackerTimeoutMs || 5000;
+        this.maxReconnectAttempts = maxReconnectAttempts;
     }
 
     /**
@@ -240,7 +245,7 @@ export class TrackerConnector extends Subscribable{
     }
 
     /**
-     * Called when a the WebSocket disconnects, to trigger automatic reconnection with a rate-limited timer.
+     * Called when the WebSocket disconnects, to trigger automatic reconnection with a rate-limited timer.
      * @private
      */
     private reconnect() {
@@ -248,11 +253,15 @@ export class TrackerConnector extends Subscribable{
 
         clearTimeout(this.timer);
 
-        this.connectTries = Math.min(10, this.connectTries+1);
+        this.connectTries+=1;
+        if (this.connectTries > this.maxReconnectAttempts) {
+            return this.kill(new Error('Failed to connect within the allowed max attempts.'));
+        }
+
         this.timer = setTimeout(() => {
             this.close();
             this.connect();
-        }, this.connectTries * 2000);
+        }, Math.min(this.connectTries, 5) * 2000);
     }
 
     /**
@@ -351,7 +360,7 @@ export class TrackerConnector extends Subscribable{
             const offerID = msg.offer_id;
             const peer = this.makePeer(false);
 
-            peer.id = msg.peer_id;
+            if (!peer.id) peer.id = msg.peer_id;
             peer.once('handshake', (answer: string) => {
                 const params: any = {
                     action: 'announce',
@@ -372,7 +381,7 @@ export class TrackerConnector extends Subscribable{
             peer.timeoutTracker = setTimeout(() => {
                 peer.close();
             }, 15000);
-            peer.handshake(msg.offer).catch(console.error);
+            peer.handshake(msg.offer, false).catch(console.error);
         }
 
         // Peer has accepted one of our offers:
@@ -380,8 +389,8 @@ export class TrackerConnector extends Subscribable{
             const peer = this.initiatorPeers[msg.offer_id];
 
             if (peer) {
-                peer.id = msg.peer_id;
-                peer.handshake(msg.answer).catch(console.error);
+                if (!peer.id) peer.id = msg.peer_id;
+                peer.handshake(msg.answer, false).catch(console.error);
             } else {
                 debug('Missing tracker peer:', msg);
             }

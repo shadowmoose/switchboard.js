@@ -333,7 +333,6 @@ export class Peer extends Subscribable{
      * @private
      */
     private static formatSdp(sdp: string | undefined) {
-
         if (!sdp) return null;
         const sdpl = sdp.toLowerCase();
 
@@ -372,12 +371,13 @@ export class Peer extends Subscribable{
      * After an initial back-and-forth (unless Trickle ICE is enabled), no additional Handshake data should be required.
      * Any subsequent negotiations will be handled internally via DataChannels.
      * @param data The data sent from the remote peer's `handshake` event, or none to initiate the handshake.
+     * @param initiate If we need to initiate the handshake.
      * @see {@link https://webrtc.org/getting-started/peer-connections}
      */
-    async handshake(data: any = 'initiate') {
+    async handshake(data: any, initiate = true) {
         if (this.isClosed) return;
 
-        if (data === 'initiate') {
+        if (initiate) {
             this.initiator = true;
             this.emit('handshake', JSON.stringify(await this.makeOffer()))
             return;

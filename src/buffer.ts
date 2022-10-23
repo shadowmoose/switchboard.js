@@ -1,4 +1,9 @@
 
+/**
+ * Extremely basic buffer implementation to make my buffer-using code more readable.
+ * @internal
+ * @hidden
+ */
 export default class BufferWrapper {
     private buffs: Uint8Array[] = [];
     private readHead = 0;

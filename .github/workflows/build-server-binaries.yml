@@ -1,4 +1,4 @@
-name: Publish NPM
+name: Build Server Binaries
 on:
   release:
     types: [released]
@@ -23,12 +23,13 @@ jobs:
         run: yarn version --new-version "${GITHUB_REF:10}" --no-git-tag-version
 
       - name: Pre-build
-        run: yarn build
+        run: yarn build-standalone-server
 
-      - name: Test
-        run: yarn test --ci
-
-      - name: Publish
-        run: yarn publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist-standalone/*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
