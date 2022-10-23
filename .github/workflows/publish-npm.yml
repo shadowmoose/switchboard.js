@@ -23,9 +23,6 @@ jobs:
       - name: Version
         run: yarn version --new-version "${GITHUB_REF:10}" --no-git-tag-version
 
-      - name: Pre-build
-        run: yarn build
-
       - name: Test
         run: yarn test --ci
 

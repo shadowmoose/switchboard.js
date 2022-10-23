@@ -299,20 +299,9 @@ export class Switchboard extends Subscribable {
         }
 
         if (!this.opts.skipExtraTrackers && !this.opts?.trackers) {
-            await fetch("https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ws.txt")
-                .then(async raw => {
-                    const res = await raw.text();
-                    res.split("\n")
-                        .map(r=>r.trim())
-                        .filter(r=>r.startsWith("wss://"))
-                        .forEach(t => {
-                            this.trackerOpts.push({
-                                uri: `${t}`
-                            });
-                        });
-                }).catch(err => {
-                    this.emit('warn', err);
-                });
+            await Switchboard.getExtraTrackers().then(res => {
+                this.trackerOpts.push(...res);
+            }).catch(err => this.emit('warn', err));
         }
 
         const filtered = new Set<string>();
@@ -670,6 +659,28 @@ export class Switchboard extends Subscribable {
      */
     private static makeCryptoPair(seedString: string) {
         return nacl.sign.keyPair.fromSeed(bs58.decode(seedString));
+    }
+
+    /**
+     * Use this to fetch a list of additional, dynamic trackers, as provided by ngosang/trackerslist.
+     * By default, this is used internally to add additional trackers unless it is disabled.
+     */
+    public static async getExtraTrackers() {
+        return fetch("https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ws.txt")
+            .then(async raw => {
+                const res = await raw.text();
+                return res.split("\n")
+                    .map(r=>r.trim())
+                    .filter(r=>r.startsWith("wss://"))
+                    .map(t => ({uri: `${t}`}))
+            })
+    }
+
+    /**
+     * Convenience wrapper for users who want to set their own trackers, but still want access to Switchboard's defaults.
+     */
+    public static async defaultTrackers() {
+        return [...DEFAULT_TRACKERS.map(t => ({ uri: t })), ...await this.getExtraTrackers()]
     }
 }
 
