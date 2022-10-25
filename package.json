@@ -28,7 +28,7 @@
         "prepublishOnly": "yarn build",
         "pretest": "yarn build",
         "run-server": "ts-node src/peering-server.ts",
-        "build-standalone-server": "cross-env yarn build && yarn pkg ./dist/peering-server.js --out-path dist-standalone/"
+        "build-standalone-server": "cross-env yarn build && yarn pkg -t node16-linux,node16-alpine,node16-win,node16-macos ./dist/peering-server.js --out-path dist-standalone/"
     },
     "devDependencies": {
         "@lopatnov/rollup-plugin-uglify": "^2.1.0",
