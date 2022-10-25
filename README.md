@@ -101,3 +101,5 @@ const sb = new switchboard.Switchboard('TestRealm', {
     ]
 });
 ```
+
+Check out [the Project Wiki](https://github.com/shadowmoose/switchboard.js/wiki/The-Switchboard-Peering-Server) for more information about setup.
