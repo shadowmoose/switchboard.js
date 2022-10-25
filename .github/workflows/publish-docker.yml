@@ -24,7 +24,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Version
-        run: yarn version --new-version "${inputs.tag}" --no-git-tag-version
+        run: yarn version --new-version "${{ inputs.tag }}" --no-git-tag-version
 
       - name: Pre-build
         run: yarn build-standalone-server
@@ -45,4 +45,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: shadowmoose/switchboard.js:latest,shadowmoose/switchboard.js:${inputs.tag}
+          tags: shadowmoose/switchboard.js:latest,shadowmoose/switchboard.js:${{ inputs.tag }}
