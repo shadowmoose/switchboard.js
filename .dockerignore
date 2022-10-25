@@ -1,2 +1,4 @@
 # Ignore everything
 *
+
+!dist-standalone/*-alpine
